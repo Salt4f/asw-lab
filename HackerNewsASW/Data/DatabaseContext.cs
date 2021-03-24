@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HackerNewsASW.Data
 {
-    public class ReportsContext : DbContext
+    public class DatabaseContext : DbContext
     {
-        public ReportsContext(DbContextOptions<ReportsContext> options) : base(options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
         }
 

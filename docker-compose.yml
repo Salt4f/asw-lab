@@ -22,7 +22,7 @@ services:
     environment:
       - "POSTGRES_PASSWORD=root_password"
       - "POSTGRES_USER=root"
-      - "POSTGRES_DB=db"
+      - "POSTGRES_DB=webapp"
     ports:
       - "5488:5432"
     volumes:
