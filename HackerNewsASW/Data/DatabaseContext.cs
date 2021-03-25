@@ -14,6 +14,8 @@ namespace HackerNewsASW.Data
         }
 
         //public DbSet<Model> Models { get; set; }
+        public DbSet<Contribucio> Contribucions { get; set; }
+        public DbSet<Usuari> Usuaris { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
