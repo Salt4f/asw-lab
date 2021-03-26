@@ -57,7 +57,7 @@ namespace HackerNewsASW
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Contribucions}/{action=Index}/{id?}");
             });
         }
     }

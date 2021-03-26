@@ -14,11 +14,21 @@ namespace HackerNewsASW.Data
         }
 
         //public DbSet<Model> Models { get; set; }
+        public DbSet<Contribucio> Contribucions { get; set; }
+        public DbSet<Usuari> Usuaris { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             /*modelBuilder.Entity<MultiplePrimaryKeyModel>()
                 .HasKey(m => new { m.ID_1, m.ID_2 });*/
+
+            modelBuilder.Entity<Contribucio>()
+            .HasOne(c => c.Author)
+            .WithMany(a => a.Contribucions);
+
+            modelBuilder.Entity<Contribucio>()
+            .Navigation(c => c.Author)
+            .UsePropertyAccessMode(PropertyAccessMode.Property);
         }
 
     }

@@ -1,0 +1,66 @@
+﻿@model IEnumerable<HackerNewsASW.Models.Contribucio>
+
+@using System
+@using System.Collections
+@using System.Collections.Generic
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<center>
+    <table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
+        <tbody>
+            <tr id="pagespace" title="" style="height:10px"></tr>
+            <tr>
+                <td>
+                    <table border="0" cellpadding="0" cellspacing="0" class="itemlist">
+                        <tbody>
+                            @{int i = 1;}
+                            @foreach (var item in Model)
+                            {
+                                <tr class="athing" id="@item.Id">
+                                    <td align="right" valign="top" class="title"><span class="rank">@i. </span></td>
+                                    <td valign="top" class="votelinks"><center><a id="up_26554539" href="vote?id=26554539&amp;how=up&amp;goto=news"><div class="votearrow" title="upvote"></div></a></center></td>
+                                    <td class="title"><a href="@item.Url" class="storylink">@Html.DisplayFor(modelItem => item.Title)</a><span class="sitebit comhead"> (<a href="from?site=bell-labs.com"><span class="sitestr">@item.Author</span></a>)</span></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td class="subtext">
+                                        <span class="score" id="score_26554539">@item.Points points</span> by <a href="user?id=__d" class="hnuser">@Html.DisplayFor(modelItem => item.Author)</a> <span class="age"><a href="item?id=26554539">@item.Date</a></span> <span id="unv_26554539"></span> | <a href="hide?id=26554539&amp;goto=news">hide</a> | <a href="item?id=26554539">55&nbsp;comments</a>
+                                    </td>
+                                </tr>
+                                <tr class="spacer" style="height:5px"></tr>
+                                { i++; }
+                            }
+
+                            <tr class="morespace" style="height:10px"></tr>
+                            <tr><td colspan="2"></td><td class="title"><a href="news?p=2" class="morelink" rel="next">More</a></td></tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="y">
+                    <table width="100%" cellspacing="0" cellpadding="1"><tbody><tr><td bgcolor="#ff6600"></td></tr></tbody></table><br><center>
+                        <span class="yclinks">
+                            <a href="newsguidelines.html">Guidelines</a>
+                            | <a href="newsfaq.html">FAQ</a>
+                            | <a href="lists">Lists</a>
+                            | <a href="https://github.com/HackerNews/API">API</a>
+                            | <a href="security.html">Security</a>
+                            | <a href="http://www.ycombinator.com/legal/">Legal</a>
+                            | <a href="http://www.ycombinator.com/apply/">Apply to YC</a>
+                            | <a href="mailto:hn@ycombinator.com">Contact</a>
+                        </span><br><br><form method="get" action="//hn.algolia.com/">
+                            Search:
+                            <input type="text" name="q" value="" size="17" autocorrect="off" spellcheck="false" autocapitalize="off" autocomplete="false">
+                        </form>
+                    </center>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</center>
+
