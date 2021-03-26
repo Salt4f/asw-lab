@@ -25,6 +25,10 @@ namespace HackerNewsASW.Data
             modelBuilder.Entity<Contribucio>()
             .HasOne(c => c.Author)
             .WithMany(a => a.Contribucions);
+
+            modelBuilder.Entity<Contribucio>()
+            .Navigation(c => c.Author)
+            .UsePropertyAccessMode(PropertyAccessMode.Property);
         }
 
     }

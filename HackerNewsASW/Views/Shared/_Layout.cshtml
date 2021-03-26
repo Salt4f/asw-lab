@@ -18,15 +18,15 @@
                             <tbody>
                                 <tr>
 
-                                    <td style="width:18px;padding-right:4px"><a href=""><img src="https://news.ycombinator.com/y18.gif" width="18" height="18" style="border:1px white solid;"></a></td>
+                                    <td style="width:18px;padding-right:4px"><a asp-controller="Contribucions" asp-action="Index"><img src="https://news.ycombinator.com/y18.gif" width="18" height="18" style="border:1px white solid;"></a></td>
 
                                     <td style="line-height:12pt; height:10px;">
                                         <span class="pagetop">
-                                            <b class="hnname"><a href="news">Hacker News</a></b>
+                                            <b class="hnname"><a asp-controller="Contribucions" asp-action="Index">Hacker News</a></b>
                                             <!--
                                 <a href="newest">new</a> | <a href="front">past</a> | <a href="newcomments">comments</a> | <a href="ask">ask</a> | <a href="show">show</a> | <a href="jobs">jobs</a> | <a href="submit">submit</a>
                             -->
-                                            <a href="Home/New">new</a> | <a href="">past</a> | <a href="">comments</a> | <a href="">ask</a> | <a href="">show</a> | <a href="">jobs</a> | <a href="">submit</a>
+                                            <a asp-controller="Contribucions" asp-action="New">new</a> | <a href="">past</a> | <a href="">comments</a> | <a href="">ask</a> | <a href="">show</a> | <a href="">jobs</a> | <a asp-controller="Contribucions" asp-action="Submit">submit</a>
 
                                         </span>
                                     </td>
