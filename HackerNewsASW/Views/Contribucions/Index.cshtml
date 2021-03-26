@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<HackerNewsASW.Models.Contribucio>
 
+@using System
+@using System.Collections
+@using System.Collections.Generic
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -31,29 +35,84 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Url)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Points)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Author)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        <center>
+            <table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
+                <tbody>
+                    <tr id="pagespace" title="" style="height:10px"></tr>
+                    <tr>
+                        <td>
+                            <table border="0" cellpadding="0" cellspacing="0" class="itemlist">
+                                <tbody>
+                                    @{int i = 0;}
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr class="athing" id="@item.Id">
+                                            <td align="right" valign="top" class="title"><span class="rank">@i;. </span></td>
+                                            <td valign="top" class="votelinks"><center><a id="up_26554539" href="vote?id=26554539&amp;how=up&amp;goto=news"><div class="votearrow" title="upvote"></div></a></center></td>
+                                            <td class="title"><a href="https://www.bell-labs.com/institute/blog/plan-9-bell-labs-cyberspace/" class="storylink">Plan 9 from Bell Labs in Cyberspace</a><span class="sitebit comhead"> (<a href="from?site=bell-labs.com"><span class="sitestr">bell-labs.com</span></a>)</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"></td>
+                                            <td class="subtext">
+                                                <span class="score" id="score_26554539">336 points</span> by <a href="user?id=__d" class="hnuser">__d</a> <span class="age"><a href="item?id=26554539">2 hours ago</a></span> <span id="unv_26554539"></span> | <a href="hide?id=26554539&amp;goto=news">hide</a> | <a href="item?id=26554539">55&nbsp;comments</a>
+                                            </td>
+                                        </tr>
+                                        <tr class="spacer" style="height:5px"></tr>
+                                        {i++;}
+                                    }
+
+                                    <tr class="morespace" style="height:10px"></tr>
+                                    <tr><td colspan="2"></td><td class="title"><a href="news?p=2" class="morelink" rel="next">More</a></td></tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="y">
+                            <table width="100%" cellspacing="0" cellpadding="1"><tbody><tr><td bgcolor="#ff6600"></td></tr></tbody></table><br><center>
+                                <span class="yclinks">
+                                    <a href="newsguidelines.html">Guidelines</a>
+                                    | <a href="newsfaq.html">FAQ</a>
+                                    | <a href="lists">Lists</a>
+                                    | <a href="https://github.com/HackerNews/API">API</a>
+                                    | <a href="security.html">Security</a>
+                                    | <a href="http://www.ycombinator.com/legal/">Legal</a>
+                                    | <a href="http://www.ycombinator.com/apply/">Apply to YC</a>
+                                    | <a href="mailto:hn@ycombinator.com">Contact</a>
+                                </span><br><br><form method="get" action="//hn.algolia.com/">
+                                    Search:
+                                    <input type="text" name="q" value="" size="17" autocorrect="off" spellcheck="false" autocapitalize="off" autocomplete="false">
+                                </form>
+                            </center>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </center>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Url)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Points)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
