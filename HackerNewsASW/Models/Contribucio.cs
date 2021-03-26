@@ -11,7 +11,8 @@ namespace HackerNewsASW.Models
 
         public int Points { get; set; }
 
-        public string Author { get; set; }
+        //[InverseProperty("UsuariId")]
+        public Usuari Author { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime Date { get; set; }

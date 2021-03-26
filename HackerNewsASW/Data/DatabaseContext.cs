@@ -21,6 +21,10 @@ namespace HackerNewsASW.Data
         {
             /*modelBuilder.Entity<MultiplePrimaryKeyModel>()
                 .HasKey(m => new { m.ID_1, m.ID_2 });*/
+
+            modelBuilder.Entity<Contribucio>()
+            .HasOne(c => c.Author)
+            .WithMany(a => a.Contribucions);
         }
 
     }

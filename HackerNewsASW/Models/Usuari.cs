@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,6 +15,9 @@ namespace HackerNewsASW.Models
         public string Email { get; set; }
 
         public DateTime DateCreated { get; set; }
+
+        //[InverseProperty("Author")]
+        public ICollection<Contribucio> Contribucions { get; set; }
 
         //constructora
 
