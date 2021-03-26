@@ -26,7 +26,7 @@ namespace HackerNewsASW.Controllers
         }
 
         // GET: Contribucions/Details/5
-        public async Task<IActionResult> Details(ulong? id)
+        public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
             {
@@ -66,7 +66,7 @@ namespace HackerNewsASW.Controllers
         }
 
         // GET: Contribucions/Edit/5
-        public async Task<IActionResult> Edit(ulong? id)
+        public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
             {
@@ -86,7 +86,7 @@ namespace HackerNewsASW.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(ulong id, [Bind("Url,Points,Author,Date,Title,Id")] Contribucio contribucio)
+        public async Task<IActionResult> Edit(long id, [Bind("Url,Points,Author,Date,Title,Id")] Contribucio contribucio)
         {
             if (id != contribucio.Id)
             {
@@ -117,7 +117,7 @@ namespace HackerNewsASW.Controllers
         }
 
         // GET: Contribucions/Delete/5
-        public async Task<IActionResult> Delete(ulong? id)
+        public async Task<IActionResult> Delete(long? id)
         {
             if (id == null)
             {
@@ -137,7 +137,7 @@ namespace HackerNewsASW.Controllers
         // POST: Contribucions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(ulong id)
+        public async Task<IActionResult> DeleteConfirmed(long id)
         {
             var contribucio = await _context.Contribucions.FindAsync(id);
             _context.Contribucions.Remove(contribucio);
@@ -145,7 +145,7 @@ namespace HackerNewsASW.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ContribucioExists(ulong id)
+        private bool ContribucioExists(long id)
         {
             return _context.Contribucions.Any(e => e.Id == id);
         }
