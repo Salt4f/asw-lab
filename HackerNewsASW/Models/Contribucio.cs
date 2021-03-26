@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HackerNewsASW.Models
 {
@@ -12,12 +13,14 @@ namespace HackerNewsASW.Models
 
         public string Author { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime Date { get; set; }
         
         public string Title { get; set; }
 
         [Key]
-        public ulong Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Id { get; set; }
 
         //constructora
         /*public Contribucio (string link, int punts, string autor, DateTime data, string titol)
