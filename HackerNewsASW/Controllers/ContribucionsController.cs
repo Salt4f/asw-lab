@@ -22,12 +22,16 @@ namespace HackerNewsASW.Controllers
         // GET: Contribucions
         public async Task<IActionResult> Index()
         {
-            return View(_context.Contribucions.OrderByDescending(c => c.Points));
+            return View(_context.Contribucions
+			.Include(c => c.Author)
+			.OrderByDescending(c => c.Points));
         }
 
         public async Task<IActionResult> New()
         {
-            return View(_context.Contribucions.OrderByDescending(c => c.Date));
+            return View(_context.Contribucions
+			.Include(c => c.Author)		
+			.OrderByDescending(c => c.Date));
         }
 
         // GET: Contribucions/Details/5
