@@ -23,6 +23,8 @@ namespace HackerNewsASW.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
+        public Contribucio Commented;
+
         //constructora
         /*public Contribucio (string link, int punts, string autor, DateTime data, string titol)
         {

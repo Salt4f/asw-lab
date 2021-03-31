@@ -19,6 +19,8 @@ namespace HackerNewsASW.Models
         //[InverseProperty("Author")]
         public ICollection<Contribucio> Contribucions { get; set; }
 
+        public string Password { get; set; }
+
         //constructora
 
        /* public Usuari(string userId, string mail, DateTime dataCreacio)
