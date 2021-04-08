@@ -39,7 +39,12 @@ namespace HackerNewsASW.Controllers
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             foreach (var id in result.Principal.Identities)
-                _logger.LogInformation(id.AuthenticationType, id.NameClaimType, id.Claims.FirstOrDefault());
+            {
+                _logger.LogInformation(id.AuthenticationType);
+                _logger.LogInformation(id.NameClaimType);
+                _logger.LogInformation(id.Claims.FirstOrDefault().ToString());
+            }
+                
 
             return Redirect("/");
         }
