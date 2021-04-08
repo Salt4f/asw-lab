@@ -22,16 +22,16 @@ namespace HackerNewsASW.Controllers
         // GET: Contribucions
         public async Task<IActionResult> Index()
         {
-            return View(_context.Contribucions
+            return View(_context.Contributions
 			.Include(c => c.Author)
-			.OrderByDescending(c => c.Points));
+			.OrderByDescending(c => c.Upvotes));
         }
 
         public async Task<IActionResult> New()
         {
-            return View(_context.Contribucions
+            return View(_context.Contributions
 			.Include(c => c.Author)		
-			.OrderByDescending(c => c.Date));
+			.OrderByDescending(c => c.DateCreated));
         }
 
         // GET: Contribucions/Details/5
@@ -42,7 +42,7 @@ namespace HackerNewsASW.Controllers
                 return NotFound();
             }
 
-            var contribucio = await _context.Contribucions
+            var contribucio = await _context.Contributions
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (contribucio == null)
             {
@@ -63,7 +63,7 @@ namespace HackerNewsASW.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Url,Points,Author,Date,Title,Id")] Contribucio contribucio)
+        public async Task<IActionResult> Create([Bind("Url,Points,Author,Date,Title,Id")] Contribution contribucio)
         {
             if (ModelState.IsValid)
             {
@@ -82,7 +82,7 @@ namespace HackerNewsASW.Controllers
                 return NotFound();
             }
 
-            var contribucio = await _context.Contribucions.FindAsync(id);
+            var contribucio = await _context.Contributions.FindAsync(id);
             if (contribucio == null)
             {
                 return NotFound();
@@ -95,7 +95,7 @@ namespace HackerNewsASW.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Url,Points,Author,Date,Title,Id")] Contribucio contribucio)
+        public async Task<IActionResult> Edit(long id, [Bind("Url,Points,Author,Date,Title,Id")] Contribution contribucio)
         {
             if (id != contribucio.Id)
             {
@@ -133,7 +133,7 @@ namespace HackerNewsASW.Controllers
                 return NotFound();
             }
 
-            var contribucio = await _context.Contribucions
+            var contribucio = await _context.Contributions
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (contribucio == null)
             {
@@ -148,15 +148,15 @@ namespace HackerNewsASW.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            var contribucio = await _context.Contribucions.FindAsync(id);
-            _context.Contribucions.Remove(contribucio);
+            var contribucio = await _context.Contributions.FindAsync(id);
+            _context.Contributions.Remove(contribucio);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ContribucioExists(long id)
         {
-            return _context.Contribucions.Any(e => e.Id == id);
+            return _context.Contributions.Any(e => e.Id == id);
         }
     }
 }
