@@ -32,7 +32,15 @@
                                     </td>
                                     <td style="text-align:right;padding-right:4px;">
                                         <span class="pagetop">
-                                            <a href="login?goto=news">login</a>
+                                            @if (Context.User.Identity is null || !Context.User.Identity.IsAuthenticated)
+                                            {
+                                                <a asp-controller="Account" asp-action="Login">login</a>
+                                            }
+                                            else
+                                            {
+                                                <text><a href="">@GetUserID()</a> | <a asp-controller="Account" asp-action="Logout">logout</a></text>
+                                            }
+
                                         </span>
                                     </td>
                                 </tr>
@@ -87,3 +95,14 @@
                     -->
 </body>
 </html>
+
+@functions {
+    string GetUserID()
+    {
+        string email = Context.User.Claims.Where(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")
+                    .Select(claim => claim.Value).FirstOrDefault();
+
+        if (email != null) return email.Split('@')[0];
+        return "";
+    }
+}
