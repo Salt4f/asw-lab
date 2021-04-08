@@ -40,11 +40,11 @@ namespace HackerNewsASW.Controllers
 
             foreach (var id in result.Principal.Identities)
             {
-                _logger.LogInformation(id.AuthenticationType);
-                _logger.LogInformation(id.NameClaimType);
-                _logger.LogInformation(id.Claims.FirstOrDefault().ToString());
+                foreach (var claim in id.Claims) 
+                {
+                    _logger.LogInformation(claim.Type + " " + claim.Value);
+                }
             }
-                
 
             return Redirect("/");
         }
