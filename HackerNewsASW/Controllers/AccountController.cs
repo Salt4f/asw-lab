@@ -1,4 +1,5 @@
 ﻿using HackerNewsASW.Data;
+using HackerNewsASW.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -45,6 +46,28 @@ namespace HackerNewsASW.Controllers
                     _logger.LogInformation(claim.Type + " " + claim.Value);
                 }
             }
+
+            if (result.Succeeded)
+            {
+                string email = result.Principal.Identities.First().Claims
+                    .Where(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")
+                    .Select(claim => claim.Value).FirstOrDefault();
+
+                User user = _context.Users.FirstOrDefault(u => u.Email == email);
+
+                if (user is null)
+                {
+                    user = new User
+                    {
+                        Email = email,
+                        DateCreated = DateTime.Now
+                    };
+
+                    await _context.AddAsync(user);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
 
             return Redirect("/");
         }
