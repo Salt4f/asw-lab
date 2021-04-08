@@ -39,7 +39,7 @@ namespace HackerNewsASW.Controllers
         {
             await HttpContext.SignOutAsync();
 
-            return RedirectToAction(nameof(NewsController.Index));
+            return Redirect("/");
         }
 
         public async Task<IActionResult> LoginResult()
@@ -67,7 +67,7 @@ namespace HackerNewsASW.Controllers
                     await _context.SaveChangesAsync();
                 }
 
-                return RedirectToAction(nameof(NewsController.Index));
+                return Redirect("/");
             }
 
             return RedirectToAction(nameof(Login));
