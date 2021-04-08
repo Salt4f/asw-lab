@@ -44,16 +44,16 @@ namespace HackerNewsASW.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Submit([Bind("Url,Points,Author,Date,Title,Id")] Contribution contribucio)
+        public async Task<IActionResult> Submit([Bind("Title, Content")] News news)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(contribucio);
+                news.DateCreated = DateTime.Now;
+                _context.Add(news);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(contribucio);
+            return View(news);
         }
 
         // GET: Contribucions/Edit/5

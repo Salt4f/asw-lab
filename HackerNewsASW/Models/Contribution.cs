@@ -7,7 +7,6 @@ namespace HackerNewsASW.Models
 {
     public abstract class Contribution
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateCreated { get; set; }
 
         //variables
