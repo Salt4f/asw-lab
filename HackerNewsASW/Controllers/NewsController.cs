@@ -28,14 +28,16 @@ namespace HackerNewsASW.Controllers
         {
             return View(_context.News
             .Include(c => c.Author)
+            .Include(c => c.Comments)
             .OrderByDescending(c => c.Upvotes)) ;
         }
 
         public IActionResult New()
         {
             return View(_context.News
-			.Include(c => c.Author)		
-			.OrderByDescending(c => c.DateCreated));
+			.Include(c => c.Author)
+            .Include(c => c.Comments)
+            .OrderByDescending(c => c.DateCreated));
         }
 
         // GET: Contribucions/Submit
