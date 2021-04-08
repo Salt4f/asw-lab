@@ -1,29 +1,28 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HackerNewsASW.Models
 {
-    public class Contribucio
+    public abstract class Contribution
     {
-        //variables
-        public string Url { get; set; }
-
-        public int Points { get; set; }
-
-        //[InverseProperty("UsuariId")]
-        public Usuari Author { get; set; }
-
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime Date { get; set; }
+        public DateTime DateCreated { get; set; }
+
+        //variables
+        public int Upvotes   { get; set; }
         
-        public string Title { get; set; }
+        public string Content { get; set; }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public Contribucio Commented;
+        //[InverseProperty("UsuariId")]
+        public User Author { get; set; }
+
+        public ICollection<Contribution> Comments { get; set; }
 
         //constructora
         /*public Contribucio (string link, int punts, string autor, DateTime data, string titol)

@@ -14,19 +14,19 @@ namespace HackerNewsASW.Data
         }
 
         //public DbSet<Model> Models { get; set; }
-        public DbSet<Contribucio> Contribucions { get; set; }
-        public DbSet<Usuari> Usuaris { get; set; }
+        public DbSet<Contribution> Contributions { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             /*modelBuilder.Entity<MultiplePrimaryKeyModel>()
                 .HasKey(m => new { m.ID_1, m.ID_2 });*/
 
-            modelBuilder.Entity<Contribucio>()
+            modelBuilder.Entity<Contribution>()
             .HasOne(c => c.Author)
-            .WithMany(a => a.Contribucions);
+            .WithMany(a => a.Contributions);
 
-            modelBuilder.Entity<Contribucio>()
+            modelBuilder.Entity<Contribution>()
             .Navigation(c => c.Author)
             .UsePropertyAccessMode(PropertyAccessMode.Property);
         }

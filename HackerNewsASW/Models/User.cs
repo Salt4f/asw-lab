@@ -5,21 +5,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HackerNewsASW.Models
 {
-    public class Usuari
+    public class User
     {
         //variables 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string UsuariId { get; set; }
+        public string UserId { get; set; }
 
         public string Email { get; set; }
+
+        public string Password { get; set; }
 
         public DateTime DateCreated { get; set; }
 
         //[InverseProperty("Author")]
-        public ICollection<Contribucio> Contribucions { get; set; }
+        public ICollection<Contribution> Contributions { get; set; }
 
-        public string Password { get; set; }
+        
 
         //constructora
 
