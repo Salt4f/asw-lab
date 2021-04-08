@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HackerNewsASW.Models.Contribucio>
+﻿@model IEnumerable<HackerNewsASW.Models.News>
 
 @using System
 @using System.Collections
@@ -23,16 +23,16 @@
                                 <tr class="athing" id="@item.Id">
                                     <td align="right" valign="top" class="title"><span class="rank">@i. </span></td>
                                     <td valign="top" class="votelinks"><center><a id="up_26554539" href="vote?id=26554539&amp;how=up&amp;goto=news"><div class="votearrow" title="upvote"></div></a></center></td>
-                                    <td class="title"><a href="@item.Url" class="storylink">@Html.DisplayFor(modelItem => item.Title)</a><span class="sitebit comhead"> (<a href="from?site=bell-labs.com"><span class="sitestr">@item.Author</span></a>)</span></td>
+                                    <td class="title"><a href="@item.Content" class="storylink">@Html.DisplayFor(modelItem => item.Title)</a><span class="sitebit comhead"> (<a href="from?site=bell-labs.com"><span class="sitestr">@item.Author</span></a>)</span></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"></td>
                                     <td class="subtext">
-                                        <span class="score" id="score_26554539">@item.Points points</span> by <a href="user?id=__d" class="hnuser">@Html.DisplayFor(modelItem => item.Author)</a> <span class="age"><a href="item?id=26554539">@item.Date</a></span> <span id="unv_26554539"></span> | <a href="hide?id=26554539&amp;goto=news">hide</a> | <a href="item?id=26554539">55&nbsp;comments</a>
+                                        <span class="score" id="score_26554539">@item.Upvotes points</span> by <a href="user?id=__d" class="hnuser">@Html.DisplayFor(modelItem => item.Author)</a> <span class="age"><a href="item?id=26554539">@item.DateCreated</a></span> <span id="unv_26554539"></span> | <a href="hide?id=26554539&amp;goto=news">hide</a> | <a href="item?id=26554539">55&nbsp;comments</a>
                                     </td>
                                 </tr>
                                 <tr class="spacer" style="height:5px"></tr>
-                                {i++;}
+                                { i++; }
                             }
 
                             <tr class="morespace" style="height:10px"></tr>
