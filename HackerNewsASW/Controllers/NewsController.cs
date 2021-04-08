@@ -55,7 +55,7 @@ namespace HackerNewsASW.Controllers
             if (ModelState.IsValid)
             {
                 news.DateCreated = DateTime.Now;
-                _logger.LogInformation(User.Identity.Name);
+                news.Author = await _context.Users.FindAsync(GetUserID(User));
                 _context.Add(news);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -146,6 +146,15 @@ namespace HackerNewsASW.Controllers
         private bool ContribucioExists(long id)
         {
             return _context.Contributions.Any(e => e.Id == id);
+        }
+
+        private static string GetUserID(System.Security.Claims.ClaimsPrincipal user)
+        {
+            string email = user.Claims.Where(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")
+                        .Select(claim => claim.Value).FirstOrDefault();
+
+            if (email != null) return email.Split('@')[0];
+            return "";
         }
     }
 }
