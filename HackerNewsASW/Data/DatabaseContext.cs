@@ -15,6 +15,10 @@ namespace HackerNewsASW.Data
 
         //public DbSet<Model> Models { get; set; }
         public DbSet<Contribution> Contributions { get; set; }
+        public DbSet<News> News { get; set; }
+        public DbSet<Ask> Asks { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+
         public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -10,11 +10,11 @@ using HackerNewsASW.Models;
 
 namespace HackerNewsASW.Controllers
 {
-    public class ContribucionsController : Controller
+    public class NewsController : Controller
     {
         private readonly DatabaseContext _context;
 
-        public ContribucionsController(DatabaseContext context)
+        public NewsController(DatabaseContext context)
         {
             _context = context;
         }
@@ -22,38 +22,20 @@ namespace HackerNewsASW.Controllers
         // GET: Contribucions
         public async Task<IActionResult> Index()
         {
-            return View(_context.Contributions
+            return View(_context.News
 			.Include(c => c.Author)
 			.OrderByDescending(c => c.Upvotes));
         }
 
         public async Task<IActionResult> New()
         {
-            return View(_context.Contributions
+            return View(_context.News
 			.Include(c => c.Author)		
 			.OrderByDescending(c => c.DateCreated));
         }
 
-        // GET: Contribucions/Details/5
-        public async Task<IActionResult> Details(long? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var contribucio = await _context.Contributions
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (contribucio == null)
-            {
-                return NotFound();
-            }
-
-            return View(contribucio);
-        }
-
         // GET: Contribucions/Create
-        public IActionResult Create()
+        public IActionResult Submit()
         {
             return View();
         }
@@ -63,7 +45,7 @@ namespace HackerNewsASW.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Url,Points,Author,Date,Title,Id")] Contribution contribucio)
+        public async Task<IActionResult> Submit([Bind("Url,Points,Author,Date,Title,Id")] Contribution contribucio)
         {
             if (ModelState.IsValid)
             {

@@ -11,7 +11,7 @@ namespace HackerNewsASW.Models
         public DateTime DateCreated { get; set; }
 
         //variables
-        public int Upvotes   { get; set; }
+        public int Upvotes { get; set; }
         
         public string Content { get; set; }
 
