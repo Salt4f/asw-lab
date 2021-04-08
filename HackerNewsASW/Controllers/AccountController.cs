@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using HackerNewsASW.Data;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,15 @@ namespace HackerNewsASW.Controllers
     [AllowAnonymous]
     public class AccountController : Controller
     {
+        private readonly DatabaseContext _context;
+        private readonly ILogger<AccountController> _logger;
+
+        public AccountController(DatabaseContext context, ILogger<AccountController> logger)
+        {
+            _context = context;
+            _logger = logger;
+        }
+
         public IActionResult Login()
         {
             var props = new AuthenticationProperties()
@@ -25,9 +36,12 @@ namespace HackerNewsASW.Controllers
 
         public async Task<IActionResult> LoginResult()
         {
-            var response = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return Json(HttpContext.User.Identities);
+            foreach (var id in result.Principal.Identities)
+                _logger.LogInformation(id.AuthenticationType, id.NameClaimType, id.Claims.FirstOrDefault());
+
+            return Redirect("/");
         }
     }
 }
