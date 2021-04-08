@@ -59,6 +59,7 @@ namespace HackerNewsASW.Controllers
                 {
                     user = new User
                     {
+                        UserId = email.Split('@')[0],
                         Email = email,
                         DateCreated = DateTime.Now
                     };
