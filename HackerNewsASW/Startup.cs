@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HackerNewsASW.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace HackerNewsASW
 {
@@ -31,6 +32,20 @@ namespace HackerNewsASW
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                })
+                .AddGoogle(options => 
+                {
+                    var keys = Configuration.GetSection("GoogleKeys");
+
+                    options.ClientId = keys["ClientID"];
+                    options.ClientSecret = keys["ClientSecret"];
+                });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +66,7 @@ namespace HackerNewsASW
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
