@@ -38,14 +38,14 @@ namespace HackerNewsASW.Controllers
 			.OrderByDescending(c => c.DateCreated));
         }
 
-        // GET: Contribucions/Create
+        // GET: Contribucions/Submit
         [Authorize]
         public IActionResult Submit()
         {
             return View();
         }
 
-        // POST: Contribucions/Create
+        // POST: Contribucions/Submit
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -83,7 +83,7 @@ namespace HackerNewsASW.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, [Bind("Url,Points,Author,Date,Title,Id")] Contribution contribucio)
         {
             if (id != contribucio.Id)
@@ -134,7 +134,7 @@ namespace HackerNewsASW.Controllers
 
         // POST: Contribucions/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
             var contribucio = await _context.Contributions.FindAsync(id);
