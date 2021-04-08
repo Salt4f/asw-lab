@@ -35,17 +35,16 @@ namespace HackerNewsASW.Controllers
             return Challenge(props, GoogleDefaults.AuthenticationScheme);
         }
 
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(GoogleDefaults.AuthenticationScheme);
+
+            return RedirectToAction(nameof(NewsController.Index));
+        }
+
         public async Task<IActionResult> LoginResult()
         {
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            foreach (var id in result.Principal.Identities)
-            {
-                foreach (var claim in id.Claims) 
-                {
-                    _logger.LogInformation(claim.Type + " " + claim.Value);
-                }
-            }
 
             if (result.Succeeded)
             {
@@ -67,10 +66,12 @@ namespace HackerNewsASW.Controllers
                     await _context.AddAsync(user);
                     await _context.SaveChangesAsync();
                 }
+
+                return RedirectToAction(nameof(NewsController.Index));
             }
 
-
-            return Redirect("/");
+            return RedirectToAction(nameof(Login));
+            
         }
     }
 }
