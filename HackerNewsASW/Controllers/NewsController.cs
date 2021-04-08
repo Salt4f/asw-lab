@@ -8,28 +8,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HackerNewsASW.Data;
 using HackerNewsASW.Models;
+using Microsoft.Extensions.Logging;
 
 namespace HackerNewsASW.Controllers
 {
     public class NewsController : Controller
     {
         private readonly DatabaseContext _context;
+        private readonly ILogger<NewsController> _logger;
 
-        public NewsController(DatabaseContext context)
+        public NewsController(DatabaseContext context, ILogger<NewsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Contribucions
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View(_context.News
-			.Include(c => c.Author)
-			.OrderByDescending(c => c.Upvotes));
+            .Include(c => c.Author)
+            .OrderByDescending(c => c.Upvotes)) ;
         }
 
-        [Authorize]
-        public async Task<IActionResult> New()
+        public IActionResult New()
         {
             return View(_context.News
 			.Include(c => c.Author)		
@@ -37,6 +39,7 @@ namespace HackerNewsASW.Controllers
         }
 
         // GET: Contribucions/Create
+        [Authorize]
         public IActionResult Submit()
         {
             return View();
@@ -46,11 +49,13 @@ namespace HackerNewsASW.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Submit([Bind("Title, Content")] News news)
         {
             if (ModelState.IsValid)
             {
                 news.DateCreated = DateTime.Now;
+                _logger.LogInformation(User.Identity.Name);
                 _context.Add(news);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
