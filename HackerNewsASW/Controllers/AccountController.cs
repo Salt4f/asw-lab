@@ -37,7 +37,7 @@ namespace HackerNewsASW.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(GoogleDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync();
 
             return RedirectToAction(nameof(NewsController.Index));
         }
