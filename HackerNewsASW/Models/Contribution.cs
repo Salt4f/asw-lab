@@ -7,7 +7,6 @@ namespace HackerNewsASW.Models
 {
     public abstract class Contribution
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateCreated { get; set; }
 
         //variables
@@ -22,7 +21,7 @@ namespace HackerNewsASW.Models
         //[InverseProperty("UsuariId")]
         public User Author { get; set; }
 
-        public ICollection<Contribution> Comments { get; set; }
+        public ICollection<Comment> Comments { get; set; }
 
         //constructora
         /*public Contribucio (string link, int punts, string autor, DateTime data, string titol)
