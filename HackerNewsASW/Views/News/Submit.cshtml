@@ -1,4 +1,4 @@
-﻿@model HackerNewsASW.Models.News
+﻿@model HackerNewsASW.Models.SubmitFormModel
 
 @{
     ViewData["Title"] = "Submit";
@@ -16,22 +16,23 @@
                 <td>
                     <form asp-action="Submit">
                         <!--><script type="text/javascript">function tlen(el) { var n = el.value.length - 80; el.nextSibling.innerText = n > 0 ? n + ' too long' : ''; }</script><table border="0"></-->
-                        <tbody>
-                            <tr><td>title</td><td><input size="50" asp-for="Title"><span style="margin-left:10px"></span></td></tr>
-                            <tr><td>url or text</td><td><textarea rows="4" cols="49" asp-for="Content"></textarea></td></tr>
-                            <tr><td></td><td></td></tr>
-                            <tr><td></td><td><input type="submit" value="Submit"></td></tr>
-                            <tr style="height:20px"></tr>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    Leave url blank to submit a question for discussion. If there
-                                    is no url, the text (if any) will appear at the top of the
-                                    thread.<br><br>
-                                    You can also submit via <a href="bookmarklet.html" rel="nofollow"><u>bookmarklet</u></a>.
-                                </td>
-                            </tr>
-                        </tbody>
+        <tbody>
+            <tr><td>title</td><td><input size="50" asp-for="Title"><span style="margin-left:10px"></span></td></tr>
+            <tr><td>url</td><td><input type="text" size="50" asp-for="Url"></td></tr>
+            <tr><td></td><td><b>or</b></td></tr>
+            <tr><td>text</td><td><textarea rows="4" cols="49" asp-for="Text"></textarea></td></tr>
+            <tr><td></td><td></td></tr>
+            <tr><td></td><td><input type="submit" value="Submit"></td></tr>
+            <tr style="height:20px"></tr>
+            <tr>
+                <td></td>
+                <td>
+                    Leave url blank to submit a question for discussion. If there
+                    is no url, the text (if any) will appear at the top of the
+                    thread.<br><br>
+                </td>
+            </tr>
+        </tbody>
                     </form>
                 </td>
             </tr>
