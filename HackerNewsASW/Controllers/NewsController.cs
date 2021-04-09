@@ -54,7 +54,8 @@ namespace HackerNewsASW.Controllers
         [Authorize]
         public async Task<IActionResult> Submit([Bind("Title, Content")] News news)
         {
-            if (ModelState.IsValid)
+            if ((news.Title != null && news.Title.Trim().Length != 0) &&
+                (news.Content != null && news.Content.Trim().Length != 0))
             {
                 news.DateCreated = DateTime.Now;
                 news.Author = await _context.Users.FindAsync(GetUserID(User));
