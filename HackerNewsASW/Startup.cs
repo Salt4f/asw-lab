@@ -44,6 +44,7 @@ namespace HackerNewsASW
 
                     options.ClientId = keys["ClientID"];
                     options.ClientSecret = keys["ClientSecret"];
+                    options.CorrelationCookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Lax;
                 });
 
         }
