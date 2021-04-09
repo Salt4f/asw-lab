@@ -58,7 +58,7 @@ namespace HackerNewsASW.Controllers
                 (news.Content != null && news.Content.Trim().Length != 0))
             {
                 news.DateCreated = DateTime.Now;
-                news.Author = await _context.Users.FindAsync(GetUserID(User));
+                news.Author = await _context.Users.FindAsync(GetUserEmail(User));
                 _context.Add(news);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -157,6 +157,15 @@ namespace HackerNewsASW.Controllers
                         .Select(claim => claim.Value).FirstOrDefault();
 
             if (email != null) return email.Split('@')[0];
+            return "";
+        }
+
+        private static string GetUserEmail(System.Security.Claims.ClaimsPrincipal user)
+        {
+            string email = user.Claims.Where(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")
+                        .Select(claim => claim.Value).FirstOrDefault();
+
+            if (email != null) return email;
             return "";
         }
     }
