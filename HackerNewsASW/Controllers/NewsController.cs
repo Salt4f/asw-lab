@@ -90,7 +90,7 @@ namespace HackerNewsASW.Controllers
                 }
                 else if (submit.Url.Trim().StartsWith("http"))//URL
                 {
-                    var url = _context.News.FirstOrDefaultAsync(n => n.Content == submit.Url);
+                    News url = await _context.News.FirstOrDefaultAsync(n => n.Content == submit.Url);
                     if (url != null)
                     {
                         //Aquí habría que redireccionar a la función que se encargue de visualizar una noticia y sus comentarios
