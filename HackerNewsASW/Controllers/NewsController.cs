@@ -88,7 +88,7 @@ namespace HackerNewsASW.Controllers
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(New)); //Habría que redireccionar a la inspección de la contribución
                 }
-                else //URL
+                else if (submit.Url.Trim().StartsWith("http"))//URL
                 {
                     var url = _context.News.FirstOrDefaultAsync(n => n.Content == submit.Url);
                     if (url != null)
