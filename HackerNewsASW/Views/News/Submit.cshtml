@@ -12,7 +12,7 @@
             {
                 <tr><td style="color:red">Title is always necessary</td></tr>
             }
-            @if (Model != null && !Model.Url.Trim().StartsWith("http"))
+            else if (Model != null && !Model.Url.Trim().StartsWith("http"))
             {
                 <tr><td style="color:red">URLs start with http or https</td></tr>
             }
