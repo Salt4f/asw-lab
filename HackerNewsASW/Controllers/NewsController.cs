@@ -29,7 +29,7 @@ namespace HackerNewsASW.Controllers
             return View(_context.News
             .Include(c => c.Author)
             .Include(c => c.Comments)
-            .OrderByDescending(c => c.Upvotes)) ;
+            .OrderByDescending(c => c.Upvotes));
         }
 
         public async Task<IActionResult> New()
@@ -37,14 +37,17 @@ namespace HackerNewsASW.Controllers
             var news = await _context.News
             .Include(c => c.Author)
             .Include(c => c.Comments)
-            .OrderByDescending(c => c.DateCreated).ToListAsync();
+            .ToListAsync<Contribution>();
 
             var asks = await _context.Asks
             .Include(c => c.Author)
             .Include(c => c.Comments)
-            .OrderByDescending(c => c.DateCreated).ToListAsync();
+            .ToListAsync<Contribution>();
 
-            return View();
+            var contrib = news.Union(asks);
+            contrib = contrib.OrderByDescending(c => c.DateCreated);
+
+            return View(contrib);
         }
 
         // GET: Contribucions/Submit

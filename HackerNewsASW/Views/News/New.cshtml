@@ -20,12 +20,21 @@
                             @{int i = 1;}
                             @foreach (var item in Model)
                             {
+                                var title = item.getTitle();
                                 <tr class="athing" id="@item.Id">
                                     <td align="right" valign="top" class="title"><span class="rank">@i. </span></td>
                                     <td valign="top" class="votelinks"><center><a id="up_26554539" href="vote?id=26554539&amp;how=up&amp;goto=news"><div class="votearrow" title="upvote"></div></a></center></td>
-                                    <td class="title"><a href="@item.Content" class="storylink">@Html.DisplayFor(modelItem => item.getTitle())</a><span class="sitebit comhead"> (<a href="from?site=bell-labs.com"><span class="sitestr">@item.Author</span></a>)</span></td>
-                                </tr>
-                                <tr>
+                                    <td class="title">
+                                        <a href="@item.Content" class="storylink">@Html.DisplayFor(modelItem => title)</a><span class="sitebit comhead">
+                                            @if (item.GetType() == typeof(HackerNewsASW.Models.News))
+                                            {
+                                                <text>(</text><a href="from?site=bell-labs.com"><span class="sitestr">@item.Author</span></a><text>)</text>
+                                            
+                                            }
+                                            </span>
+                                            </td>
+                                        
+                                </tr><tr>
                                     <td colspan="2"></td>
                                     <td class="subtext">
                                         <span class="score" id="score_26554539">@item.Upvotes points</span> by <a href="user?id=__d" class="hnuser">@Html.DisplayFor(modelItem => item.Author.UserId)</a> <span class="age"><a href="item?id=26554539">@item.DateCreated</a></span> <span id="unv_26554539"></span> | <a href="item?id=26554539">@item.Comments.Count comments</a>
