@@ -29,15 +29,25 @@ namespace HackerNewsASW.Controllers
             return View(_context.News
             .Include(c => c.Author)
             .Include(c => c.Comments)
-            .OrderByDescending(c => c.Upvotes)) ;
+            .OrderByDescending(c => c.Upvotes));
         }
 
-        public IActionResult New()
+        public async Task<IActionResult> New()
         {
-            return View(_context.News
-			.Include(c => c.Author)
+            var news = await _context.News
+            .Include(c => c.Author)
             .Include(c => c.Comments)
-            .OrderByDescending(c => c.DateCreated));
+            .ToListAsync<Contribution>();
+
+            var asks = await _context.Asks
+            .Include(c => c.Author)
+            .Include(c => c.Comments)
+            .ToListAsync<Contribution>();
+
+            var contrib = news.Union(asks);
+            contrib = contrib.OrderByDescending(c => c.DateCreated);
+
+            return View(contrib);
         }
 
         // GET: Contribucions/Submit

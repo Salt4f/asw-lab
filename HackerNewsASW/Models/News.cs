@@ -8,5 +8,12 @@ namespace HackerNewsASW.Models
     public class News : Contribution
     {
         public string Title { get; set; }
+
+        public override string getTitle()
+        {
+            return Title;
+        }
     }
+
+
 }

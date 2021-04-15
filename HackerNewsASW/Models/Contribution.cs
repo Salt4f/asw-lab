@@ -23,6 +23,8 @@ namespace HackerNewsASW.Models
 
         public ICollection<Comment> Comments { get; set; }
 
+        public abstract string getTitle();
+
         //constructora
         /*public Contribucio (string link, int punts, string autor, DateTime data, string titol)
         {

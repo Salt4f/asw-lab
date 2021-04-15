@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HackerNewsASW.Models.News>
+﻿@model IEnumerable<HackerNewsASW.Models.Ask>
 
 @using System
 @using System.Collections
@@ -7,7 +7,6 @@
 @{
     ViewData["Title"] = "Index";
 }
-
 
 <center>
     <table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
@@ -23,7 +22,7 @@
                                 <tr class="athing" id="@item.Id">
                                     <td align="right" valign="top" class="title"><span class="rank">@i. </span></td>
                                     <td valign="top" class="votelinks"><center><a id="up_26554539" href="vote?id=26554539&amp;how=up&amp;goto=news"><div class="votearrow" title="upvote"></div></a></center></td>
-                                    <td class="title"><a href="@item.Content" class="storylink">@Html.DisplayFor(modelItem => item.Title)</a><span class="sitebit comhead"> (<a href="@item.Content"><span class="sitestr">@item.Content.Split("//")[1].Split("/")[0]</span></a>)</span></td>
+                                    <td class="title"><a href="@item.Content" class="storylink">@Html.DisplayFor(modelItem => item.Title)</a><span class="sitebit comhead"></span></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"></td>
@@ -32,7 +31,7 @@
                                     </td>
                                 </tr>
                                 <tr class="spacer" style="height:5px"></tr>
-                                {i++;}
+                                { i++; }
                             }
 
                             <tr class="morespace" style="height:10px"></tr>
@@ -63,4 +62,3 @@
         </tbody>
     </table>
 </center>
-
