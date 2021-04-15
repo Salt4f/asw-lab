@@ -32,12 +32,19 @@ namespace HackerNewsASW.Controllers
             .OrderByDescending(c => c.Upvotes)) ;
         }
 
-        public IActionResult New()
+        public async Task<IActionResult> New()
         {
-            return View(_context.News
-			.Include(c => c.Author)
+            var news = await _context.News
+            .Include(c => c.Author)
             .Include(c => c.Comments)
-            .OrderByDescending(c => c.DateCreated));
+            .OrderByDescending(c => c.DateCreated).ToListAsync();
+
+            var asks = await _context.Asks
+            .Include(c => c.Author)
+            .Include(c => c.Comments)
+            .OrderByDescending(c => c.DateCreated).ToListAsync();
+
+            return View();
         }
 
         // GET: Contribucions/Submit

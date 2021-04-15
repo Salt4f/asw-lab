@@ -8,5 +8,10 @@ namespace HackerNewsASW.Models
     public class Comment : Contribution
     {
         public Contribution Commented { get; set; }
+
+        public override string getTitle()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
