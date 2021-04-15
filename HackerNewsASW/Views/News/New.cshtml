@@ -28,7 +28,8 @@
                                         <a href="@item.Content" class="storylink">@Html.DisplayFor(modelItem => title)</a><span class="sitebit comhead">
                                             @if (item.GetType() == typeof(HackerNewsASW.Models.News))
                                             {
-                                                <text>(</text><a href="from?site=bell-labs.com"><span class="sitestr">@item.Author</span></a><text>)</text>
+                                                var url = item.Content.Split("//")[1].Split("/")[0];
+                                                <text>(</text><a href="@item.Content"><span class="sitestr">@url</span></a><text>)</text>
                                             
                                             }
                                             </span>

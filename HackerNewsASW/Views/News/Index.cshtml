@@ -23,7 +23,7 @@
                                 <tr class="athing" id="@item.Id">
                                     <td align="right" valign="top" class="title"><span class="rank">@i. </span></td>
                                     <td valign="top" class="votelinks"><center><a id="up_26554539" href="vote?id=26554539&amp;how=up&amp;goto=news"><div class="votearrow" title="upvote"></div></a></center></td>
-                                    <td class="title"><a href="@item.Content" class="storylink">@Html.DisplayFor(modelItem => item.Title)</a><span class="sitebit comhead"> (<a href="from?site=bell-labs.com"><span class="sitestr">@item.Author</span></a>)</span></td>
+                                    <td class="title"><a href="@item.Content" class="storylink">@Html.DisplayFor(modelItem => item.Title)</a><span class="sitebit comhead"> (<a href="@item.Content"><span class="sitestr">@item.Content.Split("//")[1].Split("/")[0]</span></a>)</span></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"></td>
