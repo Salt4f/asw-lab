@@ -81,7 +81,7 @@ namespace HackerNewsASW.Controllers
                     await _context.AddAsync(ask);
 
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(New)); //Habría que redireccionar a la inspección de la contribución
+                    return RedirectToAction("Contributions", "Details", new { id = ask.Id }); //Habría que redireccionar a la inspección de la contribución
                 }
                 else if (submit.Url is null) //ASK
                 {
@@ -96,7 +96,7 @@ namespace HackerNewsASW.Controllers
                     await _context.AddAsync(ask);
 
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(New)); //Habría que redireccionar a la inspección de la contribución
+                    return RedirectToAction("Contributions", "Details", new { id = ask.Id }); //Habría que redireccionar a la inspección de la contribución
                 }
                 else if (submit.Url.Trim().StartsWith("http"))//URL
                 {
@@ -104,7 +104,7 @@ namespace HackerNewsASW.Controllers
                     if (url != null)
                     {
                         //Aquí habría que redireccionar a la función que se encargue de visualizar una noticia y sus comentarios
-                        return View();
+                        return RedirectToAction("Contributions", "Details", new { id = url.Id });
                     }
 
                     if (submit.Text is null) //URL
@@ -120,7 +120,7 @@ namespace HackerNewsASW.Controllers
                         await _context.AddAsync(news);
 
                         await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(New)); //Habría que redireccionar a la inspección de la contribución
+                        return RedirectToAction("Contributions", "Details", new { id = url.Id }); //Habría que redireccionar a la inspección de la contribución
                     }
                     else //URL + COMMENT
                     {
@@ -147,7 +147,7 @@ namespace HackerNewsASW.Controllers
                         await _context.AddAsync(com);
 
                         await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(New)); //Habría que redireccionar a la inspección de la contribución
+                        return RedirectToAction("Contributions", "Details", new { id = news.Id }); //Habría que redireccionar a la inspección de la contribución
                     }
                 }
             }
@@ -251,5 +251,7 @@ namespace HackerNewsASW.Controllers
             if (email != null) return email;
             return "";
         }
+
+       
     }
 }
