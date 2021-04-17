@@ -38,7 +38,7 @@
                                 </tr><tr>
                                     <td colspan="2"></td>
                                     <td class="subtext">
-                                        <span class="score" id="score_26554539">@item.Upvotes points</span> by <a href="user?id=__d" class="hnuser">@Html.DisplayFor(modelItem => item.Author.UserId)</a> <span class="age"><a href="item?id=26554539">@item.DateCreated</a></span> <span id="unv_26554539"></span> | <a href="item?id=26554539">@item.Comments.Count comments</a>
+                                        <span class="score" id="score_26554539">@item.Upvotes points</span> by <a href="user?id=__d" class="hnuser">@Html.DisplayFor(modelItem => item.Author.UserId)</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.DateCreated</a></span> <span id="unv_26554539"></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Comments.Count comments</a>
                                     </td>
                                 </tr>
                                 <tr class="spacer" style="height:5px"></tr>
