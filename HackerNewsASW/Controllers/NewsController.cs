@@ -38,7 +38,7 @@ namespace HackerNewsASW.Controllers
             .Include(c => c.Author)
             .Include(c => c.Comments)
             .ToListAsync<Contribution>();
-
+            
             var asks = await _context.Asks
             .Include(c => c.Author)
             .Include(c => c.Comments)

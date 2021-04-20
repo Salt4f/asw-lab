@@ -1,0 +1,117 @@
+﻿@model HackerNewsASW.Models.User
+
+@{
+    ViewData["Title"] = "Profile";
+}
+<html lang="en" op="user">
+<head>
+    <meta name="referrer" content="origin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="news.css?WmOPHVu15TVF5xOnDKhL">
+    <link rel="shortcut icon" href="favicon.ico">
+    <title>Profile: ramboenel | Hacker News</title>
+</head>
+<body>
+    <center>
+        <table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
+            <tbody>
+                <tr id="pagespace" title="Profile: ramboenel" style="height:10px"></tr>
+                <tr>
+                    <td>
+                        <form asp-controller="Account" asp-action="Update">
+                            <input type="hidden" name="id" value="ramboenel"><input type="hidden" name="hmac" value="20d15cd9491016c9a74709186d0c716070e80147">
+                            <table border="0">
+                                
+                                <tbody>
+                                    <tr class="athing"><td valign="top">user:</td><td><a>@Model.UserId</a></td></tr>
+                                    <tr><td valign="top">created:</td><td><a>@GetPrettyDate(Model.DateCreated)</a></td></tr>
+                                    <tr>
+                                        <td valign="top">about:</td>
+                                        <td style="overflow:hidden;">
+                                            <textarea cols="60" rows="5" wrap="virtual" name="about" asp-for="About">@Model.About</textarea> <font size="-2"><a href="formatdoc" tabindex="-1"><font color="#afafaf">help</font></a></font>
+                                        </td>
+                                    </tr>
+                                    <tr><td valign="top">email:</td><td><a>@Model.Email</a></td></tr>
+                                    <tr><td></td><td><a href="submitted?id=ramboenel"><u>submissions</u></a></td></tr>
+                                    <tr><td></td><td><a asp-controller="Threads" asp-action="UserComments"><u>comments</u></a></td></tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <a href="upvoted?id=ramboenel"><u>upvoted submissions</u></a> /
+                                            <a href="upvoted?id=ramboenel&amp;comments=t"><u>comments</u></a>
+                                            &nbsp;<span style="font-style:italic">(private)</span>
+                                        </td>
+                                    </tr>
+                                 </tbody>
+                               
+                            </table>
+                            <br><input type="submit" value="Update">
+                        </form>
+                        <br><br>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </center>
+    <script type="text/javascript" src="hn.js?WmOPHVu15TVF5xOnDKhL"></script>
+</body>
+</html>
+
+@functions{
+    static string GetPrettyDate(DateTime d)
+    {
+        // 1.
+        // Get time span elapsed since the date.
+        TimeSpan s = DateTime.Now.Subtract(d);
+
+        // 2.
+        // Get total number of days elapsed.
+        int dayDiff = (int)s.TotalDays;
+
+        // 3.
+        // Get total number of seconds elapsed.
+        int secDiff = (int)s.TotalSeconds;
+
+        // 4.
+        // Don't allow out of range values.
+        if (dayDiff < 0) return null;
+
+        // 5.
+        // Handle same-day times.
+        if (dayDiff == 0)
+        {
+            // A.
+            // Less than one minute ago.
+            if (secDiff < 60) return "just now";
+
+            // B.
+            // Less than 2 minutes ago.
+            if (secDiff < 120) return "1 minute ago";
+
+            // C.
+            // Less than one hour ago.
+            if (secDiff < 3600) return string.Format("{0} minutes ago", Math.Floor((double)secDiff / 60));
+
+            // D.
+            // Less than 2 hours ago.
+            if (secDiff < 7200) return "1 hour ago";
+            // E.
+            // Less than one day ago.
+            if (secDiff < 86400) return string.Format("{0} hours ago", Math.Floor((double)secDiff / 3600));
+        }
+        // 6.
+        // Handle previous days.
+        if (dayDiff == 1) return "yesterday";
+
+        if (dayDiff < 7) return string.Format("{0} days ago", dayDiff);
+
+        //Handle previous weeks
+        if (dayDiff < 31) return string.Format("{0} weeks ago", Math.Ceiling((double)dayDiff / 7));
+
+        //Handle previous months
+        if (dayDiff < 365) return string.Format("{0} months ago", Math.Ceiling((double)dayDiff / 30.41));
+
+        //Handle previous years
+        return string.Format("{0} years ago", Math.Ceiling((double)dayDiff / 365));
+    }
+}
