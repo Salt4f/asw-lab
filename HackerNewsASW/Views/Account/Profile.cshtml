@@ -18,7 +18,7 @@
                 <tr id="pagespace" title="Profile: ramboenel" style="height:10px"></tr>
                 <tr>
                     <td>
-                        <form asp-controller="Account" asp-action="Update">
+                        <form asp-controller="Account" asp-action="Profile">
                             <input type="hidden" name="id" value="ramboenel"><input type="hidden" name="hmac" value="20d15cd9491016c9a74709186d0c716070e80147">
                             <table border="0">
                                 
@@ -32,7 +32,7 @@
                                         </td>
                                     </tr>
                                     <tr><td valign="top">email:</td><td><a>@Model.Email</a></td></tr>
-                                    <tr><td></td><td><a href="submitted?id=ramboenel"><u>submissions</u></a></td></tr>
+                                    <tr><td></td><td><a asp-controller="Submissions" asp-action="UserSubmissions"><u>submissions</u></a></td></tr>
                                     <tr><td></td><td><a asp-controller="Threads" asp-action="UserComments"><u>comments</u></a></td></tr>
                                     <tr>
                                         <td></td>

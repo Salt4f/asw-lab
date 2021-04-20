@@ -28,11 +28,13 @@ namespace HackerNewsASW.Controllers
 
         [HttpPost]
         [Authorize]
-       public async Task<IActionResult> Update(string About)
+       public async Task<IActionResult> Profile(string About)
         {
             User author = await _context.Users.FindAsync(GetUserEmail(User));
             author.About=About;
-           return View(author);
+            _context.Update(author);
+             await _context.SaveChangesAsync();
+            return View(author);
         }
 
        public async Task<IActionResult> Profile()
