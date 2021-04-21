@@ -54,7 +54,7 @@
                                         @if (Model.GetType() == typeof(HackerNewsASW.Models.News))
                                         {
                                             <a href="@Model.Content" class="storylink">@Model.getTitle()</a>
-                                            <span class="sitebit comhead"> (<a href=@Model.Content ><span class="sitestr">@Model.Content.Split("//")[1].Split("/")[0]</span></a>)</span>
+                                            <span class="sitebit comhead"> (<a href=@Model.Content><span class="sitestr">@Model.Content.Split("//")[1].Split("/")[0]</span></a>)</span>
                                         }
                                         else
                                         {
@@ -74,109 +74,52 @@
                                     <td>
                                         <form asp-action="Details">
                                             <textarea asp-for="Content" rows="6" cols="60">a</textarea>
-                                            <br><br><input type="submit">
+                                            <br><br><input type="submit" onfocus="this.value=''" value="add comment">
                                         </form>
                                     </td>
                                 </tr>
+                                <table border="0" class="comment-tree">
+                                    <tbody>
+                                        @{int i = 1;}
+                                        @foreach (var item in Model.Comments)
+                                        {
+                                           <tr class="athing comtr" id="26842175">
+                                                <td>
+                                                    <table border="0">
+                                                        <tbody>
+                                                            <tr>
+
+                                                                <td valign="top" class="votelinks">
+                                                                    <center><a id="up_26842175" href="vote?id=26842175&amp;how=up&amp;goto=item%3Fid%3D26842018"><div class="votearrow" title="upvote"></div></a></center>
+                                                                </td>
+                                                                <td class="default">
+                                                                    <div style="margin-top:2px; margin-bottom:-10px;">
+                                                                        <span class="comhead">
+                                                                            <a href="user?id=ttty" class="hnuser">@item.Author</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(item.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 26842175)">[–]</a>          <span class="storyon"></span>
+                                                                        </span>
+                                                                    </div><br><div class="comment">
+                                                                        <span class="commtext c00">@item.Content</span>
+                                                                        <div class="reply">
+                                                                            <p>
+                                                                                <font size="1">
+                                                                                    <u><a href="reply?id=26842175&amp;goto=item%3Fid%3D26842018%2326842175">reply</a></u>
+                                                                                </font>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            { i++; }
+                                        }
+                                        </tbody>
+                                </table>
                             </tbody>
                         </table><br><br>
-                        <table border="0" class="comment-tree">
-                            <tbody>
-                                <tr class="athing comtr" id="26842175">
-                                    <td>
-                                        <table border="0">
-                                            <tbody>
-                                                <tr>
-                                                    <td class="ind"><img src="s.gif" height="1" width="0"></td>
-                                                    <td valign="top" class="votelinks">
-                                                        <center><a id="up_26842175" href="vote?id=26842175&amp;how=up&amp;goto=item%3Fid%3D26842018"><div class="votearrow" title="upvote"></div></a></center>
-                                                    </td>
-                                                    <td class="default">
-                                                        <div style="margin-top:2px; margin-bottom:-10px;">
-                                                            <span class="comhead">
-                                                                <a href="user?id=ttty" class="hnuser">ttty</a> <span class="age"><a href="item?id=26842175">2 hours ago</a></span> <span id="unv_26842175"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 26842175)">[–]</a>          <span class="storyon"></span>
-                                                            </span>
-                                                        </div><br><div class="comment">
-                                                            <span class="commtext c00">Animals have evolved highly functional visual systems to understand motion, assisting perception even under complex environments. In this paper, we work towards developing a computer vision system able to segment objects by exploiting motion cues, i.e. motion segmentation. We make the following contributions: First, we introduce a simple variant of the Transformer to segment optical flow frames into primary objects and the background. Second, we train the architecture in a self-supervised manner, i.e. without using any manual annotations. Third, we analyze several critical components of our method and conduct thorough ablation studies to validate their necessity. Fourth, we evaluate the proposed architecture on public benchmarks (DAVIS2016, SegTrackv2, and FBMS59). Despite using only optical flow as input, our approach achieves superior results compared to previous state-of-the-art self-supervised methods, while being an order of magnitude faster. We additionally evaluate on a challenging camouflage dataset (MoCA), significantly outperforming the other self-supervised approaches, and comparing favourably to the top supervised approach, highlighting the importance of motion cues, and the potential bias towards visual appearance in existing video segmentation models.</span>
-                                                            <div class="reply">
-                                                                <p>
-                                                                    <font size="1">
-                                                                        <u><a href="reply?id=26842175&amp;goto=item%3Fid%3D26842018%2326842175">reply</a></u>
-                                                                    </font>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr class="athing comtr" id="26842534">
-                                    <td>
-                                        <table border="0">
-                                            <tbody>
-                                                <tr>
-                                                    <td class="ind"><img src="s.gif" height="1" width="40"></td>
-                                                    <td valign="top" class="votelinks">
-                                                        <center><a id="up_26842534" href="vote?id=26842534&amp;how=up&amp;goto=item%3Fid%3D26842018"><div class="votearrow" title="upvote"></div></a></center>
-                                                    </td>
-                                                    <td class="default">
-                                                        <div style="margin-top:2px; margin-bottom:-10px;">
-                                                            <span class="comhead">
-                                                                <a href="user?id=jonplackett" class="hnuser">jonplackett</a> <span class="age"><a href="item?id=26842534">1 hour ago</a></span> <span id="unv_26842534"></span><span class="par"></span> <a class="togg" n="2" href="javascript:void(0)" onclick="return toggle(event, 26842534)">[–]</a>          <span class="storyon"></span>
-                                                            </span>
-                                                        </div><br><div class="comment">
-                                                            <span class="commtext c00">Amazing! I always thought it must be a huge disadvantage that computer vision only has one frame to work with (and only one camera vs 2 eyes). Often as a human you stare at for a while when trying to spot something tricky, like a bird in the trees and then find it when it moves. Or you move you head side to side to create movement. It would be interesting to see a comparison with what the best single frame segmentation could detect in one of these scenes.</span>
-                                                            <div class="reply">
-                                                                <p>
-                                                                    <font size="1">
-                                                                        <u><a href="reply?id=26842534&amp;goto=item%3Fid%3D26842018%2326842534">reply</a></u>
-                                                                    </font>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr class="athing comtr" id="26842922">
-                                    <td>
-                                        <table border="0">
-                                            <tbody>
-                                                <tr>
-                                                    <td class="ind"><img src="s.gif" height="1" width="80"></td>
-                                                    <td valign="top" class="votelinks">
-                                                        <center><a id="up_26842922" href="vote?id=26842922&amp;how=up&amp;goto=item%3Fid%3D26842018"><div class="votearrow" title="upvote"></div></a></center>
-                                                    </td>
-                                                    <td class="default">
-                                                        <div style="margin-top:2px; margin-bottom:-10px;">
-                                                            <span class="comhead">
-                                                                <a href="user?id=mkl" class="hnuser">mkl</a> <span class="age"><a href="item?id=26842922">4 minutes ago</a></span> <span id="unv_26842922"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 26842922)">[–]</a>          <span class="storyon"></span>
-                                                            </span>
-                                                        </div><br><div class="comment">
-                                                            <span class="commtext c00">That's just the abstract of the linked article.</span>
-                                                            <div class="reply">
-                                                                <p>
-                                                                    <font size="1">
-                                                                        <u><a href="reply?id=26842922&amp;goto=item%3Fid%3D26842018%2326842922">reply</a></u>
-                                                                    </font>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                             </tbody>
-                        </table>
-                        <br><br>
-                    </td>
-                </tr>
+                        
                 
             </tbody>
         </table>
