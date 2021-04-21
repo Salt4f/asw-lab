@@ -26,7 +26,6 @@ namespace HackerNewsASW.Controllers
         // GET: Contribucions
         public async Task<IActionResult> Index()
         {
-
             User user = await _context.Users
                 .Include(u => u.Upvoted)
                 .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
