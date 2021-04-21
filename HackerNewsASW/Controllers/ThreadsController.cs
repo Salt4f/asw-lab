@@ -25,15 +25,27 @@ namespace HackerNewsASW.Controllers
             _logger = logger;
         }
 
-        [Authorize]
-        public IActionResult UserComments()
+        
+        public IActionResult UserComments(string usermail)
         {
 
             User author = _context.Users
                 .Include(u => u.Contributions)
-                .Single(u => u.Email == GetUserEmail(User));
+                .Single(u => u.Email == usermail);
             return View(author.Contributions);
         }
+
+        [Authorize]
+        public IActionResult UserThreads()
+        {
+            User author = _context.Users
+                .Include(u => u.Contributions)
+                .Single(u => u.Email == GetUserEmail(User));
+            return View("UserComments",author.Contributions);
+        }
+
+
+
 
         private static string GetUserEmail(System.Security.Claims.ClaimsPrincipal user)
         {

@@ -25,14 +25,17 @@ namespace HackerNewsASW.Controllers
             _logger = logger;
         }
 
-        [Authorize]
-        public IActionResult UserSubmissions()
-        {
 
-            User author = _context.Users
-                .Include(u => u.Contributions)
-                .Single(u => u.Email == GetUserEmail(User));
-            return View(author.Contributions);
+        
+        public async Task<IActionResult> UserSubmissions(string usermail)
+        {
+           var contributions = await _context.Contributions
+                   .Include(u => u.Comments)
+                   .Include(u => u.Author)
+                   .Where(u => u.Author.Email == usermail)
+                   .ToListAsync();
+
+            return View(contributions);
         }
 
         private static string GetUserEmail(System.Security.Claims.ClaimsPrincipal user)

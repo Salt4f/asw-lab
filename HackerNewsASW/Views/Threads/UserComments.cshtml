@@ -37,15 +37,32 @@
                             <table border="0">
                                 <tbody>
                                     <tr>
-                                    <td class="votelinks" valign="top">
+                                        <td class="votelinks" valign="top">
                                             <center>
                                                 <font color="#FF6600">*</font><br>
-                                                
+
                                             </center>
                                         </td>
+                                        @if (Context.User.Identity is null || !Context.User.Identity.IsAuthenticated)
+                                            {
+                                var usermail=item.Author.Email;
                                         <td class="default">
                                             <div style="margin-top:2px; margin-bottom:-10px;">
-                                                <span class="comhead"><span class="score" id="score_26860528">1 point</span> by <a class="hnuser" href="user?id=ramboenel">@item.Author.UserId</a> <span class="age"><a href="item?id=26860528">@GetPrettyDate(item.DateCreated)</a></span></span>
+                                                <span class="comhead"><span class="score" id="score_26860528">1 point</span> by <a asp-controller="Account" asp-action="OtherProfile" asp-route-usermail="@item.Author.Email">@item.Author.UserId</a> <span class="age"><a href="item?id=26860528">@GetPrettyDate(item.DateCreated)</a> | <a class="Reference">Falta referencia</a></span></span>
+                                            </div><br>
+                                            <div class="comment">
+                                                <span class="commtext c00" asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Content</span>
+                                                <div class="reply">
+                                                    <p><font size="1"><u><a href="reply?id=26860528&amp;goto=threads%3Fid%3Dramboenel%2326860528">reply</a></u></font></p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        }
+                                        else {
+                                            var usermail=item.Author.Email;
+                                        <td class="default">
+                                            <div style="margin-top:2px; margin-bottom:-10px;">
+                                                <span class="comhead"><span class="score" id="score_26860528">1 point</span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Author.Email">@item.Author.UserId</a> <span class="age"><a href="item?id=26860528">@GetPrettyDate(item.DateCreated)</a> | <a class="Reference">Falta referencia</a></span></span>
                                             </div><br>
                                             <div class="comment">
                                                 <span class="commtext c00">@item.Content</span>
@@ -54,6 +71,7 @@
                                                 </div>
                                             </div>
                                         </td>
+                                        }
                                     </tr>
                                 </tbody>
                             </table>
