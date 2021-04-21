@@ -13,12 +13,14 @@ namespace HackerNewsASW.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Email { get; set; }
 
-        public string Password { get; set; }
+        public string About { get; set; }
 
         public DateTime DateCreated { get; set; }
 
         //[InverseProperty("Author")]
         public ICollection<Contribution> Contributions { get; set; }
+
+        public ICollection<Contribution> Upvoted { get; set; }
 
     }
 }

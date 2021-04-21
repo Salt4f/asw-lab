@@ -10,6 +10,17 @@
 <body>
 
     <center>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <meta name="google-signin-client_id" content="269220389323-35c6vooavdf3jqso90u43mvs3vjm3eb3.apps.googleusercontent.com">
+        <script>
+            function onSignIn(googleUser) {
+                var profile = googleUser.getBasicProfile();
+                console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+                console.log('Name: ' + profile.getName());
+                console.log('Image URL: ' + profile.getImageUrl());
+                console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+            }
+        </script>
         <table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
             <tbody>
                 <tr>
@@ -24,9 +35,9 @@
                                         <span class="pagetop">
                                             <b class="hnname"><a asp-controller="News" asp-action="Index">Hacker News</a></b>
                                             <!--
-                                <a href="newest">new</a> | <a href="front">past</a> | <a href="newcomments">comments</a> | <a href="ask">ask</a> | <a href="show">show</a> | <a href="jobs">jobs</a> | <a href="submit">submit</a>
-                            -->
-                                            <a asp-controller="News" asp-action="New">new</a> | <a href="">past</a> | <a href="">comments</a> | <a asp-controller="Asks" asp-action="Index">ask</a> | <a href="">show</a> | <a href="">jobs</a> | <a asp-controller="News" asp-action="Submit">submit</a>
+                                            <a href="newest">new</a> | <a href="front">past</a> | <a href="newcomments">comments</a> | <a href="ask">ask</a> | <a href="show">show</a> | <a href="jobs">jobs</a> | <a href="submit">submit</a>
+                                        -->
+                                            <a asp-controller="News" asp-action="New">new</a> | <a asp-controller="Threads" asp-action="UserComments"> threads</a> | <a href="">past</a> | <a href="">comments</a> | <a asp-controller="Asks" asp-action="Index">ask</a> | <a href="">show</a> | <a asp-controller="Account" asp-action="Profile">jobs</a> | <a asp-controller="News" asp-action="Submit">submit</a>
 
                                         </span>
                                     </td>
@@ -38,7 +49,7 @@
                                             }
                                             else
                                             {
-                                                <text><a href="">@GetUserID()</a> | <a asp-controller="Account" asp-action="Logout">logout</a></text>
+                                            <text><a asp-controller="Account" asp-action="Profile">@GetUserID()</a> | <a asp-controller="Account" asp-action="Logout">logout</a></text>
                                             }
 
                                         </span>
