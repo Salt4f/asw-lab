@@ -24,8 +24,14 @@ namespace HackerNewsASW.Controllers
         }
 
         // GET: Contribucions
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+
+            User user = await _context.Users
+                .Include(u => u.Upvoted)
+                .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
+            if (user != null) ViewBag.votedList = user.Upvoted;
+
             return View(_context.News
             .Include(c => c.Author)
             .Include(c => c.Comments)
@@ -34,6 +40,11 @@ namespace HackerNewsASW.Controllers
 
         public async Task<IActionResult> New()
         {
+            User user = await _context.Users
+                .Include(u => u.Upvoted)
+                .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
+            if (user != null) ViewBag.votedList = user.Upvoted;
+
             var news = await _context.News
             .Include(c => c.Author)
             .Include(c => c.Comments)

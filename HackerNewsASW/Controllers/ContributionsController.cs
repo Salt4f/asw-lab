@@ -77,6 +77,67 @@ namespace HackerNewsASW.Controllers
             return View(contribution);
         }
 
+        [Authorize]
+        public async Task<IActionResult> Upvote(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contribution = await _context.Contributions
+                .Include(c => c.Comments)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (contribution == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.Users
+                .Include(u => u.Upvoted)
+                .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
+            if (user.Upvoted.FirstOrDefault(c => c.Id == contribution.Id) is null)
+            {
+                contribution.Upvotes++;
+                if (user.Upvoted is null) user.Upvoted = new HashSet<Contribution>();
+                user.Upvoted.Add(contribution);
+
+                await _context.SaveChangesAsync();
+            }
+
+            return Redirect(Request.Query["return"].ToString());
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Unvote(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contribution = await _context.Contributions
+                .Include(c => c.Comments)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (contribution == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.Users
+                .Include(u => u.Upvoted)
+                .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
+            if (user.Upvoted.FirstOrDefault(c => c.Id == contribution.Id) != null)
+            {
+                contribution.Upvotes--;
+                user.Upvoted.Remove(contribution);
+
+                await _context.SaveChangesAsync();
+            }
+
+            return Redirect(Request.Query["return"].ToString());
+        }
+
         private bool ContributionExists(long id)
         {
             return _context.Contributions.Any(e => e.Id == id);
