@@ -152,5 +152,7 @@ namespace HackerNewsASW.Controllers
         {
             return _context.Asks.Any(e => e.Id == id);
         }
+
+
     }
 }
