@@ -120,7 +120,7 @@ namespace HackerNewsASW.Controllers
                         await _context.AddAsync(news);
 
                         await _context.SaveChangesAsync();
-                        return RedirectToAction("Details", "Contributions", new { id = url.Id }); //Habría que redireccionar a la inspección de la contribución
+                        return RedirectToAction("Details", "Contributions", new { id = news.Id }); //Habría que redireccionar a la inspección de la contribución
                     }
                     else //URL + COMMENT
                     {
