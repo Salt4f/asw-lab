@@ -32,7 +32,7 @@
                                 {
                                     <td></td>
                                 }
-                                <td class="title"><a href="@item.Content" class="storylink">@Html.DisplayFor(modelItem => item.Title)</a><span class="sitebit comhead"></span></td>
+                                <td class="title"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a><span class="sitebit comhead"></span></td>
                             </tr>
                                 <tr>
                                     <td colspan="2"></td>

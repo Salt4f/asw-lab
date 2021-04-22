@@ -37,11 +37,33 @@ namespace HackerNewsASW.Controllers
             return View(author);
         }
 
+
+       [Authorize]
        public async Task<IActionResult> Profile()
         {
             User author = await _context.Users.FindAsync(GetUserEmail(User));
             return View(author);
         }
+
+        public async Task<IActionResult> OtherProfile(string usermail)
+        {
+            User author = await _context.Users.FindAsync(usermail);
+            return View(author);
+        }
+
+        public async Task<IActionResult> CheckUser(string usermail)
+        {
+            User author= await _context.Users.FindAsync(GetUserEmail(User));
+            string emailact=author.Email;
+            if(usermail==emailact) {
+                return View("Profile",author);
+            }
+            else {
+                author= await _context.Users.FindAsync(usermail);
+                return View("OtherProfile",author);
+            }
+        }
+        
 
         public IActionResult Login()
         {

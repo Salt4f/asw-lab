@@ -1,7 +1,7 @@
-﻿@model HackerNewsASW.Models.User
+@model HackerNewsASW.Models.User
 
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "OtherProfile";
 }
 <html lang="en" op="user">
 <head>
@@ -18,36 +18,23 @@
                 <tr id="pagespace" title="Profile: ramboenel" style="height:10px"></tr>
                 <tr>
                     <td>
-                        <form asp-controller="Account" asp-action="Profile">
-                            <input type="hidden" name="id" value="ramboenel"><input type="hidden" name="hmac" value="20d15cd9491016c9a74709186d0c716070e80147">
+                        <input type="hidden" name="id" value="ramboenel"><input type="hidden" name="hmac" value="20d15cd9491016c9a74709186d0c716070e80147">
                             <table border="0">
-                                
-                                <tbody>
+                               <tbody>
                                     <tr class="athing"><td valign="top">user:</td><td><a>@Model.UserId</a></td></tr>
-                                    <tr><td valign="top">created:</td><td><a>@GetPrettyDate(Model.DateCreated)</a></td></tr>
+                                    <tr><td valign="top">created:</td><td><a>@GetPrettyDate(@Model.DateCreated)</a></td></tr>
                                     <tr>
                                         <td valign="top">about:</td>
                                         <td style="overflow:hidden;">
-                                            <textarea cols="60" rows="5" wrap="virtual" name="about" asp-for="About">@Model.About</textarea> <font size="-2"><a href="formatdoc" tabindex="-1"><font color="#afafaf">help</font></a></font>
+                                            <textarea cols="60" rows="5" wrap="virtual" name="about"  disabled="disabled">@Model.About</textarea> <font size="-2"><a href="formatdoc" tabindex="-1"><font color="#afafaf">help</font></a></font>
                                         </td>
                                     </tr>
-                                    <tr><td valign="top">email:</td><td><a>@Model.Email</a></td></tr>
-                                    <tr><td></td><td><a asp-controller="Submissions" asp-action="UserSubmissions" asp-route-usermail="@Model.Email"><u>submissions</u></a></td></tr>
-                                    <tr><td></td><td><a asp-controller="Threads" asp-action="UserThreads"><u>comments</u></a></td></tr>
-                                    <tr>
-                                        <td></td>
-                                        <td>
-                                            <a href="upvoted?id=ramboenel"><u>upvoted submissions</u></a> /
-                                            <a href="upvoted?id=ramboenel&amp;comments=t"><u>comments</u></a>
-                                            &nbsp;<span style="font-style:italic">(private)</span>
-                                        </td>
-                                    </tr>
-                                 </tbody>
-                               
+                                    <tr><td></td><td><a asp-controller="Submissions" asp-action="UserSubmissions" asp-route-usermail="@Model.Email" ><u>submissions</u></a></td></tr>
+                                    <tr><td></td><td><a asp-controller="Threads" asp-action="UserComments" asp-route-usermail="@Model.Email" ><u>comments</u></a></td></tr>
+                                </tbody>
+
                             </table>
-                            <br><input type="submit" value="Update">
-                        </form>
-                        <br><br>
+                           <br><br>
                     </td>
                 </tr>
             </tbody>
