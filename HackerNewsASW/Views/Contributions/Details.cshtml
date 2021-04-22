@@ -53,28 +53,40 @@
                                     <td class="title">
                                         @if (Model.GetType() == typeof(HackerNewsASW.Models.News))
                                         {
-                                            <a href="@Model.Content" class="storylink">@Model.getTitle()</a>
-                                            <span class="sitebit comhead"> (<a href=@Model.Content><span class="sitestr">@Model.Content.Split("//")[1].Split("/")[0]</span></a>)</span>
+                                        <a href="@Model.Content" class="storylink">@Model.getTitle()</a>
+                                        <span class="sitebit comhead"> (<a href=@Model.Content><span class="sitestr">@Model.Content.Split("//")[1].Split("/")[0]</span></a>)</span>
                                         }
                                         else
                                         {
-                                            <p class="storylink">@Model.getTitle() </p>
+                                        <p class="storylink">@Model.getTitle() </p>
                                         }
                                     </td>
                                 </tr>
+                                @if (Context.User.Identity is null || !Context.User.Identity.IsAuthenticated)
+                                            {
                                 <tr>
                                     <td colspan="2"></td>
                                     <td class="subtext">
-                                        <span class="score" id="score_26842018">@Model.Upvotes </span> by <a href="user?id=@Model.Author" class="hnuser">@Model.Author</a> <span class="age">@GetPrettyDate(Model.DateCreated)<a href="item?id=26842018"></a></span> <span id="unv_26842018"></span> | <a href="hide?id=26842018&amp;goto=item%3Fid%3D26842018">hide</a> | <a href="https://hn.algolia.com/?query=Self-Supervised%20Video%20Object%20Segmentation%20by%20Motion%20Grouping&amp;type=story&amp;dateRange=all&amp;sort=byDate&amp;storyText=false&amp;prefix&amp;page=0" class="hnpast">past</a> | <a href="fave?id=26842018&amp;auth=198ae303bcbd9953f9ccf89d70f958761f99e7df">favorite</a> | <a href="item?id=26842018">@Model.Comments.Count comments</a>
+                                        <span class="score" id="score_26842018">@Model.Upvotes </span> by <a asp-controller="Account" asp-action="OtherProfile" asp-route-usermail="@Model.Author.Email">@Model.Author.UserId</a> <span class="age">@GetPrettyDate(Model.DateCreated)<a href="item?id=26842018"></a></span> <span id="unv_26842018"></span> | <a href="hide?id=26842018&amp;goto=item%3Fid%3D26842018">hide</a> | <a href="https://hn.algolia.com/?query=Self-Supervised%20Video%20Object%20Segmentation%20by%20Motion%20Grouping&amp;type=story&amp;dateRange=all&amp;sort=byDate&amp;storyText=false&amp;prefix&amp;page=0" class="hnpast">past</a> | <a href="fave?id=26842018&amp;auth=198ae303bcbd9953f9ccf89d70f958761f99e7df">favorite</a> | <a href="item?id=26842018">@Model.Comments.Count comments</a>
                                     </td>
                                 </tr>
+                                }
+                                else {
+                                 <tr>
+                                    <td colspan="2"></td>
+                                    <td class="subtext">
+                                        <span class="score" id="score_26842018">@Model.Upvotes </span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@Model.Author.Email">@Model.Author.UserId</a> <span class="age">@GetPrettyDate(Model.DateCreated)<a href="item?id=26842018"></a></span> <span id="unv_26842018"></span> | <a href="hide?id=26842018&amp;goto=item%3Fid%3D26842018">hide</a> | <a href="https://hn.algolia.com/?query=Self-Supervised%20Video%20Object%20Segmentation%20by%20Motion%20Grouping&amp;type=story&amp;dateRange=all&amp;sort=byDate&amp;storyText=false&amp;prefix&amp;page=0" class="hnpast">past</a> | <a href="fave?id=26842018&amp;auth=198ae303bcbd9953f9ccf89d70f958761f99e7df">favorite</a> | <a href="item?id=26842018">@Model.Comments.Count comments</a>
+                                    </td>
+                                </tr>    
+
+                                }
                                 <tr style="height:10px"></tr>
                                 <tr>
                                     <td colspan="2"></td>
                                     <td>
-                                        <form asp-action="Details">
-                                            <textarea asp-for="Content" rows="6" cols="60">a</textarea>
-                                            <br><br><input type="submit" onfocus="this.value=''" value="add comment">
+                                        <form asp-controller="Contributions" asp-action="Details">
+                                            <textarea asp-for="Content" rows="6" cols="60" value="Clear">a</textarea>
+                                            <br><br><input type="submit" value="add comment">
                                         </form>
                                     </td>
                                 </tr>
@@ -83,39 +95,60 @@
                                         @{int i = 1;}
                                         @foreach (var item in Model.Comments)
                                         {
-                                           <tr class="athing comtr" id="26842175">
-                                                <td>
-                                                    <table border="0">
-                                                        <tbody>
-                                                            <tr>
+                                        <tr class="athing comtr" id="26842175">
+                                            <td>
+                                                <table border="0">
+                                                    <tbody>
+                                                        <tr>
 
-                                                                <td valign="top" class="votelinks">
-                                                                    <center><a id="up_26842175" href="vote?id=26842175&amp;how=up&amp;goto=item%3Fid%3D26842018"><div class="votearrow" title="upvote"></div></a></center>
-                                                                </td>
-                                                                <td class="default">
-                                                                    <div style="margin-top:2px; margin-bottom:-10px;">
-                                                                        <span class="comhead">
-                                                                            <a href="user?id=ttty" class="hnuser">@item.Author</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(item.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 26842175)">[–]</a>          <span class="storyon"></span>
-                                                                        </span>
-                                                                    </div><br><div class="comment">
-                                                                        <span class="commtext c00">@item.Content</span>
-                                                                        <div class="reply">
-                                                                            <p>
-                                                                                <font size="1">
-                                                                                    <u><a href="reply?id=26842175&amp;goto=item%3Fid%3D26842018%2326842175">reply</a></u>
-                                                                                </font>
-                                                                            </p>
-                                                                        </div>
+                                                            <td valign="top" class="votelinks">
+                                                                <center><a id="up_26842175" href="vote?id=26842175&amp;how=up&amp;goto=item%3Fid%3D26842018"><div class="votearrow" title="upvote"></div></a></center>
+                                                            </td>
+                                                            @if (Context.User.Identity is null || !Context.User.Identity.IsAuthenticated)
+                                            {
+                                                            <td class="default">
+                                                                <div style="margin-top:2px; margin-bottom:-10px;">
+                                                                    <span class="comhead">
+                                                                        <a asp-controller="Account" asp-action="OtherProfile" asp-route-usermail="@item.Author.Email">@item.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(item.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 26842175)">[–]</a>          <span class="storyon"></span>
+                                                                    </span>
+                                                                </div><br><div class="comment">
+                                                                    <span class="commtext c00">@item.Content</span>
+                                                                    <div class="reply">
+                                                                        <p>
+                                                                            <font size="1">
+                                                                                <u><a href="reply?id=26842175&amp;goto=item%3Fid%3D26842018%2326842175">reply</a></u>
+                                                                            </font>
+                                                                        </p>
                                                                     </div>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
+                                                                </div>
+                                                            </td>
+                                                            }
+                                                            else {
+                                                            <td class="default">
+                                                                <div style="margin-top:2px; margin-bottom:-10px;">
+                                                                    <span class="comhead">
+                                                                        <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Author.Email">@item.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(item.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 26842175)">[–]</a>          <span class="storyon"></span>
+                                                                    </span>
+                                                                </div><br><div class="comment">
+                                                                    <span class="commtext c00">@item.Content</span>
+                                                                    <div class="reply">
+                                                                        <p>
+                                                                            <font size="1">
+                                                                                <u><a href="reply?id=26842175&amp;goto=item%3Fid%3D26842018%2326842175">reply</a></u>
+                                                                            </font>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            }
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
                                             { i++; }
                                         }
-                                        </tbody>
+                                    </tbody>
                                 </table>
                             </tbody>
                         </table><br><br>
