@@ -21,9 +21,19 @@
                                 @foreach (var item in Model)
                             {
                                 var title = item.getTitle();
+                                bool voted = ViewBag.votedList != null && ((ICollection<HackerNewsASW.Models.Contribution>)ViewBag.votedList).FirstOrDefault(c => c.Id == item.Id) != null;
                                 <tr class="athing" id="@item.Id">
                                     <td align="right" valign="top" class="title"><span class="rank">@i. </span></td>
-                                    <td valign="top" class="votelinks"><center><a id="up_26554539" href="vote?id=26554539&amp;how=up&amp;goto=news"><div class="votearrow" title="upvote"></div></a></center></td>
+                                    @if (Context.User.Identity is null ||
+                          !Context.User.Identity.IsAuthenticated ||
+                          (Context.User.Identity.IsAuthenticated && !voted))
+                                {
+                                    <td class="votelinks" valign="top"><center><a asp-controller="Contributions" asp-action="Upvote" asp-route-id="@item.Id" asp-route-return="@Context.Request.Path.ToString()"><div class="votearrow" title="upvote"></div></a></center></td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
                                     <td class="title">
                                         <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => title)</a><span class="sitebit comhead">
                                             @if (item.GetType() == typeof(HackerNewsASW.Models.News))
@@ -43,7 +53,14 @@
                                 <tr>
                                     <td colspan="2"></td>
                                     <td class="subtext">
-                                        <span class="score" id="score_26554539">@item.Upvotes points</span> by <a asp-controller="Account" asp-action="OtherProfile" asp-route-usermail="@item.Author.Email">@Html.DisplayFor(modelItem =>item.Author.UserId)</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@GetPrettyDate(item.DateCreated)</a></span> <span id="unv_26554539"></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Comments.Count comments</a>
+                                      @if (!voted)
+                                        {
+                                            <text><span class="score" id="score_26554539">@item.Upvotes points</span> by <a asp-controller="Account" asp-action="OtherProfile" asp-route-usermail="@item.Author.Email">@Html.DisplayFor(modelItem =>item.Author.UserId)</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@GetPrettyDate(item.DateCreated)</a></span> <span id="unv_26554539"></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Comments.Count comments</a></text>
+                                        }
+                                        else
+                                        {
+                                            <text><span class="score" id="score_26554539">@item.Upvotes points</span> by <a asp-controller="Account" asp-action="OtherProfile" asp-route-usermail="@item.Author.Email">@Html.DisplayFor(modelItem =>item.Author.UserId)</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@GetPrettyDate(item.DateCreated)</a></span> | <span id="unv_26554539"><a asp-controller="Contributions" asp-action="Unvote" asp-route-id="@item.Id" asp-route-return="@Context.Request.Path.ToString()">Unvote</a></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Comments.Count comments</a></text>
+                                        }
                                     </td>
                                 </tr>
                                 <tr class="spacer" style="height:5px"></tr>
@@ -53,7 +70,14 @@
                                 <tr>
                                     <td colspan="2"></td>
                                     <td class="subtext">
-                                        <span class="score" id="score_26554539">@item.Upvotes points</span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Author.Email">@Html.DisplayFor(modelItem => item.Author.UserId)</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@GetPrettyDate(item.DateCreated)</a></span> <span id="unv_26554539"></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Comments.Count comments</a>
+                                      @if (!voted)
+                                        {
+                                            <text><span class="score" id="score_26554539">@item.Upvotes points</span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Author.Email">@Html.DisplayFor(modelItem =>item.Author.UserId)</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@GetPrettyDate(item.DateCreated)</a></span> <span id="unv_26554539"></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Comments.Count comments</a></text>
+                                        }
+                                        else
+                                        {
+                                            <text><span class="score" id="score_26554539">@item.Upvotes points</span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Author.Email">@Html.DisplayFor(modelItem =>item.Author.UserId)</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@GetPrettyDate(item.DateCreated)</a></span> | <span id="unv_26554539"><a asp-controller="Contributions" asp-action="Unvote" asp-route-id="@item.Id" asp-route-return="@Context.Request.Path.ToString()">Unvote</a></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Comments.Count comments</a></text>
+                                        }
                                     </td>
                                 </tr>
                                 <tr class="spacer" style="height:5px"></tr>
@@ -62,36 +86,36 @@
                                 { i++; }
                             }
 
-                                <tr class="morespace" style="height:10px"></tr>
-                                <tr><td colspan="2"></td><td class="title"><a href="news?p=2" class="morelink" rel="next">More</a></td></tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="y">
-                        <table width="100%" cellspacing="0" cellpadding="1"><tbody><tr><td bgcolor="#ff6600"></td></tr></tbody></table><br><center>
-                            <span class="yclinks">
-                                <a href="newsguidelines.html">Guidelines</a>
-                                | <a href="newsfaq.html">FAQ</a>
-                                | <a href="lists">Lists</a>
-                                | <a href="https://github.com/HackerNews/API">API</a>
-                                | <a href="security.html">Security</a>
-                                | <a href="http://www.ycombinator.com/legal/">Legal</a>
-                                | <a href="http://www.ycombinator.com/apply/">Apply to YC</a>
-                                | <a href="mailto:hn@ycombinator.com">Contact</a>
-                            </span><br><br><form method="get" action="//hn.algolia.com/">
-                                Search:
-                                <input type="text" name="q" value="" size="17" autocorrect="off" spellcheck="false" autocapitalize="off" autocomplete="false">
-                            </form>
-                        </center>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </center>
+                            <tr class="morespace" style="height:10px"></tr>
+                            <tr><td colspan="2"></td><td class="title"></td></tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="y">
+                    <table width="100%" cellspacing="0" cellpadding="1"><tbody><tr><td bgcolor="#ff6600"></td></tr></tbody></table><br><center>
+                        <span class="yclinks">
+                            <a href="newsguidelines.html">Guidelines</a>
+                            | <a href="newsfaq.html">FAQ</a>
+                            | <a href="lists">Lists</a>
+                            | <a href="https://github.com/HackerNews/API">API</a>
+                            | <a href="security.html">Security</a>
+                            | <a href="http://www.ycombinator.com/legal/">Legal</a>
+                            | <a href="http://www.ycombinator.com/apply/">Apply to YC</a>
+                            | <a href="mailto:hn@ycombinator.com">Contact</a>
+                        </span><br><br><form method="get" action="//hn.algolia.com/">
+                            Search:
+                            <input type="text" name="q" value="" size="17" autocorrect="off" spellcheck="false" autocapitalize="off" autocomplete="false">
+                        </form>
+                    </center>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</center>
 
-    @functions{
+@functions{
     static string GetPrettyDate(DateTime d)
     {
         // 1.
@@ -148,6 +172,5 @@
         //Handle previous years
         return string.Format("{0} years ago", Math.Ceiling((double)dayDiff / 365));
     }
-    }
-
+}
 

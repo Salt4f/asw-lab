@@ -20,8 +20,13 @@ namespace HackerNewsASW.Controllers
         }
 
         // GET: Asks
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            User user = await _context.Users
+                .Include(u => u.Upvoted)
+                .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
+            if (user != null) ViewBag.votedList = user.Upvoted;
+
             return View(_context.Asks
             .Include(c => c.Author)
             .Include(c => c.Comments)
@@ -152,5 +157,15 @@ namespace HackerNewsASW.Controllers
         {
             return _context.Asks.Any(e => e.Id == id);
         }
+
+        private static string GetUserEmail(System.Security.Claims.ClaimsPrincipal user)
+        {
+            string email = user.Claims.Where(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")
+                        .Select(claim => claim.Value).FirstOrDefault();
+
+            if (email != null) return email;
+            return "";
+        }
+
     }
 }

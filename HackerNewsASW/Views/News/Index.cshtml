@@ -21,10 +21,16 @@
                             @{int i = 1;}
                             @foreach (var item in Model)
                             {
-
+                                bool voted = ViewBag.votedList != null && ((ICollection<HackerNewsASW.Models.Contribution>)ViewBag.votedList).FirstOrDefault(c => c.Id == item.Id) != null;
                             <tr class="athing" id="@item.Id">
                                 <td align="right" valign="top" class="title"><span class="rank">@i. </span></td>
-                                <td valign="top" class="votelinks"><center><a id="up_26554539" href="vote?id=26554539&amp;how=up&amp;goto=news"><div class="votearrow" title="upvote"></div></a></center></td>
+                                @if (Context.User.Identity is null ||
+                               !Context.User.Identity.IsAuthenticated ||
+                               (Context.User.Identity.IsAuthenticated && !voted))
+                                {
+                                    <td class="votelinks" valign="top"><center><a asp-controller="Contributions" asp-action="Upvote" asp-route-id="@item.Id" asp-route-return="@Context.Request.Path.ToString()"><div class="votearrow" title="upvote"></div></a></center></td>
+                                }
+                                else { <td></td>}
                                 <td class="title"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a><span class="sitebit comhead"> (<a href="@item.Content"><span class="sitestr">@item.Content.Split("//")[1].Split("/")[0]</span></a>)</span></td>
                             </tr>
                             @if (Context.User.Identity is null || !Context.User.Identity.IsAuthenticated)
@@ -33,7 +39,14 @@
                             <tr>
                                 <td colspan="2"></td>
                                 <td class="subtext">
-                                    <span class="score" id="score_26554539">@item.Upvotes points</span> by <a asp-controller="Account" asp-action="OtherProfile" asp-route-usermail="@item.Author.Email">@Html.DisplayFor(modelItem =>item.Author.UserId)</a> <span class="age"><a>@GetPrettyDate(item.DateCreated)</a></span> <span id="unv_26554539"></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Comments.Count comments</a>
+                                  @if (!voted)
+                                    {
+                                        <text><span class="score" id="score_26554539">@item.Upvotes points</span> by <a asp-controller="Account" asp-action="OtherProfile" asp-route-usermail="@item.Author.Email">@Html.DisplayFor(modelItem =>item.Author.UserId)</a> <span class="age"><a>@GetPrettyDate(item.DateCreated)</a></span> <span id="unv_26554539"></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Comments.Count comments</a></text>
+                                    }
+                                    else
+                                    {
+                                        <text><span class="score" id="score_26554539">@item.Upvotes points</span> by <a asp-controller="Account" asp-action="OtherProfile" asp-route-usermail="@item.Author.Email">@Html.DisplayFor(modelItem =>item.Author.UserId)</a> <span class="age"><a>@GetPrettyDate(item.DateCreated)</a></span> | <span id="unv_26554539"><a asp-controller="Contributions" asp-action="Unvote" asp-route-id="@item.Id" asp-route-return="@Context.Request.Path.ToString()">Unvote</a></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Comments.Count comments</a></text>
+                                    }
                                 </td>
                             </tr>
                             <tr class="spacer" style="height:5px"></tr>
@@ -43,7 +56,14 @@
                             <tr>
                                 <td colspan="2"></td>
                                 <td class="subtext">
-                                    <span class="score" id="score_26554539">@item.Upvotes points</span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Author.Email">@Html.DisplayFor(modelItem => item.Author.UserId)</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@GetPrettyDate(item.DateCreated)</a></span> <span id="unv_26554539"></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Comments.Count comments</a>
+                                  @if (!voted)
+                                    {
+                                        <text><span class="score" id="score_26554539">@item.Upvotes points</span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Author.Email">@Html.DisplayFor(modelItem => item.Author.UserId)</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@GetPrettyDate(item.DateCreated)</a></span> <span id="unv_26554539"></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Comments.Count comments</a></text>
+                                    }
+                                    else
+                                    {
+                                        <text><span class="score" id="score_26554539">@item.Upvotes points</span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Author.Email">@Html.DisplayFor(modelItem => item.Author.UserId)</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@GetPrettyDate(item.DateCreated)</a></span> | <span id="unv_26554539"><a asp-controller="Contributions" asp-action="Unvote" asp-route-id="@item.Id" asp-route-return="@Context.Request.Path.ToString()">Unvote</a></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Comments.Count comments</a></text>
+                                    }
                                 </td>
                             </tr>
                             <tr class="spacer" style="height:5px"></tr>
@@ -52,7 +72,7 @@
                             }
 
                             <tr class="morespace" style="height:10px"></tr>
-                            <tr><td colspan="2"></td><td class="title"><a href="news?p=2" class="morelink" rel="next">More</a></td></tr>
+                            <tr><td colspan="2"></td><td class="title"></td></tr>
                         </tbody>
                     </table>
                 </td>
