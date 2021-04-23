@@ -108,6 +108,17 @@ namespace HackerNewsASW.Controllers
             return Redirect(Request.Query["return"].ToString());
         }
 
+        /* [Authorize]
+       public async Task<IActionResult> SubmissionsUpvoted()
+        {
+            string usermail=GetUserEmail(User);
+             User user = await _context.Users
+                .Include(u => u.Upvoted)
+                .FirstOrDefaultAsync(u => u.Email == usermail);
+                
+             return View(user.Contributions);
+        }*/
+
         [Authorize]
         public async Task<IActionResult> Unvote(long? id)
         {
