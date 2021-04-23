@@ -1,4 +1,4 @@
-@model IEnumerable<HackerNewsASW.Models.Contribution>
+@model IEnumerable<HackerNewsASW.Models.Comment>
 
     @{
     ViewData["Title"] = "UserComments";
@@ -48,7 +48,7 @@
                                             var usermail = item.Author.Email;
                                         <td class="default">
                                             <div style="margin-top:2px; margin-bottom:-10px;">
-                                                <span class="comhead"><span class="score" id="score_26860528">@item.Upvotes</span> by <a asp-controller="Account" asp-action="OtherProfile" asp-route-usermail="@item.Author.Email">@item.Author.UserId</a> <span class="age"><a href="item?id=26860528">@GetPrettyDate(item.DateCreated)</a> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@(((Comment)item).Commented.Id)">@{ if (((Comment)item).Commented.GetType() == typeof(Comment)) { <text>[Comment] </text>} }@(((Comment)item).Commented.getTitle())</a></span></span>
+                                                <span class="comhead"><span class="score" id="score_26860528">@item.Upvotes</span> by <a asp-controller="Account" asp-action="OtherProfile" asp-route-usermail="@item.Author.Email">@item.Author.UserId</a> <span class="age"><a href="item?id=26860528">@GetPrettyDate(item.DateCreated)</a> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Commented.Id">@{ if (item.Commented.GetType() == typeof(Comment)) { <text>[Comment] </text>} }@(item.Commented.getTitle())</a></span></span>
                                             </div><br>
                                             <div class="comment">
                                                 <span class="commtext c00" asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Content</span>
@@ -62,7 +62,7 @@
                                                         var usermail = item.Author.Email;
                                         <td class="default">
                                             <div style="margin-top:2px; margin-bottom:-10px;">
-                                                <span class="comhead"><span class="score" id="score_26860528">@item.Upvotes</span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Author.Email">@item.Author.UserId</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@GetPrettyDate(item.DateCreated)</a> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@(((Comment)item).Commented.Id)">@{ if (((Comment)item).Commented.GetType() == typeof(Comment)) { <text>[Comment] </text>} }@(((Comment)item).Commented.getTitle())</a></span></span>
+                                                <span class="comhead"><span class="score" id="score_26860528">@item.Upvotes</span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Author.Email">@item.Author.UserId</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@GetPrettyDate(item.DateCreated)</a> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@(item.Commented.Id)">@{ if (item.Commented.GetType() == typeof(Comment)) { <text>[Comment] </text>} }@(item.Commented.getTitle())</a></span></span>
                                             </div><br>
                                             <div class="comment">
                                                 <span class="commtext c00">@item.Content</span>

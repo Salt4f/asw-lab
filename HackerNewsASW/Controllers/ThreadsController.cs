@@ -26,26 +26,38 @@ namespace HackerNewsASW.Controllers
         }
 
         
-        public IActionResult UserComments(string usermail)
+        public async Task<IActionResult> UserComments(string usermail)
         {
-
-            User author = _context.Users
+            User author = await _context.Users
                 .Include(u => u.Contributions)
-                .Single(u => u.Email == usermail);
-            return View(author.Contributions);
+                .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
+
+            var contrib = await _context.Comments
+                .Include(c => c.Author)
+                .Include(c => c.Comments)
+                .Include(c => c.Commented)
+                .Where(c => c.Author.Email == author.Email)
+                .ToListAsync();
+
+            return View(contrib);
         }
 
         [Authorize]
-        public IActionResult UserThreads()
+        public async Task<IActionResult> UserThreads()
         {
-            User author = _context.Users
+            User author = await _context.Users
                 .Include(u => u.Contributions)
-                .Single(u => u.Email == GetUserEmail(User));
-            return View("UserComments",author.Contributions);
+                .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
+
+            var contrib = await _context.Comments
+                .Include(c => c.Author)
+                .Include(c => c.Comments)
+                .Include(c => c.Commented)
+                .Where(c => c.Author.Email == author.Email)
+                .ToListAsync();
+
+            return View("UserComments", contrib);
         }
-
-
-
 
         private static string GetUserEmail(System.Security.Claims.ClaimsPrincipal user)
         {
