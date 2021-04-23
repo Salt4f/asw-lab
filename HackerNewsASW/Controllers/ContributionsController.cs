@@ -57,6 +57,7 @@ namespace HackerNewsASW.Controllers
             }
 
             var contribution = await _context.Contributions
+                .Include(c => c.Author)
                 .Include(c => c.Comments)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (contribution == null)
