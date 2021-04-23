@@ -22,20 +22,23 @@
                             {
 
                                 @if (item.GetType() == typeof(HackerNewsASW.Models.Comment)) {
-                                var title=item.getTitle();
-                                <tr class="athing" id="@item.Id">
-                                    <td align="right" valign="top" class="title"></td>
-                                    <td></td>
-                                    <td class="title"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">title</a><span class="sitebit comhead"> (<a href="@item.Content"><span class="sitestr">@item.Content.Split("//")[1].Split("/")[0]</span></a>)</span></td>
-                                </tr>
                                 <tr>
                                     <td colspan="2"></td>
                                     <td class="subtext">
-                                        <text><span class="score" id="score_26554539">@item.Upvotes points</span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Author.Email">@Html.DisplayFor(modelItem => item.Author.UserId)</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@GetPrettyDate(item.DateCreated)</a></span> | <span id="unv_26554539"><a asp-controller="Contributions" asp-action="Unvote" asp-route-id="@item.Id" asp-route-return="@Context.Request.Path.ToString()">Unvote</a></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Comments.Count comments</a></text>
+                                        <text><span class="score" id="score_26554539">@item.Upvotes points</span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Author.Email">@Html.DisplayFor(modelItem => item.Author.UserId)</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@GetPrettyDate(item.DateCreated)</a></span> | <span id="unv_26554539"><a asp-controller="Contributions" asp-action="Unvote" asp-route-id="@item.Id" asp-route-return="@Context.Request.Path.ToString()">Unvote</a></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Comments.Count comments</a>| <a asp-controller="Contributions" asp-action="Details" asp-route-id="@(((Comment)item).Commented.Id)">@{ if (((Comment)item).Commented.GetType() == typeof(Comment)) { <text>[Comment] </text>} }@(((Comment)item).Commented.getTitle())</a></text>
                                     </td>
                                 </tr>
+                                <td></td>
+                                var title=item.getTitle();
+                                <tr class="athing" id="@item.Id">
+                                    <td align="right" valign="top" class="commtext c00"></td>
+                                    <td></td>
+                                    <td class="commtext c00"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@title</a><span class="sitebit comhead"><a href="@item.Content"></a></span></td>
+                                </tr>
+                                
                                 <tr class="spacer" style="height:5px"></tr>
                                 }
+
 
                                     {++i; }
                                     }

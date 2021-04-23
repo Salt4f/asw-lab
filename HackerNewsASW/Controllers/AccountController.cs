@@ -92,8 +92,13 @@ return View(upvoted);
              User user = await _context.Users
                 .Include(u => u.Upvoted)
                 .FirstOrDefaultAsync(u => u.Email == usermail);
-                return View(user.Upvoted);
+            HashSet<Contribution> upvoted = new HashSet<Contribution>();
+        foreach (var c in user.Upvoted) {
+        var c2 = await _context.Contributions.Include(c3 => c3.Comments).FirstOrDefaultAsync(c3 => c3.Id == c.Id);
+        upvoted.Add(c2);
         }
+        return View(upvoted);
+            }
         
 
         public IActionResult Login()
