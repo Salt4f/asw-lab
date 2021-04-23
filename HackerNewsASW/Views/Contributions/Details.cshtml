@@ -20,7 +20,7 @@
                                     <td align="right" valign="top" class="title"><span class="rank"></span></td>
                                     <td valign="top" class="votelinks"><center><a id="up_26842018" href="vote?id=26842018&amp;how=up&amp;goto=item%3Fid%3D26842018"><div class="votearrow" title=@Model.Item1.Upvotes></div></a></center></td>
                                     <td class="title">
-                                        @if (Model.GetType() == typeof(HackerNewsASW.Models.News))
+                                        @if (Model.Item1.GetType() == typeof(HackerNewsASW.Models.News))
                                         {
                                             <a href="@Model.Item1.Content" class="storylink">@Model.Item1.getTitle()</a>
                                             <span class="sitebit comhead"> (<a href=@Model.Item1.Content><span class="sitestr">@Model.Item1.Content.Split("//")[1].Split("/")[0]</span></a>)</span>
