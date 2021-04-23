@@ -56,7 +56,7 @@ namespace HackerNewsASW.Controllers
         public async Task<IActionResult> CheckUser(string usermail)
         {
             User author = await _context.Users.FindAsync(GetUserEmail(User));
-            if (author is null) return RedirectToAction(nameof(OtherProfile), usermail);
+            if (author is null) return RedirectToAction(nameof(OtherProfile), new { usermail = usermail });
             string emailact = author.Email;
             if(usermail == emailact) {
                 return View("Profile",author);
