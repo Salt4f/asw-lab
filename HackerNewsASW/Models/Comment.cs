@@ -11,7 +11,8 @@ namespace HackerNewsASW.Models
 
         public override string getTitle()
         {
-            throw new NotImplementedException();
+            return Content;
+            //throw new NotImplementedException();
         }
     }
 }

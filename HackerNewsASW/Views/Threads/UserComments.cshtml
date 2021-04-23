@@ -30,7 +30,7 @@
                     @foreach (var item in Model){
 
                     @if (item.GetType() == typeof(HackerNewsASW.Models.Comment))
-                        {
+                    {
                     <tr class="athing comtr" id="26860528">
 
                         <td>
@@ -44,11 +44,11 @@
                                             </center>
                                         </td>
                                         @if (Context.User.Identity is null || !Context.User.Identity.IsAuthenticated)
-                                            {
-                                var usermail=item.Author.Email;
+                                        {
+                                            var usermail = item.Author.Email;
                                         <td class="default">
                                             <div style="margin-top:2px; margin-bottom:-10px;">
-                                                <span class="comhead"><span class="score" id="score_26860528">1 point</span> by <a asp-controller="Account" asp-action="OtherProfile" asp-route-usermail="@item.Author.Email">@item.Author.UserId</a> <span class="age"><a href="item?id=26860528">@GetPrettyDate(item.DateCreated)</a> | <a class="Reference">Falta referencia</a></span></span>
+                                                <span class="comhead"><span class="score" id="score_26860528">@item.Upvotes</span> by <a asp-controller="Account" asp-action="OtherProfile" asp-route-usermail="@item.Author.Email">@item.Author.UserId</a> <span class="age"><a href="item?id=26860528">@GetPrettyDate(item.DateCreated)</a> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@(((Comment)item).Commented.Id)">@{ if (((Comment)item).Commented.GetType() == typeof(Comment)) { <text>[Comment] </text>} }@(((Comment)item).Commented.getTitle())</a></span></span>
                                             </div><br>
                                             <div class="comment">
                                                 <span class="commtext c00" asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Content</span>
@@ -57,12 +57,12 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        }
-                                        else {
-                                            var usermail=item.Author.Email;
+                                                    }
+                                                    else {
+                                                        var usermail = item.Author.Email;
                                         <td class="default">
                                             <div style="margin-top:2px; margin-bottom:-10px;">
-                                                <span class="comhead"><span class="score" id="score_26860528">1 point</span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Author.Email">@item.Author.UserId</a> <span class="age"><a href="item?id=26860528">@GetPrettyDate(item.DateCreated)</a> | <a class="Reference">Falta referencia</a></span></span>
+                                                <span class="comhead"><span class="score" id="score_26860528">@item.Upvotes</span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Author.Email">@item.Author.UserId</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@GetPrettyDate(item.DateCreated)</a> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@(((Comment)item).Commented.Id)">@{ if (((Comment)item).Commented.GetType() == typeof(Comment)) { <text>[Comment] </text>} }@(((Comment)item).Commented.getTitle())</a></span></span>
                                             </div><br>
                                             <div class="comment">
                                                 <span class="commtext c00">@item.Content</span>
