@@ -1,9 +1,10 @@
 # asw-lab
-Marc Cortadellas
-Joel Dill
-Jaume Armengol
-Marc Plans
-Sergio Camps
+
+* Marc Cortadellas
+* Joel Dill
+* Jaume Armengol
+* Marc Plans
+* Sergio Camps
 
 # URL
 http://asw.vgafib.org
