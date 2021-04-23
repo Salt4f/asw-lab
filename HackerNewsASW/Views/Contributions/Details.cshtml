@@ -34,7 +34,7 @@
                                 <tr>
                                     <td colspan="2"></td>
                                     <td class="subtext">
-                                        <span class="score" id="score_26842018">@Model.Item1.Upvotes </span> by <a href="user?id=@Model.Item1.Author" class="hnuser">@Model.Item1.Author</a> <span class="age">@GetPrettyDate(Model.Item1.DateCreated)<a href="item?id=26842018"></a></span> <span id="unv_26842018"></span> | <a href="hide?id=26842018&amp;goto=item%3Fid%3D26842018">hide</a> | <a href="https://hn.algolia.com/?query=Self-Supervised%20Video%20Object%20Segmentation%20by%20Motion%20Grouping&amp;type=story&amp;dateRange=all&amp;sort=byDate&amp;storyText=false&amp;prefix&amp;page=0" class="hnpast">past</a> | <a href="fave?id=26842018&amp;auth=198ae303bcbd9953f9ccf89d70f958761f99e7df">favorite</a> | <a href="item?id=26842018">@Model.Item1.Comments.Count comments</a>
+                                        <span class="score" id="score_26842018">@Model.Item1.Upvotes </span> by <a href="user?id=@Model.Item1.Author" class="hnuser">@Model.Item1.Author.UserId</a> <span class="age">@GetPrettyDate(Model.Item1.DateCreated)<a href="item?id=26842018"></a></span> <span id="unv_26842018"></span> | <a href="hide?id=26842018&amp;goto=item%3Fid%3D26842018">hide</a> | <a href="https://hn.algolia.com/?query=Self-Supervised%20Video%20Object%20Segmentation%20by%20Motion%20Grouping&amp;type=story&amp;dateRange=all&amp;sort=byDate&amp;storyText=false&amp;prefix&amp;page=0" class="hnpast">past</a> | <a href="fave?id=26842018&amp;auth=198ae303bcbd9953f9ccf89d70f958761f99e7df">favorite</a> | <a href="item?id=26842018">@Model.Item1.Comments.Count comments</a>
                                     </td>
                                 </tr>
                                 <tr style="height:10px"></tr>
@@ -83,7 +83,7 @@
                                                                                  <li>
                                                                                      <div style="margin-top:2px; margin-bottom:-10px;">
                                                                                          <span class="comhead">
-                                                                                             <a href="user?id=ttty" class="hnuser">@comp.Parent.Author</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 26842175)">[–]</a> <span class="storyon"></span>
+                                                                                             <a href="user?id=ttty" class="hnuser">@comp.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 26842175)">[–]</a> <span class="storyon"></span>
                                                                                          </span>
                                                                                      </div><br>
                                                                                      <div class="comment">
@@ -102,7 +102,7 @@
                                                                                              <li>
                                                                                                  <div style="margin-top:2px; margin-bottom:-10px;">
                                                                                                      <span class="comhead">
-                                                                                                         <a href="user?id=ttty" class="hnuser">@comp2.Parent.Author</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp2.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 26842175)">[–]</a> <span class="storyon"></span>
+                                                                                                         <a href="user?id=ttty" class="hnuser">@comp2.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp2.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 26842175)">[–]</a> <span class="storyon"></span>
                                                                                                      </span>
                                                                                                  </div><br>
                                                                                                  <div class="comment">
@@ -121,7 +121,7 @@
                                                                                                          <li>
                                                                                                              <div style="margin-top:2px; margin-bottom:-10px;">
                                                                                                                  <span class="comhead">
-                                                                                                                     <a href="user?id=ttty" class="hnuser">@comp3.Parent.Author</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp3.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 26842175)">[–]</a> <span class="storyon"></span>
+                                                                                                                     <a href="user?id=ttty" class="hnuser">@comp3.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp3.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 26842175)">[–]</a> <span class="storyon"></span>
                                                                                                                  </span>
                                                                                                              </div><br>
                                                                                                              <div class="comment">
@@ -140,7 +140,7 @@
                                                                                                                      <li>
                                                                                                                          <div style="margin-top:2px; margin-bottom:-10px;">
                                                                                                                              <span class="comhead">
-                                                                                                                                 <a href="user?id=ttty" class="hnuser">@comp4.Parent.Author</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp4.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 26842175)">[–]</a> <span class="storyon"></span>
+                                                                                                                                 <a href="user?id=ttty" class="hnuser">@comp4.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp4.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 26842175)">[–]</a> <span class="storyon"></span>
                                                                                                                              </span>
                                                                                                                          </div><br>
                                                                                                                          <div class="comment">
@@ -155,7 +155,7 @@
                                                                                                                          </div>
                                                                                                                          @if (comp4.Children != null && comp4.Children.Count() > 0)
                                                                                                                             {
-                                                                                                                               <br/><u><a asp-action="Details" asp-route-id="@comp4.Parent.Id"> view More </a></u>
+                                                                                                                               <u><a asp-action="Details" asp-route-id="@comp4.Parent.Id">view More</a></u>
                                                                                                                             }                                                                                                                         
                                                                                                                      </li>
                                                                                                                  </ul>
