@@ -8,16 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using HackerNewsASW.Data;
 using HackerNewsASW.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace HackerNewsASW.Controllers
 {
     public class ContributionsController : Controller
     {
         private readonly DatabaseContext _context;
+        private readonly ILogger<ContributionsController> _logger;
 
-        public ContributionsController(DatabaseContext context)
+        public ContributionsController(DatabaseContext context, ILogger<ContributionsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Contributions
@@ -181,8 +184,9 @@ namespace HackerNewsASW.Controllers
 
             foreach (var com in c.Comments) {
                 var com2 = await _context.Comments.Include(c2 => c2.Author).Include(c2 => c2.Comments).FirstOrDefaultAsync(c2 => c2.Id == com.Id);
+                _logger.LogInformation(com2.Content + " " + com2.Author.UserId);
                 Tupla t = new Tupla();
-                t.Parent = com2;
+                t.Parent = com2;1
                 t.Children =  await GetComments(com2);
                 comments.Add(t);
             }
