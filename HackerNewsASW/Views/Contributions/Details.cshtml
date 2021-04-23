@@ -76,10 +76,10 @@
                                                                 <tr>
                                                                     @{voted = ViewBag.votedList != null && ((ICollection<HackerNewsASW.Models.Contribution>)ViewBag.votedList).FirstOrDefault(c => c.Id == item.Parent.Id) != null; }
                                                                     @if (Context.User.Identity is null ||
-                                                                   !Context.User.Identity.IsAuthenticated ||
-                                                                   (Context.User.Identity.IsAuthenticated && !voted))
+                                                                  !Context.User.Identity.IsAuthenticated ||
+                                                                  (Context.User.Identity.IsAuthenticated && !voted))
                                                                     {
-                                                                        <td class="votelinks" valign="top"><center><a asp-controller="Contributions" asp-action="Upvote" asp-route-id="@Model.Item1.Id" asp-route-return="@Context.Request.Path.ToString()"><div class="votearrow" title="upvote"></div></a></center></td>
+                                                                        <td class="votelinks" valign="top"><center><a asp-controller="Contributions" asp-action="Upvote" asp-route-id="@item.Parent.Id" asp-route-return="@Context.Request.Path.ToString()"><div class="votearrow" title="upvote"></div></a></center></td>
                                                                     }
                                                                     else
                                                                     {
@@ -112,6 +112,17 @@
                                                                         @foreach (var comp in item.Children)
                                                                         {
                                                                             <ul style="list-style-type:none;">
+                                                                                @{voted = ViewBag.votedList != null && ((ICollection<HackerNewsASW.Models.Contribution>)ViewBag.votedList).FirstOrDefault(c => c.Id == item.Parent.Id) != null; }
+                                                                                @if (Context.User.Identity is null ||
+                                                                              !Context.User.Identity.IsAuthenticated ||
+                                                                              (Context.User.Identity.IsAuthenticated && !voted))
+                                                                                {
+                                                                                    <li class="votelinks" valign="top"><center><a asp-controller="Contributions" asp-action="Upvote" asp-route-id="@item.Parent.Id" asp-route-return="@Context.Request.Path.ToString()"><div class="votearrow" title="upvote"></div></a></center></li>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <li></li>
+                                                                                }
                                                                                 <li>
                                                                                     <div style="margin-top:2px; margin-bottom:-10px;">
                                                                                         <span class="comhead">
@@ -199,10 +210,10 @@
                                                                                         </ul>
                                                                                     }
                                                                                 </li>
-                                                                            </ul>
-                                                                        }
+                                                                                </ul>
+                                                                            }
 
-                                                                    </td>
+</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
