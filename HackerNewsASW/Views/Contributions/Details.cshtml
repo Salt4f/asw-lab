@@ -74,7 +74,7 @@
                                                         <table border="0">
                                                             <tbody>
                                                                 <tr>
-                                                                    @{voted = ViewBag.votedList != null && ((ICollection<HackerNewsASW.Models.Contribution>)ViewBag.votedList).FirstOrDefault(c => c.Id == item.Id) != null; }
+                                                                    @{voted = ViewBag.votedList != null && ((ICollection<HackerNewsASW.Models.Contribution>)ViewBag.votedList).FirstOrDefault(c => c.Id == item.Parent.Id) != null; }
                                                                     @if (Context.User.Identity is null ||
                                                                    !Context.User.Identity.IsAuthenticated ||
                                                                    (Context.User.Identity.IsAuthenticated && !voted))
