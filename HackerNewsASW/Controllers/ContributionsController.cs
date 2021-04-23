@@ -43,6 +43,12 @@ namespace HackerNewsASW.Controllers
             {
                 return NotFound();
             }
+
+            User user = await _context.Users
+                .Include(u => u.Upvoted)
+                .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
+            if (user != null) ViewBag.votedList = user.Upvoted;
+
             return View(Tuple.Create(contribution,await GetComments(contribution)));
         }
 
@@ -75,6 +81,11 @@ namespace HackerNewsASW.Controllers
 
             await _context.AddAsync(comment);
             await _context.SaveChangesAsync();
+
+            User user = await _context.Users
+                .Include(u => u.Upvoted)
+                .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
+            if (user != null) ViewBag.votedList = user.Upvoted;
 
             return View(Tuple.Create(contribution, await GetComments(contribution)));
         }
