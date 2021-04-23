@@ -32,9 +32,10 @@ namespace HackerNewsASW.Controllers
                 .Include(u => u.Contributions)
                 .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
 
-            var contrib = await _context.Contributions
+            var contrib = await _context.Comments
                 .Include(c => c.Author)
                 .Include(c => c.Comments)
+                .Include(c => c.Commented)
                 .Where(c => c.Author.Email == author.Email)
                 .ToListAsync();
 
@@ -48,17 +49,15 @@ namespace HackerNewsASW.Controllers
                 .Include(u => u.Contributions)
                 .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
 
-            var contrib = await _context.Contributions
+            var contrib = await _context.Comments
                 .Include(c => c.Author)
                 .Include(c => c.Comments)
+                .Include(c => c.Commented)
                 .Where(c => c.Author.Email == author.Email)
                 .ToListAsync();
 
             return View("UserComments", contrib);
         }
-
-
-
 
         private static string GetUserEmail(System.Security.Claims.ClaimsPrincipal user)
         {
