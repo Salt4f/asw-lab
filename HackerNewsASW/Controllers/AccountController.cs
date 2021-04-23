@@ -94,7 +94,7 @@ namespace HackerNewsASW.Controllers
                 .FirstOrDefaultAsync(u => u.Email == usermail);
             HashSet<Contribution> upvoted = new HashSet<Contribution>();
         foreach (var c in user.Upvoted) {
-        var c2 = await _context.Contributions.Include(c3 => c3.Comments).FirstOrDefaultAsync(c3 => c3.Id == c.Id);
+        var c2 = await _context.Contributions.Include(c3 => c3.Comments).Include(c3 => c3.Author).FirstOrDefaultAsync(c3 => c3.Id == c.Id);
         upvoted.Add(c2);
         }
         return View(upvoted);
