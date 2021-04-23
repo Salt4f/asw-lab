@@ -90,11 +90,11 @@
                                                                             <span class="comhead">
                                                                                 @if (!voted)
                                                                                 {
-                                                                                    <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@Model.Item1.Author.Email">@Html.DisplayFor(modelItem => Model.Item1.Author.UserId)</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(item.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
+                                                                                    <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Parent.Author.Email">@Html.DisplayFor(modelItem => item.Parent.Author.UserId)</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(item.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@Model.Item1.Author.Email">@Html.DisplayFor(modelItem => Model.Item1.Author.UserId)</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(item.Parent.DateCreated)</a></span> <span id="unv_26842175"><a asp-controller="Contributions" asp-action="Unvote" asp-route-id="@item.Parent.Id" asp-route-return="@Context.Request.Path.ToString()">Unvote</a></span><span class="par"></span><span class="storyon"></span>
+                                                                                    <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Parent.Author.Email">@Html.DisplayFor(modelItem => item.Parent.Author.UserId)</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(item.Parent.DateCreated)</a></span> <span id="unv_26842175"><a asp-controller="Contributions" asp-action="Unvote" asp-route-id="@item.Parent.Id" asp-route-return="@Context.Request.Path.ToString()">Unvote</a></span><span class="par"></span><span class="storyon"></span>
                                                                                 }
                                                                             </span>
                                                                         </div>
