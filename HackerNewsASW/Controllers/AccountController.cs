@@ -42,19 +42,21 @@ namespace HackerNewsASW.Controllers
        public async Task<IActionResult> Profile()
        {
             User author = await _context.Users.FindAsync(GetUserEmail(User));
+            if (author is null) return NotFound();
             return View(author);
        }
 
         public async Task<IActionResult> OtherProfile(string usermail)
         {
             User author = await _context.Users.FindAsync(usermail);
+            if (author is null) return NotFound();
             return View(author);
         }
 
         public async Task<IActionResult> CheckUser(string usermail)
         {
             User author = await _context.Users.FindAsync(GetUserEmail(User));
-            if (author is null) return NotFound();
+            if (author is null) return RedirectToAction(nameof(OtherProfile), usermail);
             string emailact = author.Email;
             if(usermail == emailact) {
                 return View("Profile",author);
