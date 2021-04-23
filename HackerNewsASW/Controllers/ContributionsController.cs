@@ -186,7 +186,7 @@ namespace HackerNewsASW.Controllers
                 var com2 = await _context.Comments.Include(c2 => c2.Author).Include(c2 => c2.Comments).FirstOrDefaultAsync(c2 => c2.Id == com.Id);
                 _logger.LogInformation(com2.Content + " " + com2.Author.UserId);
                 Tupla t = new Tupla();
-                t.Parent = com2;1
+                t.Parent = com2;
                 t.Children =  await GetComments(com2);
                 comments.Add(t);
             }
