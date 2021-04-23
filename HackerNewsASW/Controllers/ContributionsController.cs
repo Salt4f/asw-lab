@@ -37,13 +37,13 @@ namespace HackerNewsASW.Controllers
             var contribution = await _context.Contributions
                 .Include(c => c.Author)
                 .Include(c => c.Comments)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id );
+            
             if (contribution == null)
             {
                 return NotFound();
             }
-
-            return View(contribution);
+            return View(Tuple.Create(contribution,await GetComments(contribution)));
         }
 
         // POST: Contributions/Details/5
@@ -57,6 +57,7 @@ namespace HackerNewsASW.Controllers
             }
 
             var contribution = await _context.Contributions
+                .Include(c => c.Author)
                 .Include(c => c.Comments)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (contribution == null)
@@ -67,6 +68,7 @@ namespace HackerNewsASW.Controllers
             comment.Commented = contribution;
             comment.DateCreated = DateTime.Now;
             comment.Author = await _context.Users.FindAsync(GetUserEmail(User));
+            //comment.Reference = contribution.Id;
 
             if (contribution.Comments is null) contribution.Comments = new HashSet<Comment>();
             contribution.Comments.Add(comment);
@@ -74,7 +76,7 @@ namespace HackerNewsASW.Controllers
             await _context.AddAsync(comment);
             await _context.SaveChangesAsync();
 
-            return View(contribution);
+            return View(Tuple.Create(contribution, await GetComments(contribution)));
         }
 
         [Authorize]
@@ -150,6 +152,19 @@ namespace HackerNewsASW.Controllers
 
             if (email != null) return email;
             return "";
+        }
+        private async Task<HashSet<Tupla>> GetComments(Contribution c)
+        {
+            HashSet<Tupla> comments = new HashSet<Tupla>();
+
+            foreach (var com in c.Comments) {
+                var com2 = await _context.Comments.Include(c2 => c2.Author).Include(c2 => c2.Comments).FirstOrDefaultAsync(c2 => c2.Id == com.Id);
+                Tupla t = new Tupla();
+                t.Parent = com2;
+                t.Children =  await GetComments(com2);
+                comments.Add(t);
+            }
+            return comments;
         }
     }
 }
