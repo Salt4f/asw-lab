@@ -29,21 +29,21 @@ namespace HackerNewsASW.Controllers
         [HttpPost]
         [Authorize]
        public async Task<IActionResult> Profile(string About)
-        {
+       {
             User author = await _context.Users.FindAsync(GetUserEmail(User));
             author.About=About;
             _context.Update(author);
              await _context.SaveChangesAsync();
             return View(author);
-        }
+       }
 
 
        [Authorize]
        public async Task<IActionResult> Profile()
-        {
+       {
             User author = await _context.Users.FindAsync(GetUserEmail(User));
             return View(author);
-        }
+       }
 
         public async Task<IActionResult> OtherProfile(string usermail)
         {
@@ -53,13 +53,14 @@ namespace HackerNewsASW.Controllers
 
         public async Task<IActionResult> CheckUser(string usermail)
         {
-            User author= await _context.Users.FindAsync(GetUserEmail(User));
-            string emailact=author.Email;
-            if(usermail==emailact) {
+            User author = await _context.Users.FindAsync(GetUserEmail(User));
+            if (author is null) return NotFound();
+            string emailact = author.Email;
+            if(usermail == emailact) {
                 return View("Profile",author);
             }
             else {
-                author= await _context.Users.FindAsync(usermail);
+                author = await _context.Users.FindAsync(usermail);
                 return View("OtherProfile",author);
             }
         }
@@ -115,13 +116,13 @@ namespace HackerNewsASW.Controllers
         }
 
          private static string GetUserEmail(System.Security.Claims.ClaimsPrincipal user)
-        {
+         {
             string email = user.Claims.Where(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")
                         .Select(claim => claim.Value).FirstOrDefault();
 
             if (email != null) return email;
             return "";
-        }
+         }
 
         
     }
