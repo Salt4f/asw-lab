@@ -90,11 +90,11 @@
                                                                             <span class="comhead">
                                                                                 @if (!voted)
                                                                                 {
-                                                                                    <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Parent.Author.Email">@Html.DisplayFor(modelItem => item.Parent.Author.UserId)</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(item.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
+                                                                                    <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Parent.Author.Email">@Html.DisplayFor(modelItem => item.Parent.Author.UserId)</a> <span class="age"><p>@GetPrettyDate(item.Parent.DateCreated)</p></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Parent.Author.Email">@Html.DisplayFor(modelItem => item.Parent.Author.UserId)</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(item.Parent.DateCreated)</a></span> <span id="unv_26842175"><a asp-controller="Contributions" asp-action="Unvote" asp-route-id="@item.Parent.Id" asp-route-return="@Context.Request.Path.ToString()">Unvote</a></span><span class="par"></span><span class="storyon"></span>
+                                                                                    <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Parent.Author.Email">@Html.DisplayFor(modelItem => item.Parent.Author.UserId)</a> <span class="age"><p>@GetPrettyDate(item.Parent.DateCreated)</p></span> <span id="unv_26842175"><a asp-controller="Contributions" asp-action="Unvote" asp-route-id="@item.Parent.Id" asp-route-return="@Context.Request.Path.ToString()">Unvote</a></span><span class="par"></span><span class="storyon"></span>
                                                                                 }
                                                                             </span>
                                                                         </div>
@@ -118,7 +118,7 @@
                                                                                         <span class="comhead">
                                                                                             @if (Context.User.Identity is null || !Context.User.Identity.IsAuthenticated || (Context.User.Identity.IsAuthenticated && !voted))
                                                                                             {<a asp-controller="Contributions" asp-action="Upvote" asp-route-id="@comp.Parent.Id" asp-route-return="@Context.Request.Path.ToString()"><div class="votearrow" title="upvote"></div></a>}
-                                                                                            <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@comp.Parent.Author.Email">@comp.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp.Parent.DateCreated)</a></span>
+                                                                                            <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@comp.Parent.Author.Email">@comp.Parent.Author.UserId</a> <span class="age"><p>@GetPrettyDate(comp.Parent.DateCreated)</p></span>
                                                                                             <span id="unv_26842175">
                                                                                             @if (voted) { <a asp-controller="Contributions" asp-action="Unvote" asp-route-id="@comp.Parent.Id" asp-route-return="@Context.Request.Path.ToString()">Unvote</a>}
                                                                                             </span><span class="par"></span><span class="storyon"></span>
@@ -143,7 +143,7 @@
                                                                                             <span class="comhead">
                                                                                                 @if (Context.User.Identity is null || !Context.User.Identity.IsAuthenticated || (Context.User.Identity.IsAuthenticated && !voted))
                                                                                                 {<a asp-controller="Contributions" asp-action="Upvote" asp-route-id="@comp2.Parent.Id" asp-route-return="@Context.Request.Path.ToString()"><div class="votearrow" title="upvote"></div></a>}
-                                                                                                <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@comp2.Parent.Author.Email">@comp2.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp2.Parent.DateCreated)</a></span>
+                                                                                                <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@comp2.Parent.Author.Email">@comp2.Parent.Author.UserId</a> <span class="age"><p>@GetPrettyDate(comp2.Parent.DateCreated)</p></span>
                                                                                                 <span id="unv_26842175">
                                                                                                     @if (voted)
                                                                                                     {<a asp-controller="Contributions" asp-action="Unvote" asp-route-id="@comp2.Parent.Id" asp-route-return="@Context.Request.Path.ToString()">Unvote</a>}
@@ -169,7 +169,7 @@
                                                                                                 <span class="comhead">
                                                                                                     @if (Context.User.Identity is null || !Context.User.Identity.IsAuthenticated || (Context.User.Identity.IsAuthenticated && !voted))
                                                                                                     {<a asp-controller="Contributions" asp-action="Upvote" asp-route-id="@comp3.Parent.Id" asp-route-return="@Context.Request.Path.ToString()"><div class="votearrow" title="upvote"></div></a>}
-                                                                                                    <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@comp3.Parent.Author.Email">@comp3.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp3.Parent.DateCreated)</a></span>
+                                                                                                    <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@comp3.Parent.Author.Email">@comp3.Parent.Author.UserId</a> <span class="age"><p>@GetPrettyDate(comp3.Parent.DateCreated)</p></span>
                                                                                                     <span id="unv_26842175">
                                                                                                         @if (voted)
                                                                                                         {<a asp-controller="Contributions" asp-action="Unvote" asp-route-id="@comp3.Parent.Id" asp-route-return="@Context.Request.Path.ToString()">Unvote</a>}
@@ -195,7 +195,7 @@
                                                                                                     <span class="comhead">
                                                                                                         @if (Context.User.Identity is null || !Context.User.Identity.IsAuthenticated || (Context.User.Identity.IsAuthenticated && !voted))
                                                                                                         {<a asp-controller="Contributions" asp-action="Upvote" asp-route-id="@comp4.Parent.Id" asp-route-return="@Context.Request.Path.ToString()"><div class="votearrow" title="upvote"></div></a>}
-                                                                                                        <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@comp4.Parent.Author.Email">@comp4.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp4.Parent.DateCreated)</a></span>
+                                                                                                        <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@comp4.Parent.Author.Email">@comp4.Parent.Author.UserId</a> <span class="age"><p>@GetPrettyDate(comp4.Parent.DateCreated)</p></span>
                                                                                                         <span id="unv_26842175">
                                                                                                             @if (voted)
                                                                                                             {<a asp-controller="Contributions" asp-action="Unvote" asp-route-id="@comp4.Parent.Id" asp-route-return="@Context.Request.Path.ToString()">Unvote</a>}
