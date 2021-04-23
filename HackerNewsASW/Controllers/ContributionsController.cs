@@ -75,7 +75,7 @@ namespace HackerNewsASW.Controllers
             await _context.AddAsync(comment);
             await _context.SaveChangesAsync();
 
-            return View(contribution);
+            return View(Tuple.Create(contribution, await GetComments(contribution)));
         }
 
         private bool ContributionExists(long id)
