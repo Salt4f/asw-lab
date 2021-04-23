@@ -1,0 +1,130 @@
+@model IEnumerable<HackerNewsASW.Models.Contribution>
+
+    @using System
+    @using System.Collections
+    @using System.Collections.Generic
+
+    @{
+    ViewData["Title"] = "CommentsUpvoted";
+    }
+
+
+    <center>
+        <table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
+            <tbody>
+                <tr id="pagespace" title="" style="height:10px"></tr>
+                <tr>
+                    <td>
+                        <table border="0" cellpadding="0" cellspacing="0" class="itemlist">
+                            <tbody>
+                                @{int i = 1;}
+                                @foreach (var item in Model)
+                            {
+
+                                @if (item.GetType() == typeof(HackerNewsASW.Models.Comment)) {
+                                var title=item.getTitle();
+                                <tr class="athing" id="@item.Id">
+                                    <td align="right" valign="top" class="title"></td>
+                                    <td></td>
+                                    <td class="title"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">title</a><span class="sitebit comhead"> (<a href="@item.Content"><span class="sitestr">@item.Content.Split("//")[1].Split("/")[0]</span></a>)</span></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td class="subtext">
+                                        <text><span class="score" id="score_26554539">@item.Upvotes points</span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@item.Author.Email">@Html.DisplayFor(modelItem => item.Author.UserId)</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@GetPrettyDate(item.DateCreated)</a></span> | <span id="unv_26554539"><a asp-controller="Contributions" asp-action="Unvote" asp-route-id="@item.Id" asp-route-return="@Context.Request.Path.ToString()">Unvote</a></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@item.Id">@item.Comments.Count comments</a></text>
+                                    </td>
+                                </tr>
+                                <tr class="spacer" style="height:5px"></tr>
+                                }
+
+                                    {++i; }
+                                    }
+
+                                <tr class="morespace" style="height:10px"></tr>
+                                <tr><td colspan="2"></td><td class="title"></td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="y">
+                        <table width="100%" cellspacing="0" cellpadding="1"><tbody><tr><td bgcolor="#ff6600"></td></tr></tbody></table><br><center>
+                            <span class="yclinks">
+                                <a href="newsguidelines.html">Guidelines</a>
+                                | <a href="newsfaq.html">FAQ</a>
+                                | <a href="lists">Lists</a>
+                                | <a href="https://github.com/HackerNews/API">API</a>
+                                | <a href="security.html">Security</a>
+                                | <a href="http://www.ycombinator.com/legal/">Legal</a>
+                                | <a href="http://www.ycombinator.com/apply/">Apply to YC</a>
+                                | <a href="mailto:hn@ycombinator.com">Contact</a>
+                            </span><br><br><form method="get" action="//hn.algolia.com/">
+                                Search:
+                                <input type="text" name="q" value="" size="17" autocorrect="off" spellcheck="false" autocapitalize="off" autocomplete="false">
+                            </form>
+                        </center>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </center>
+
+    @functions{
+    static string GetPrettyDate(DateTime d)
+    {
+        // 1.
+        // Get time span elapsed since the date.
+        TimeSpan s = DateTime.Now.Subtract(d);
+
+        // 2.
+        // Get total number of days elapsed.
+        int dayDiff = (int)s.TotalDays;
+
+        // 3.
+        // Get total number of seconds elapsed.
+        int secDiff = (int)s.TotalSeconds;
+
+        // 4.
+        // Don't allow out of range values.
+        if (dayDiff < 0) return null;
+
+        // 5.
+        // Handle same-day times.
+        if (dayDiff == 0)
+        {
+            // A.
+            // Less than one minute ago.
+            if (secDiff < 60) return "just now";
+
+            // B.
+            // Less than 2 minutes ago.
+            if (secDiff < 120) return "1 minute ago";
+
+            // C.
+            // Less than one hour ago.
+            if (secDiff < 3600) return string.Format("{0} minutes ago", Math.Floor((double)secDiff / 60));
+
+            // D.
+            // Less than 2 hours ago.
+            if (secDiff < 7200) return "1 hour ago";
+            // E.
+            // Less than one day ago.
+            if (secDiff < 86400) return string.Format("{0} hours ago", Math.Floor((double)secDiff / 3600));
+        }
+        // 6.
+        // Handle previous days.
+        if (dayDiff == 1) return "yesterday";
+
+        if (dayDiff < 7) return string.Format("{0} days ago", dayDiff);
+
+        //Handle previous weeks
+        if (dayDiff < 31) return string.Format("{0} weeks ago", Math.Ceiling((double)dayDiff / 7));
+
+        //Handle previous months
+        if (dayDiff < 365) return string.Format("{0} months ago", Math.Ceiling((double)dayDiff / 30.41));
+
+        //Handle previous years
+        return string.Format("{0} years ago", Math.Ceiling((double)dayDiff / 365));
+    }
+    }
+
