@@ -16,9 +16,19 @@
                     <td>
                         <table class="fatitem" border="0">
                             <tbody>
+                                @{bool voted = ViewBag.votedList != null && ((ICollection<HackerNewsASW.Models.Contribution>)ViewBag.votedList).FirstOrDefault(c => c.Id == Model.Item1.Id) != null; }
                                 <tr class="athing" id="26842018">
                                     <td align="right" valign="top" class="title"><span class="rank"></span></td>
-                                    <td valign="top" class="votelinks"><center><a id="up_26842018" href="vote?id=26842018&amp;how=up&amp;goto=item%3Fid%3D26842018"><div class="votearrow" title=@Model.Item1.Upvotes></div></a></center></td>
+                                    @if (Context.User.Identity is null ||
+!Context.User.Identity.IsAuthenticated ||
+(Context.User.Identity.IsAuthenticated && !voted))
+                                    {
+                                        <td class="votelinks" valign="top"><center><a asp-controller="Contributions" asp-action="Upvote" asp-route-id="@Model.Item1.Id" asp-route-return="@Context.Request.Path.ToString()"><div class="votearrow" title="upvote"></div></a></center></td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
                                     <td class="title">
                                         @if (Model.Item1.GetType() == typeof(HackerNewsASW.Models.News))
                                         {
@@ -31,167 +41,162 @@
                                         }
                                     </td>
                                 </tr>
-                                @if (Context.User.Identity is null || !Context.User.Identity.IsAuthenticated)
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td class="subtext">
+                                            @if (!voted)
                                             {
-                                <tr>
-                                    <td colspan="2"></td>
-                                    <td class="subtext">
-                                        <span class="score" id="score_26842018">@Model.Item1.Upvotes </span> by <a asp-controller="Account" asp-action="OtherProfile" asp-route-usermail="@Model.Item1.Author.Email">@Model.Item1.Author.UserId</a> <span class="age">@GetPrettyDate(Model.Item1.DateCreated)<a href="item?id=26842018"></a></span> <span id="unv_26842018"></span> | <a href="hide?id=26842018&amp;goto=item%3Fid%3D26842018">hide</a> | <a href="https://hn.algolia.com/?query=Self-Supervised%20Video%20Object%20Segmentation%20by%20Motion%20Grouping&amp;type=story&amp;dateRange=all&amp;sort=byDate&amp;storyText=false&amp;prefix&amp;page=0" class="hnpast">past</a> | <a href="fave?id=26842018&amp;auth=198ae303bcbd9953f9ccf89d70f958761f99e7df">favorite</a> | <a href="item?id=26842018">@Model.Item1.Comments.Count comments</a>
-                                    </td>
-                                </tr>
-                                }
-                                else {
-                                 <tr>
-                                    <td colspan="2"></td>
-                                    <td class="subtext">
-                                        <span class="score" id="score_26842018">@Model.Item1.Upvotes </span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@Model.Item1.Author.Email">@Model.Item1.Author.UserId</a> <span class="age">@GetPrettyDate(Model.Item1.DateCreated)<a href="item?id=26842018"></a></span> <span id="unv_26842018"></span> | <a href="hide?id=26842018&amp;goto=item%3Fid%3D26842018">hide</a> | <a href="https://hn.algolia.com/?query=Self-Supervised%20Video%20Object%20Segmentation%20by%20Motion%20Grouping&amp;type=story&amp;dateRange=all&amp;sort=byDate&amp;storyText=false&amp;prefix&amp;page=0" class="hnpast">past</a> | <a href="fave?id=26842018&amp;auth=198ae303bcbd9953f9ccf89d70f958761f99e7df">favorite</a> | <a href="item?id=26842018">@Model.Item1.Comments.Count comments</a>
-                                    </td>
-                                </tr>    
-
-                                }
-                                <tr style="height:10px"></tr>
-                                <tr>
-                                    <td colspan="2"></td>
-                                    <td>
-                                        <form asp-action="Details">
-                                            <textarea id="Content" name="Content" rows="6" cols="60"></textarea>
-                                            <br><br><input type="submit" value="add comment">
-                                        </form>
-                                    </td>
-                                </tr>
-                                <table border="0" class="comment-tree">
-                                    <tbody>
-                                        @{int i = 1;}
-                                        @foreach (var item in Model.Item2)
-                                        {
-                                            <tr class="athing comtr" id="26842175">
-                                                <td>
-                                                    <table border="0">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td valign="top" class="votelinks">
-                                                                    <center><a id="up_26842175" href="vote?id=26842175&amp;how=up&amp;goto=item%3Fid%3D26842018"><div class="votearrow" title="upvote"></div></a></center>
-                                                                </td>
-                                                                <td class="default">
-                                                                    <div style="margin-top:2px; margin-bottom:-10px;">
-                                                                        <span class="comhead">
-                                                                            <a href="user?id=ttty" class="hnuser">@item.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(item.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
-                                                                        </span>
-                                                                    </div>
-                                                                    <br>
-                                                                    <div class="comment">
-                                                                        <span class="commtext c00">@item.Parent.Content</span>
-                                                                        <div class="reply">
-                                                                            <p>
-                                                                                <font size="1">
-                                                                                    <u><a asp-action="Details" asp-route-id="@item.Parent.Id">reply</a></u>
-                                                                                </font>
-                                                                            </p>
+                                                <text><span class="score" id="score_26554539">@Model.Item1.Upvotes points</span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@Model.Item1.Author.Email">@Html.DisplayFor(modelItem => Model.Item1.Author.UserId)</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@Model.Item1.Id">@GetPrettyDate(Model.Item1.DateCreated)</a></span> <span id="unv_26554539"></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@Model.Item1.Id">@Model.Item1.Comments.Count comments</a></text>
+                                            }
+                                            else
+                                            {
+                                                <text><span class="score" id="score_26554539">@Model.Item1.Upvotes points</span> by <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@Model.Item1.Author.Email">@Html.DisplayFor(modelItem => Model.Item1.Author.UserId)</a> <span class="age"><a asp-controller="Contributions" asp-action="Details" asp-route-id="@Model.Item1.Id">@GetPrettyDate(Model.Item1.DateCreated)</a></span> | <span id="unv_26554539"><a asp-controller="Contributions" asp-action="Unvote" asp-route-id="@Model.Item1.Id" asp-route-return="@Context.Request.Path.ToString()">Unvote</a></span> | <a asp-controller="Contributions" asp-action="Details" asp-route-id="@Model.Item1.Id">@Model.Item1.Comments.Count comments</a></text>
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr style="height:10px"></tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td>
+                                            <form asp-action="Details">
+                                                <textarea id="Content" name="Content" rows="6" cols="60"></textarea>
+                                                <br><br><input type="submit" value="add comment">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <table border="0" class="comment-tree">
+                                        <tbody>
+                                            @{int i = 1;}
+                                            @foreach (var item in Model.Item2)
+                                            {
+                                                <tr class="athing comtr" id="26842175">
+                                                    <td>
+                                                        <table border="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td valign="top" class="votelinks">
+                                                                        <center><a id="up_26842175" href="vote?id=26842175&amp;how=up&amp;goto=item%3Fid%3D26842018"><div class="votearrow" title="upvote"></div></a></center>
+                                                                    </td>
+                                                                    <td class="default">
+                                                                        <div style="margin-top:2px; margin-bottom:-10px;">
+                                                                            <span class="comhead">
+                                                                                <a href="user?id=ttty" class="hnuser">@item.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(item.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
+                                                                            </span>
                                                                         </div>
-                                                                    </div>
-                                                                             @foreach (var comp in item.Children)
-                                                                             {
-                                                                             <ul style="list-style-type:none;">
-                                                                                 <li>
-                                                                                     <div style="margin-top:2px; margin-bottom:-10px;">
-                                                                                         <span class="comhead">
-                                                                                             <a href="user?id=ttty" class="hnuser">@comp.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
-                                                                                         </span>
-                                                                                     </div><br>
-                                                                                     <div class="comment">
-                                                                                         <span class="commtext c00">@comp.Parent.Content</span>
-                                                                                         <div class="reply">
-                                                                                             <p>
-                                                                                                 <font size="1">
-                                                                                                     <u><a asp-action="Details" asp-route-id="@comp.Parent.Id">reply</a></u>
-                                                                                                 </font>
-                                                                                             </p>
-                                                                                         </div>
-                                                                                     </div>
-                                                                                     @foreach (var comp2 in comp.Children)
-                                                                                     {
-                                                                                         <ul style="list-style-type:none;">
-                                                                                             <li>
-                                                                                                 <div style="margin-top:2px; margin-bottom:-10px;">
-                                                                                                     <span class="comhead">
-                                                                                                         <a href="user?id=ttty" class="hnuser">@comp2.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp2.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
-                                                                                                     </span>
-                                                                                                 </div><br>
-                                                                                                 <div class="comment">
-                                                                                                     <span class="commtext c00">@comp2.Parent.Content</span>
-                                                                                                     <div class="reply">
-                                                                                                         <p>
-                                                                                                             <font size="1">
-                                                                                                                 <u><a asp-action="Details" asp-route-id="@comp2.Parent.Id">reply</a></u>
-                                                                                                             </font>
-                                                                                                         </p>
-                                                                                                     </div>
-                                                                                                 </div>
-                                                                                                 @foreach (var comp3 in comp2.Children)
-                                                                                                 {
-                                                                                                     <ul style="list-style-type:none;">
-                                                                                                         <li>
-                                                                                                             <div style="margin-top:2px; margin-bottom:-10px;">
-                                                                                                                 <span class="comhead">
-                                                                                                                     <a href="user?id=ttty" class="hnuser">@comp3.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp3.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
-                                                                                                                 </span>
-                                                                                                             </div><br>
-                                                                                                             <div class="comment">
-                                                                                                                 <span class="commtext c00">@comp3.Parent.Content</span>
-                                                                                                                 <div class="reply">
-                                                                                                                     <p>
-                                                                                                                         <font size="1">
-                                                                                                                             <u><a asp-action="Details" asp-route-id="@comp3.Parent.Id">reply</a></u>
-                                                                                                                         </font>
-                                                                                                                     </p>
-                                                                                                                 </div>
-                                                                                                             </div>
-                                                                                                             @foreach (var comp4 in comp3.Children)
-                                                                                                             {
-                                                                                                                 <ul style="list-style-type:none;">
-                                                                                                                     <li>
-                                                                                                                         <div style="margin-top:2px; margin-bottom:-10px;">
-                                                                                                                             <span class="comhead">
-                                                                                                                                 <a href="user?id=ttty" class="hnuser">@comp4.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp4.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
-                                                                                                                             </span>
-                                                                                                                         </div><br>
-                                                                                                                         <div class="comment">
-                                                                                                                             <span class="commtext c00">@comp4.Parent.Content</span>
-                                                                                                                             <div class="reply">
-                                                                                                                                 <p>
-                                                                                                                                     <font size="1">
-                                                                                                                                         <u><a asp-action="Details" asp-route-id="@comp4.Parent.Id">reply</a></u>
-                                                                                                                                     </font>
-                                                                                                                                 </p>
-                                                                                                                             </div>
-                                                                                                                         </div>
-                                                                                                                         @if (comp4.Children != null && comp4.Children.Count() > 0)
-                                                                                                                            {
-                                                                                                                               <u><a asp-action="Details" asp-route-id="@comp4.Parent.Id">view More</a></u>
-                                                                                                                            }                                                                                                                         
-                                                                                                                     </li>
-                                                                                                                 </ul>
-                                                                                                             }
-                                                                                                         </li>
-                                                                                                     </ul>
-                                                                                                 }
-                                                                                             </li>
-                                                                                         </ul>
-                                                                                     }
-                                                                                 </li>
-                                                                             </ul>
-                                                                             }
-        
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            { i++; }
-                                        }
-                                    </tbody>
-                                </table>
+                                                                        <br>
+                                                                        <div class="comment">
+                                                                            <span class="commtext c00">@item.Parent.Content</span>
+                                                                            <div class="reply">
+                                                                                <p>
+                                                                                    <font size="1">
+                                                                                        <u><a asp-action="Details" asp-route-id="@item.Parent.Id">reply</a></u>
+                                                                                    </font>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        @foreach (var comp in item.Children)
+                                                                        {
+                                                                            <ul style="list-style-type:none;">
+                                                                                <li>
+                                                                                    <div style="margin-top:2px; margin-bottom:-10px;">
+                                                                                        <span class="comhead">
+                                                                                            <a href="user?id=ttty" class="hnuser">@comp.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
+                                                                                        </span>
+                                                                                    </div><br>
+                                                                                    <div class="comment">
+                                                                                        <span class="commtext c00">@comp.Parent.Content</span>
+                                                                                        <div class="reply">
+                                                                                            <p>
+                                                                                                <font size="1">
+                                                                                                    <u><a asp-action="Details" asp-route-id="@comp.Parent.Id">reply</a></u>
+                                                                                                </font>
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    @foreach (var comp2 in comp.Children)
+                                                                                    {
+                                                                                        <ul style="list-style-type:none;">
+                                                                                            <li>
+                                                                                                <div style="margin-top:2px; margin-bottom:-10px;">
+                                                                                                    <span class="comhead">
+                                                                                                        <a href="user?id=ttty" class="hnuser">@comp2.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp2.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
+                                                                                                    </span>
+                                                                                                </div><br>
+                                                                                                <div class="comment">
+                                                                                                    <span class="commtext c00">@comp2.Parent.Content</span>
+                                                                                                    <div class="reply">
+                                                                                                        <p>
+                                                                                                            <font size="1">
+                                                                                                                <u><a asp-action="Details" asp-route-id="@comp2.Parent.Id">reply</a></u>
+                                                                                                            </font>
+                                                                                                        </p>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                @foreach (var comp3 in comp2.Children)
+                                                                                                {
+                                                                                                    <ul style="list-style-type:none;">
+                                                                                                        <li>
+                                                                                                            <div style="margin-top:2px; margin-bottom:-10px;">
+                                                                                                                <span class="comhead">
+                                                                                                                    <a href="user?id=ttty" class="hnuser">@comp3.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp3.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
+                                                                                                                </span>
+                                                                                                            </div><br>
+                                                                                                            <div class="comment">
+                                                                                                                <span class="commtext c00">@comp3.Parent.Content</span>
+                                                                                                                <div class="reply">
+                                                                                                                    <p>
+                                                                                                                        <font size="1">
+                                                                                                                            <u><a asp-action="Details" asp-route-id="@comp3.Parent.Id">reply</a></u>
+                                                                                                                        </font>
+                                                                                                                    </p>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            @foreach (var comp4 in comp3.Children)
+                                                                                                            {
+                                                                                                                <ul style="list-style-type:none;">
+                                                                                                                    <li>
+                                                                                                                        <div style="margin-top:2px; margin-bottom:-10px;">
+                                                                                                                            <span class="comhead">
+                                                                                                                                <a href="user?id=ttty" class="hnuser">@comp4.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp4.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
+                                                                                                                            </span>
+                                                                                                                        </div><br>
+                                                                                                                        <div class="comment">
+                                                                                                                            <span class="commtext c00">@comp4.Parent.Content</span>
+                                                                                                                            <div class="reply">
+                                                                                                                                <p>
+                                                                                                                                    <font size="1">
+                                                                                                                                        <u><a asp-action="Details" asp-route-id="@comp4.Parent.Id">reply</a></u>
+                                                                                                                                    </font>
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        @if (comp4.Children != null && comp4.Children.Count() > 0)
+                                                                                                                        {
+                                                                                                                            <u><a asp-action="Details" asp-route-id="@comp4.Parent.Id">view More</a></u>
+                                                                                                                        }
+                                                                                                                    </li>
+                                                                                                                </ul>
+                                                                                                            }
+                                                                                                        </li>
+                                                                                                    </ul>
+                                                                                                }
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    }
+                                                                                </li>
+                                                                            </ul>
+                                                                        }
+
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                { i++; }
+                                            }
+                                        </tbody>
+                                    </table>
                             </tbody>
                         </table>
                      <br>
