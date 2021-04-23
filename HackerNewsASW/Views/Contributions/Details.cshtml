@@ -112,13 +112,13 @@
                                                                         @foreach (var comp in item.Children)
                                                                         {
                                                                             <ul style="list-style-type:none;">
-                                                                                @{voted = ViewBag.votedList != null && ((ICollection<HackerNewsASW.Models.Contribution>)ViewBag.votedList).FirstOrDefault(c => c.Id == item.Parent.Id) != null; }
+                                                                                @{voted = ViewBag.votedList != null && ((ICollection<HackerNewsASW.Models.Contribution>)ViewBag.votedList).FirstOrDefault(c => c.Id == comp.Parent.Id) != null; }
                                                                                 <li>
                                                                                     <div style="margin-top:2px; margin-bottom:-10px;">
                                                                                         <span class="comhead">
                                                                                             @if (Context.User.Identity is null || !Context.User.Identity.IsAuthenticated || (Context.User.Identity.IsAuthenticated && !voted))
-                                                                                            {<a asp-controller="Contributions" asp-action="Upvote" asp-route-id="@item.Parent.Id" asp-route-return="@Context.Request.Path.ToString()"><div class="votearrow" title="upvote"></div></a>}
-                                                                                            <a href="user?id=ttty" class="hnuser">@comp.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
+                                                                                            {<a asp-controller="Contributions" asp-action="Upvote" asp-route-id="@comp.Parent.Id" asp-route-return="@Context.Request.Path.ToString()"><div class="votearrow" title="upvote"></div></a>}
+                                                                                            <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@comp.Parent.Author.Email">@comp.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
                                                                                         </span>
                                                                                     </div><br>
                                                                                     <div class="comment">
@@ -133,73 +133,82 @@
                                                                                     </div>
                                                                                     @foreach (var comp2 in comp.Children)
                                                                                     {
+                                                                                <ul style="list-style-type:none;">
+                                                                                    @{voted = ViewBag.votedList != null && ((ICollection<HackerNewsASW.Models.Contribution>)ViewBag.votedList).FirstOrDefault(c => c.Id == comp2.Parent.Id) != null; }
+                                                                                    <li>
+                                                                                        <div style="margin-top:2px; margin-bottom:-10px;">
+                                                                                            <span class="comhead">
+                                                                                                @if (Context.User.Identity is null || !Context.User.Identity.IsAuthenticated || (Context.User.Identity.IsAuthenticated && !voted))
+                                                                                                {<a asp-controller="Contributions" asp-action="Upvote" asp-route-id="@comp2.Parent.Id" asp-route-return="@Context.Request.Path.ToString()"><div class="votearrow" title="upvote"></div></a>}
+                                                                                                <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@comp2.Parent.Author.Email">@comp2.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp2.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
+                                                                                            </span>
+                                                                                        </div><br>
+                                                                                        <div class="comment">
+                                                                                            <span class="commtext c00">@comp2.Parent.Content</span>
+                                                                                            <div class="reply">
+                                                                                                <p>
+                                                                                                    <font size="1">
+                                                                                                        <u><a asp-action="Details" asp-route-id="@comp2.Parent.Id">reply</a></u>
+                                                                                                    </font>
+                                                                                                </p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        @foreach (var comp3 in comp2.Children)
+                                                                                        {
+                                                                                    <ul style="list-style-type:none;">
+                                                                                        @{voted = ViewBag.votedList != null && ((ICollection<HackerNewsASW.Models.Contribution>)ViewBag.votedList).FirstOrDefault(c => c.Id == comp3.Parent.Id) != null; }
+                                                                                        <li>
+                                                                                            <div style="margin-top:2px; margin-bottom:-10px;">
+                                                                                                <span class="comhead">
+                                                                                                    @if (Context.User.Identity is null || !Context.User.Identity.IsAuthenticated || (Context.User.Identity.IsAuthenticated && !voted))
+                                                                                                    {<a asp-controller="Contributions" asp-action="Upvote" asp-route-id="@comp3.Parent.Id" asp-route-return="@Context.Request.Path.ToString()"><div class="votearrow" title="upvote"></div></a>}
+                                                                                                    <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@comp3.Parent.Author.Email">@comp3.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp3.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
+                                                                                                </span>
+                                                                                            </div><br>
+                                                                                            <div class="comment">
+                                                                                                <span class="commtext c00">@comp3.Parent.Content</span>
+                                                                                                <div class="reply">
+                                                                                                    <p>
+                                                                                                        <font size="1">
+                                                                                                            <u><a asp-action="Details" asp-route-id="@comp3.Parent.Id">reply</a></u>
+                                                                                                        </font>
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            @foreach (var comp4 in comp3.Children)
+                                                                                            {
                                                                                         <ul style="list-style-type:none;">
+                                                                                            @{voted = ViewBag.votedList != null && ((ICollection<HackerNewsASW.Models.Contribution>)ViewBag.votedList).FirstOrDefault(c => c.Id == comp4.Parent.Id) != null; }
                                                                                             <li>
                                                                                                 <div style="margin-top:2px; margin-bottom:-10px;">
                                                                                                     <span class="comhead">
-                                                                                                        <a href="user?id=ttty" class="hnuser">@comp2.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp2.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
-                                                                                                    </span>
+                                                                                                        @if (Context.User.Identity is null || !Context.User.Identity.IsAuthenticated || (Context.User.Identity.IsAuthenticated && !voted))
+                                                                                                        {<a asp-controller="Contributions" asp-action="Upvote" asp-route-id="@comp4.Parent.Id" asp-route-return="@Context.Request.Path.ToString()"><div class="votearrow" title="upvote"></div></a>}
+                                                                                                        <a asp-controller="Account" asp-action="CheckUser" asp-route-usermail="@comp4.Parent.Author.Email">@comp4.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp4.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
+</span>
                                                                                                 </div><br>
                                                                                                 <div class="comment">
-                                                                                                    <span class="commtext c00">@comp2.Parent.Content</span>
+                                                                                                    <span class="commtext c00">@comp4.Parent.Content</span>
                                                                                                     <div class="reply">
                                                                                                         <p>
                                                                                                             <font size="1">
-                                                                                                                <u><a asp-action="Details" asp-route-id="@comp2.Parent.Id">reply</a></u>
+                                                                                                                <u><a asp-action="Details" asp-route-id="@comp4.Parent.Id">reply</a></u>
                                                                                                             </font>
                                                                                                         </p>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                @foreach (var comp3 in comp2.Children)
+                                                                                                @if (comp4.Children != null && comp4.Children.Count() > 0)
                                                                                                 {
-                                                                                                    <ul style="list-style-type:none;">
-                                                                                                        <li>
-                                                                                                            <div style="margin-top:2px; margin-bottom:-10px;">
-                                                                                                                <span class="comhead">
-                                                                                                                    <a href="user?id=ttty" class="hnuser">@comp3.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp3.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
-                                                                                                                </span>
-                                                                                                            </div><br>
-                                                                                                            <div class="comment">
-                                                                                                                <span class="commtext c00">@comp3.Parent.Content</span>
-                                                                                                                <div class="reply">
-                                                                                                                    <p>
-                                                                                                                        <font size="1">
-                                                                                                                            <u><a asp-action="Details" asp-route-id="@comp3.Parent.Id">reply</a></u>
-                                                                                                                        </font>
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            @foreach (var comp4 in comp3.Children)
-                                                                                                            {
-                                                                                                                <ul style="list-style-type:none;">
-                                                                                                                    <li>
-                                                                                                                        <div style="margin-top:2px; margin-bottom:-10px;">
-                                                                                                                            <span class="comhead">
-                                                                                                                                <a href="user?id=ttty" class="hnuser">@comp4.Parent.Author.UserId</a> <span class="age"><a href="item?id=26842175">@GetPrettyDate(comp4.Parent.DateCreated)</a></span> <span id="unv_26842175"></span><span class="par"></span><span class="storyon"></span>
-                                                                                                                            </span>
-                                                                                                                        </div><br>
-                                                                                                                        <div class="comment">
-                                                                                                                            <span class="commtext c00">@comp4.Parent.Content</span>
-                                                                                                                            <div class="reply">
-                                                                                                                                <p>
-                                                                                                                                    <font size="1">
-                                                                                                                                        <u><a asp-action="Details" asp-route-id="@comp4.Parent.Id">reply</a></u>
-                                                                                                                                    </font>
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                        @if (comp4.Children != null && comp4.Children.Count() > 0)
-                                                                                                                        {
-                                                                                                                            <u><a asp-action="Details" asp-route-id="@comp4.Parent.Id">view More</a></u>
-                                                                                                                        }
-                                                                                                                    </li>
-                                                                                                                </ul>
-                                                                                                            }
-                                                                                                        </li>
-                                                                                                    </ul>
+                                                                                                    <u><a asp-action="Details" asp-route-id="@comp4.Parent.Id">view More</a></u>
                                                                                                 }
                                                                                             </li>
                                                                                         </ul>
+                                                                                            }
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                        }
+                                                                                    </li>
+                                                                                </ul>
                                                                                     }
                                                                                 </li>
                                                                                 </ul>
