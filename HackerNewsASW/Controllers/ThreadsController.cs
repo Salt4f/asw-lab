@@ -30,7 +30,9 @@ namespace HackerNewsASW.Controllers
         {
             User author = await _context.Users
                 .Include(u => u.Contributions)
-                .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
+                .FirstOrDefaultAsync(u => u.Email == usermail);
+
+            if (author is null) return NotFound();
 
             var contrib = await _context.Comments
                 .Include(c => c.Author)
