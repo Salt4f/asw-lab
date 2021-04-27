@@ -18,9 +18,12 @@ namespace HackerNewsASW.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        //[InverseProperty("UsuariId")]
+        [InverseProperty("Contributions")]
         public User Author { get; set; }
 
+        [InverseProperty("Upvoted")]
+        public ICollection<User> Upvoters { get; set; }
+        
         public ICollection<Comment> Comments { get; set; }
 
         public abstract string getTitle();
