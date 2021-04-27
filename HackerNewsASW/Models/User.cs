@@ -17,9 +17,10 @@ namespace HackerNewsASW.Models
 
         public DateTime DateCreated { get; set; }
 
-        //[InverseProperty("Author")]
+        [InverseProperty("Author")]
         public ICollection<Contribution> Contributions { get; set; }
 
+        [InverseProperty("Upvoters")]
         public ICollection<Contribution> Upvoted { get; set; }
 
     }
