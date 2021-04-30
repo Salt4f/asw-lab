@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text;
 
 namespace HackerNewsASW.Controllers
 {
@@ -69,9 +70,9 @@ namespace HackerNewsASW.Controllers
             }
         }
 
-   [Authorize]
-       public async Task<IActionResult> SubmissionsUpvoted()
-       {
+        [Authorize]
+        public async Task<IActionResult> SubmissionsUpvoted()
+        {
             string usermail=GetUserEmail(User);
             User user = await _context.Users
                 .Include(u => u.Upvoted)
@@ -83,9 +84,9 @@ namespace HackerNewsASW.Controllers
             }
 
             return View(upvoted);
-       }
+        }
 
-       [Authorize]
+        [Authorize]
         public async Task<IActionResult> CommentsUpvoted()
         {
             string usermail=GetUserEmail(User);
@@ -93,12 +94,12 @@ namespace HackerNewsASW.Controllers
                 .Include(u => u.Upvoted)
                 .FirstOrDefaultAsync(u => u.Email == usermail);
             HashSet<Contribution> upvoted = new HashSet<Contribution>();
-        foreach (var c in user.Upvoted) {
-        var c2 = await _context.Contributions.Include(c3 => c3.Comments).Include(c3 => c3.Author).FirstOrDefaultAsync(c3 => c3.Id == c.Id);
-        upvoted.Add(c2);
-        }
-        return View(upvoted);
+            foreach (var c in user.Upvoted) {
+                var c2 = await _context.Contributions.Include(c3 => c3.Comments).Include(c3 => c3.Author).FirstOrDefaultAsync(c3 => c3.Id == c.Id);
+                upvoted.Add(c2);
             }
+            return View(upvoted);
+        }
         
 
         public IActionResult Login()
@@ -136,7 +137,8 @@ namespace HackerNewsASW.Controllers
                     {
                         UserId = email.Split('@')[0],
                         Email = email,
-                        DateCreated = DateTime.Now
+                        DateCreated = DateTime.Now,
+                        Token = GenerateToken()
                     };
 
                     await _context.AddAsync(user);
@@ -150,15 +152,34 @@ namespace HackerNewsASW.Controllers
             
         }
 
-         private static string GetUserEmail(System.Security.Claims.ClaimsPrincipal user)
-         {
-            string email = user.Claims.Where(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")
-                        .Select(claim => claim.Value).FirstOrDefault();
+        private static string GetUserEmail(System.Security.Claims.ClaimsPrincipal user)
+        {
+        string email = user.Claims.Where(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")
+                    .Select(claim => claim.Value).FirstOrDefault();
 
-            if (email != null) return email;
-            return "";
-         }
+        if (email != null) return email;
+        return "";
+        }
 
-        
+        private string GenerateToken()
+        {
+            var hashfunc = new System.Security.Cryptography.SHA512Managed();
+            Random rand = new Random((int) DateTime.Now.Ticks);
+            byte[] buffer = new byte[20];
+            rand.NextBytes(buffer);
+            var hash = hashfunc.ComputeHash(buffer);
+
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in hash)
+            {
+                sb.Append(b.ToString("x2"));
+            }
+
+            //_logger.LogInformation(sb.ToString());
+
+            return sb.ToString();
+        }
+
+
     }
 }
