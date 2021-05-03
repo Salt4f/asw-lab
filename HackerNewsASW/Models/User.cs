@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace HackerNewsASW.Models
 {
@@ -17,6 +18,7 @@ namespace HackerNewsASW.Models
 
         public DateTime DateCreated { get; set; }
 
+        [JsonIgnore]
         public string Token { get; set; }
 
         [InverseProperty("Author")]

@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using HackerNewsASW.Data;
 using HackerNewsASW.Models;
 using Microsoft.Extensions.Logging;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace HackerNewsASW.Controllers
 {
@@ -37,7 +40,7 @@ namespace HackerNewsASW.Controllers
             .OrderByDescending(c => c.Upvotes));
         }
 
-        public async Task<IActionResult> New()
+        private async Task<IEnumerable<Contribution>> GetIndexNews()
         {
             User user = await _context.Users
                 .Include(u => u.Upvoted)
@@ -48,7 +51,7 @@ namespace HackerNewsASW.Controllers
             .Include(c => c.Author)
             .Include(c => c.Comments)
             .ToListAsync<Contribution>();
-            
+
             var asks = await _context.Asks
             .Include(c => c.Author)
             .Include(c => c.Comments)
@@ -57,7 +60,52 @@ namespace HackerNewsASW.Controllers
             var contrib = news.Union(asks);
             contrib = contrib.OrderByDescending(c => c.DateCreated);
 
+            return contrib;
+
+        }
+
+        public async Task<IActionResult> New()
+        {
+            var contrib = await GetIndexNews();
+
             return View(contrib);
+        }
+
+        [Route("api/[controller]/News")]
+        public async Task<string> NewAPI()
+        {
+            var contrib = await GetIndexNews();
+
+            var json = new JArray();
+
+            foreach (var c in contrib)
+            {
+                var item = new JObject();
+                item.Add("Id", c.Id);
+                item.Add("DateCreated", c.DateCreated);
+                item.Add("Upvotes", c.Upvotes);
+                item.Add("Title", c.getTitle());
+                item.Add("Content", c.Content);
+
+                var author = new JObject();
+                author.Add("UserId", c.Author.UserId);
+                author.Add("Email", c.Author.Email);
+
+                item.Add("Author", author);
+
+                json.Add(item);
+            }
+
+            //return json;
+            return json.ToString();
+
+            /*var settings = new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
+            return JsonConvert.SerializeObject(contrib.FirstOrDefault(), settings);*/
         }
 
         // GET: Contribucions/Submit

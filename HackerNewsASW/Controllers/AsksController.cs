@@ -20,6 +20,7 @@ namespace HackerNewsASW.Controllers
         }
 
         // GET: Asks
+        
         public async Task<IActionResult> Index()
         {
             User user = await _context.Users
