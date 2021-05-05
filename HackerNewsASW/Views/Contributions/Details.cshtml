@@ -29,17 +29,20 @@
                                     {
                                         <td></td>
                                     }
-                                    <td class="title">
-                                        @if (Model.Item1.GetType() == typeof(HackerNewsASW.Models.News))
-                                        {
-                                            <a href="@Model.Item1.Content" class="storylink">@Model.Item1.getTitle()</a>
-                                            <span class="sitebit comhead"> (<a href=@Model.Item1.Content><span class="sitestr">@Model.Item1.Content.Split("//")[1].Split("/")[0]</span></a>)</span>
-                                        }
-                                        else
-                                        {
-                                            <p class="storylink">@Model.Item1.getTitle() </p>
-                                        }
-                                    </td>
+                                <td class="title">
+                                    @if (Model.Item1.GetType() == typeof(HackerNewsASW.Models.News))
+                                    {
+                                        <a href="@Model.Item1.Content" class="storylink">@Model.Item1.getTitle()</a>
+                                        <span class="sitebit comhead"> (<a href=@Model.Item1.Content><span class="sitestr">@Model.Item1.Content.Split("//")[1].Split("/")[0]</span></a>)</span>
+                                    }
+                                    else
+                                    {
+                                        <p class="storylink">@Model.Item1.getTitle() </p>
+                                        <p class="storylink">@Model.Item1.Content </p>
+
+
+                                    }
+                                </td>
                                 </tr>
                                     <tr>
                                         <td colspan="2"></td>
