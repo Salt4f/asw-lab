@@ -11,6 +11,7 @@ using HackerNewsASW.Models;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json.Linq;
 
 namespace HackerNewsASW.Controllers
 {
@@ -26,16 +27,43 @@ namespace HackerNewsASW.Controllers
         }
 
 
-        
+        public async Task<IEnumerable<Contribution>> getUserSubmissions(string usermail)
+        {
+            var contributions = await _context.Contributions
+                .Include(u => u.Comments)
+                .Include(u => u.Author)
+                .Where(u => u.Author.Email == usermail)
+                .ToListAsync();
+            return contributions;
+        }
+
         public async Task<IActionResult> UserSubmissions(string usermail)
         {
-           var contributions = await _context.Contributions
-                   .Include(u => u.Comments)
-                   .Include(u => u.Author)
-                   .Where(u => u.Author.Email == usermail)
-                   .ToListAsync();
+            var contributions = await getUserSubmissions(usermail);
 
             return View(contributions);
+        }
+        [Route("api/[controller]/Submission/Author")]
+        public async Task<string> UserSubmissionsAPI()
+        {
+            var usermail = "marc.cortadellas@estudiantat.upc.edu";
+            var contributions = await getUserSubmissions(usermail);
+
+            var json = new JArray();
+
+            foreach (var c in contributions)
+            {
+                var item = new JObject();
+                item.Add("Id", c.Id);
+                item.Add("DateCreated", c.DateCreated);
+                item.Add("Upvotes", c.Upvotes);
+                item.Add("Title", c.getTitle());
+                item.Add("Content", c.Content);
+
+                
+                json.Add(item);
+            }
+            return json.ToString();
         }
 
         private static string GetUserEmail(System.Security.Claims.ClaimsPrincipal user)
