@@ -84,6 +84,7 @@ namespace HackerNewsASW.Controllers
                 item.Add("Id", c.Id);
                 item.Add("DateCreated", c.DateCreated);
                 item.Add("Upvotes", c.Upvotes);
+                item.Add("Comments", c.Comments.Count);
                 item.Add("Title", c.getTitle());
                 item.Add("Content", c.Content);
 
