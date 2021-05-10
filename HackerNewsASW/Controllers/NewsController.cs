@@ -115,12 +115,8 @@ namespace HackerNewsASW.Controllers
             return View();
         }
 
-        // POST: Contribucions/Submit
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Submit([Bind("Title, Url, Text")] SubmitFormModel submit)
+     
+        public async Task<Tuple<bool, long>> SubmitFunction(SubmitFormModel submit)
         {
             if (submit.Title != null)
             {
@@ -139,7 +135,8 @@ namespace HackerNewsASW.Controllers
                     await _context.AddAsync(ask);
 
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", "Contributions", new { id = ask.Id }); //Habría que redireccionar a la inspección de la contribución
+                    //ask = await _context.Asks.FirstOrDefaultAsync(a => a.Title == submit.Title);
+                    return new Tuple<bool, long>(true, ask.Id); //Habría que redireccionar a la inspección de la contribución
                 }
                 else if (submit.Url is null) //ASK
                 {
@@ -154,7 +151,8 @@ namespace HackerNewsASW.Controllers
                     await _context.AddAsync(ask);
 
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", "Contributions",  new { id = ask.Id }); //Habría que redireccionar a la inspección de la contribución
+                    //ask = await _context.Asks.FirstOrDefaultAsync(a => a.Title == submit.Title);
+                    return new Tuple<bool, long>(true, ask.Id); //Habría que redireccionar a la inspección de la contribución
                 }
                 else if (submit.Url.Trim().StartsWith("http"))//URL
                 {
@@ -162,7 +160,7 @@ namespace HackerNewsASW.Controllers
                     if (url != null)
                     {
                         //Aquí habría que redireccionar a la función que se encargue de visualizar una noticia y sus comentarios
-                        return RedirectToAction("Details", "Contributions", new { id = url.Id });
+                        return new Tuple<bool, long>(false, url.Id);
                     }
 
                     if (submit.Text is null) //URL
@@ -178,7 +176,8 @@ namespace HackerNewsASW.Controllers
                         await _context.AddAsync(news);
 
                         await _context.SaveChangesAsync();
-                        return RedirectToAction("Details", "Contributions", new { id = news.Id }); //Habría que redireccionar a la inspección de la contribución
+                        //news = await _context.News.FirstOrDefaultAsync(a => a.Title == submit.Title);
+                        return new Tuple<bool, long>(true, news.Id);  //Habría que redireccionar a la inspección de la contribución
                     }
                     else //URL + COMMENT
                     {
@@ -205,11 +204,45 @@ namespace HackerNewsASW.Controllers
                         await _context.AddAsync(com);
 
                         await _context.SaveChangesAsync();
-                        return RedirectToAction("Details", "Contributions", new { id = news.Id }); //Habría que redireccionar a la inspección de la contribución
+                        //news = await _context.News.FirstOrDefaultAsync(a => a.Title == submit.Title);
+                        return new Tuple<bool, long> (true, news.Id); //Habría que redireccionar a la inspección de la contribución
                     }
                 }
             }
-            return View(submit);
+
+            return new Tuple<bool, long>(false, -1); 
+        }
+        
+        
+        // POST: Contribucions/Submit
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Submit([Bind("Title, Url, Text")] SubmitFormModel submit)
+        {
+            var submission = await SubmitFunction(submit);
+            if (submission.Item2 != -1)
+                return RedirectToAction("Details", "Contributions", new { id = submission.Item2 });
+            else return View(submit);
+        }
+
+        [Route("api/[controller]/News/Submit")]
+        [HttpPost]
+        //[Authorize]
+        public async Task<IActionResult> SubmitAPI(string title, string? url, string? text)
+        {
+
+            if (title is null) return BadRequest();
+
+            var submit = new SubmitFormModel()
+            {
+                Title = title,
+                Url = url,
+                Text = text
+            };
+            var submission = await SubmitFunction(submit);
+            return submission.Item1 ? Created("URI", "Deberíamos poner el objeto (o no)") : StatusCode(412);
         }
 
         // GET: Contribucions/Edit/5

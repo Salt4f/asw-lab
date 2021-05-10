@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace HackerNewsASW.Controllers
 {
@@ -49,13 +50,55 @@ namespace HackerNewsASW.Controllers
             return View(author);
        }
 
+/*
+        private async Task<IEnumerable<User>> GetUser(string usermail)
+        {
+            usermail = "marc.cortadellas@estudiantat.upc.edu";
+            var author = await _context.Users.FindAsync(usermail);
+            return author;
+        }
+*/
         public async Task<IActionResult> OtherProfile(string usermail)
         {
             User author = await _context.Users.FindAsync(usermail);
             if (author is null) return NotFound();
             return View(author);
         }
+/*
+        [Route("api/[controller]/Account")]
+        public async Task<string> otherProfileApi(string usermail)
+        {
+            var Author = "";
+            if (Author is null) return "";
 
+            var json = new JArray();
+
+            foreach (var a in Author)
+            {
+                var item = new JObject();
+                item.Add("Id", a.Id);
+                item.Add("DateCreated", a.DateCreated);
+                item.Add("About", a.About);
+
+                var submissions = new JObject();
+                submissions.Add("Submissions", a.Submissions);
+
+                var comments = new JObject();
+                comments.Add("Comments", a.Comments);
+
+
+                item.Add("Submisisons", submissions);
+                item.Add("Comments", comments);
+
+                json.Add(item);
+            }
+
+            //return json;
+            return json.ToString();
+
+
+        }
+*/
         public async Task<IActionResult> CheckUser(string usermail)
         {
             User author = await _context.Users.FindAsync(GetUserEmail(User));
