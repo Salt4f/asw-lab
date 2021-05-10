@@ -178,25 +178,28 @@ namespace HackerNewsASW.Controllers
             }
         }
 
-        [Authorize]
+
+        
+        //[Authorize]
         public async Task<IActionResult> SubmissionsUpvoted()
         {
-            string usermail=GetUserEmail(User);
+            string usermail = GetUserEmail(User);
             User user = await _context.Users
                 .Include(u => u.Upvoted)
                 .FirstOrDefaultAsync(u => u.Email == usermail);
             HashSet<Contribution> upvoted = new HashSet<Contribution>();
-            foreach (var c in user.Upvoted) {
+            foreach (var c in user.Upvoted)
+            {
                 var c2 = await _context.Contributions.Include(c3 => c3.Comments).Include(c3 => c3.Author).FirstOrDefaultAsync(c3 => c3.Id == c.Id);
                 upvoted.Add(c2);
             }
-
             return View(upvoted);
         }
 
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> CommentsUpvoted()
         {
+            
             string usermail=GetUserEmail(User);
              User user = await _context.Users
                 .Include(u => u.Upvoted)
