@@ -43,10 +43,13 @@ namespace HackerNewsASW.Controllers
 
             return View(contributions);
         }
+
+        [HttpPost]
         [Route("api/[controller]/Submission/Author")]
-        public async Task<string> UserSubmissionsAPI()
+        // [Authorize]
+        public async Task<string> UserSubmissionsAPI(string usermail)
         {
-            var usermail = "marc.cortadellas@estudiantat.upc.edu";
+
             var contributions = await getUserSubmissions(usermail);
 
             var json = new JArray();
