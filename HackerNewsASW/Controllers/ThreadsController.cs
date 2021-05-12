@@ -92,7 +92,7 @@ namespace HackerNewsASW.Controllers
 
         [Authorize]
         [Route("api/[controller]/Threads")]
-        public async Task<string> NewAPI()
+        public async Task<string> ThreadAPI()
         {
             var comments = await GetThreadsNews();
 
