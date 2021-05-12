@@ -209,21 +209,8 @@ namespace HackerNewsASW.Controllers
 
 
 
-        public async Task<IActionResult> UpvoteApi(long id)
+        public async Task<Tuple<bool, long>> UpvoteApi(long id, Contribution contribution)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var contribution = await _context.Contributions
-                .Include(c => c.Comments)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (contribution == null)
-            {
-                return NotFound();
-            }
-
             var user = await _context.Users
                 .Include(u => u.Upvoted)
                 .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
@@ -235,24 +222,13 @@ namespace HackerNewsASW.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return Redirect(Request.Query["return"].ToString());
+            return new Tuple<bool, long>(true, id);
 
         }
 
-        public async Task<IActionResult> UnVoteApi(long id)
+        public async Task<Tuple<bool, long>> UnVoteApi(long id, Contribution contribution)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var contribution = await _context.Contributions
-                .Include(c => c.Comments)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (contribution == null)
-            {
-                return NotFound();
-            }
+            
 
             var user = await _context.Users
                 .Include(u => u.Upvoted)
@@ -265,7 +241,7 @@ namespace HackerNewsASW.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return Redirect(Request.Query["return"].ToString());
+            return new Tuple<bool, long>(true, id);
         }
 
 
@@ -273,16 +249,27 @@ namespace HackerNewsASW.Controllers
         [Route("api/[controller]/Contributions/Vote")]
         [HttpPost]
         //[Authorize]
-        public async IActionResult VoteApi(long id, string email)
+        public async Task<IActionResult> VoteApi(long id, string email)
         {
-            if (!ContributionExists(id))
-            {
-                return BadRequest();
 
+            if (id == null)
+            {
+                return NotFound();
             }
+
+            var contribution = await _context.Contributions
+                .Include(c => c.Comments)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (contribution == null)
+            {
+                return NotFound();
+            }
+            
+
             var upvoters = await _context.Contributions.FindAsync(id);
 
-            bool trobat = false;
+            bool trobat;
+            trobat= false;
             foreach (var u in upvoters.Upvoters)
             {
                 if(u.Email == email)
@@ -294,10 +281,13 @@ namespace HackerNewsASW.Controllers
             //Si ha votado
             if (trobat)
             {
-                return UnVoteApi(id);
+                var answ = await UnVoteApi(id, contribution);
+                return answ.Item1 ? Created("URI", "Deberíamos poner el objeto (o no)") : StatusCode(412); 
+                
             }
             
-            return UpvoteApi(id);
+            var answ2 = await UpvoteApi(id, contribution);
+            return answ2.Item1 ? Created("URI", "Deberíamos poner el objeto (o no)") : StatusCode(412);
         }
 
           
