@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text;
+using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace HackerNewsASW.Controllers
 {
@@ -31,31 +33,93 @@ namespace HackerNewsASW.Controllers
 
         [HttpPost]
         [Authorize]
-       public async Task<IActionResult> Profile(string About)
-       {
+        public async Task<IActionResult> Profile(string About)
+        {
             User author = await _context.Users.FindAsync(GetUserEmail(User));
             author.About=About;
             _context.Update(author);
-             await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             return View(author);
-       }
+        }
 
+        [Route("api/users/{email}/about")]
+        [HttpPut]
+        //[Authorize]
+        public async Task<IActionResult> AboutAPI(string email, string about)
+        {
 
-       [Authorize]
-       public async Task<IActionResult> Profile()
-       {
+            User user = await _context.Users.FindAsync(email);
+            
+            if (user is null) return NotFound(); //404
+            if (about is null) return BadRequest(); //400
+
+            var header = Request.Headers["X-API-KEY"];//.FirstOrDefault();
+            if (!header.Any() || header.FirstOrDefault() != user.Token) return StatusCode(401);
+
+            user.About = about;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Profile()
+        {
             User author = await _context.Users.FindAsync(GetUserEmail(User));
             if (author is null) return NotFound();
             return View(author);
-       }
+        }
 
+/*
+        private async Task<IEnumerable<User>> GetUser(string usermail)
+        {
+            usermail = "marc.cortadellas@estudiantat.upc.edu";
+            var author = await _context.Users.FindAsync(usermail);
+            return author;
+        }
+*/
         public async Task<IActionResult> OtherProfile(string usermail)
         {
             User author = await _context.Users.FindAsync(usermail);
             if (author is null) return NotFound();
             return View(author);
         }
+/*
+        [Route("api/[controller]/Account")]
+        public async Task<string> otherProfileApi(string usermail)
+        {
+            var Author = "";
+            if (Author is null) return "";
 
+            var json = new JArray();
+
+            foreach (var a in Author)
+            {
+                var item = new JObject();
+                item.Add("Id", a.Id);
+                item.Add("DateCreated", a.DateCreated);
+                item.Add("About", a.About);
+
+                var submissions = new JObject();
+                submissions.Add("Submissions", a.Submissions);
+
+                var comments = new JObject();
+                comments.Add("Comments", a.Comments);
+
+
+                item.Add("Submisisons", submissions);
+                item.Add("Comments", comments);
+
+                json.Add(item);
+            }
+
+            //return json;
+            return json.ToString();
+
+
+        }
+*/
         public async Task<IActionResult> CheckUser(string usermail)
         {
             User author = await _context.Users.FindAsync(GetUserEmail(User));
