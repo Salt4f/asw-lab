@@ -40,8 +40,8 @@ namespace HackerNewsASW.Controllers
             var contribution = await _context.Contributions
                 .Include(c => c.Author)
                 .Include(c => c.Comments)
-                .FirstOrDefaultAsync(m => m.Id == id );
-            
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (contribution == null)
             {
                 return NotFound();
@@ -52,7 +52,7 @@ namespace HackerNewsASW.Controllers
                 .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
             if (user != null) ViewBag.votedList = user.Upvoted;
 
-            return View(Tuple.Create(contribution,await GetComments(contribution)));
+            return View(Tuple.Create(contribution, await GetComments(contribution)));
         }
 
         // POST: Contributions/Details/5
@@ -125,14 +125,6 @@ namespace HackerNewsASW.Controllers
         }
 
 
-
-
-
-
-
-
-
-
         /* 
          * [Authorize]
        public async Task<IActionResult> SubmissionsUpvoted()
@@ -195,12 +187,13 @@ namespace HackerNewsASW.Controllers
         {
             HashSet<Tupla> comments = new HashSet<Tupla>();
 
-            foreach (var com in c.Comments) {
+            foreach (var com in c.Comments)
+            {
                 var com2 = await _context.Comments.Include(c2 => c2.Author).Include(c2 => c2.Comments).FirstOrDefaultAsync(c2 => c2.Id == com.Id);
                 //_logger.LogInformation(com2.Content + " " + com2.Author.UserId);
                 Tupla t = new Tupla();
                 t.Parent = com2;
-                t.Children =  await GetComments(com2);
+                t.Children = await GetComments(com2);
                 comments.Add(t);
             }
             return comments;
@@ -208,88 +201,78 @@ namespace HackerNewsASW.Controllers
 
 
 
-
-        public async Task<Tuple<bool, long>> UpvoteApi(long id, Contribution contribution)
-        {
-            var user = await _context.Users
-                .Include(u => u.Upvoted)
-                .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
-            if (user.Upvoted.FirstOrDefault(c => c.Id == contribution.Id) != null)
-            {
-                contribution.Upvotes--;
-                user.Upvoted.Remove(contribution);
-
-                await _context.SaveChangesAsync();
-            }
-
-            return new Tuple<bool, long>(true, id);
-
-        }
-
-        public async Task<Tuple<bool, long>> UnVoteApi(long id, Contribution contribution)
-        {
-            
-
-            var user = await _context.Users
-                .Include(u => u.Upvoted)
-                .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
-            if (user.Upvoted.FirstOrDefault(c => c.Id == contribution.Id) != null)
-            {
-                contribution.Upvotes--;
-                user.Upvoted.Remove(contribution);
-
-                await _context.SaveChangesAsync();
-            }
-
-            return new Tuple<bool, long>(true, id);
-        }
-
-
-
-        [Route("api/[controller]/Contributions/Vote")]
-        [HttpPost]
+        [Route("api/contributions/{id}/upvote")]
+        [HttpDelete]
         //[Authorize]
-        public async Task<IActionResult> VoteApi(long id, string email)
+        public async Task<IActionResult> unvoteAPI(long id)
         {
-
-            if (id == null)
-            {
-                return NotFound();
-            }
 
             var contribution = await _context.Contributions
                 .Include(c => c.Comments)
+                .Include(c => c.Upvoters)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (contribution == null)
             {
                 return NotFound();
             }
-            
 
-            var upvoters = await _context.Contributions.FindAsync(id);
+            var header = Request.Headers["X-API-KEY"];//.FirstOrDefault();
+            if (!header.Any()) return StatusCode(401);
 
-            bool trobat;
-            trobat= false;
-            foreach (var u in upvoters.Upvoters)
-            {
-                if(u.Email == email)
-                {
-                    trobat = true;
-                }
-            }
+            User user = await _context.Users.FirstOrDefaultAsync(u => u.Token == header.FirstOrDefault());
+            if (user is null) return StatusCode(401);
 
-            //Si ha votado
-            if (trobat)
-            {
-                var answ = await UnVoteApi(id, contribution);
-                return answ.Item1 ? Created("URI", "Deberíamos poner el objeto (o no)") : StatusCode(412); 
-                
-            }
-            
-            var answ2 = await UpvoteApi(id, contribution);
-            return answ2.Item1 ? Created("URI", "Deberíamos poner el objeto (o no)") : StatusCode(412);
+            bool result = contribution.Upvoters.Remove(user);
+            if (result) contribution.Upvotes--;
+
+            _context.Contributions.Update(contribution);
+            await _context.SaveChangesAsync();
+
+            return result ? Ok() : StatusCode(412);
+
         }
 
-          
+        [Route("api/contributions/{id}/upvote")]
+        [HttpPost]
+        //[Authorize]
+        public async Task<IActionResult> upvoteAPI(long id)
+        {
+
+            var contribution = await _context.Contributions
+                .Include(c => c.Comments)
+                .Include(c => c.Upvoters)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (contribution == null)
+            {
+                return NotFound();
+            }
+
+            var header = Request.Headers["X-API-KEY"];//.FirstOrDefault();
+            if (!header.Any()) return StatusCode(401);
+
+            User user = await _context.Users.FirstOrDefaultAsync(u => u.Token == header.FirstOrDefault());
+            if (user is null) return StatusCode(401);
+
+            bool result = contribution.Upvoters.Contains(user);
+            if (!result)
+            {
+                contribution.Upvotes++;
+                if (contribution.Upvoters is null) contribution.Upvoters = new HashSet<User>();
+                contribution.Upvoters.Add(user);
+
+                _context.Contributions.Update(contribution);
+                await _context.SaveChangesAsync();
+            }
+
+            return !result ? Ok() : StatusCode(412);
+
+        }
+
+
+
+
+
     }
 }

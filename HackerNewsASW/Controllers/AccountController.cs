@@ -139,17 +139,7 @@ namespace HackerNewsASW.Controllers
                 CommentsJson.Add(item2);
             }
 
-            
-
-
-
-
-
-
-
             item.Add("Comments", CommentsJson);
-
-
 
             var json = new JArray();
 
@@ -157,8 +147,6 @@ namespace HackerNewsASW.Controllers
 
 
             return json.ToString();
-
-
         }
 
 
