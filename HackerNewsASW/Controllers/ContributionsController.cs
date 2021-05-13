@@ -229,7 +229,7 @@ namespace HackerNewsASW.Controllers
             _context.Contributions.Update(contribution);
             await _context.SaveChangesAsync();
 
-            return result ? Ok() : StatusCode(412);
+            return result ? StatusCode(204) : StatusCode(412);
 
         }
 
