@@ -307,6 +307,25 @@ namespace HackerNewsASW.Controllers
             return StatusCode(201);
         }
 
+        [Route("api/contributions/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> DetailsAPI(long id)
+        {
+
+            var contribution = await _context.Contributions
+                .Include(c => c.Author)
+                .Include(c => c.Comments)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (contribution == null)
+            {
+                return NotFound();
+            }
+
+            var t = Tuple.Create(contribution, await GetComments(contribution));
+
+            return Ok(t);
+        }
 
 
 
