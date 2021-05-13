@@ -87,7 +87,8 @@ namespace HackerNewsASW.Controllers
             return View(author);
         }
        
-        [Route("api/OtherProfile")]
+        [HttpGet]
+        [Route("api/otherProfile")]
         public async Task<string> otherProfileApi(string usermail)
         {
             var Author = await _context.Users.FindAsync(usermail);
@@ -109,8 +110,8 @@ namespace HackerNewsASW.Controllers
 
         }
 
-
-        [Route("api/UserComments")]
+        [HttpGet]
+        [Route("api/usercomments")]
         public async Task<string> ProfileCommentsApi(string usermail)
         {
             var Author = await _context.Users.FindAsync(usermail);
@@ -121,7 +122,7 @@ namespace HackerNewsASW.Controllers
 
             var comments = await _context.Comments
            .Include(c => c.Comments)
-           .OrderBy(c => c.DateCreated)
+           .OrderByDescending(c => c.DateCreated)
            .Where(c => c.Author==Author)
            .ToListAsync<Comment>();
 
