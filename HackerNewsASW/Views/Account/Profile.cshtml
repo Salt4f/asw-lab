@@ -32,6 +32,7 @@
                                         </td>
                                     </tr>
                                     <tr><td valign="top">email:</td><td><a>@Model.Email</a></td></tr>
+                                    <tr><td valign="top">token:</td><td><a>@Model.Token</a></td></tr>
                                     <tr><td></td><td><a asp-controller="Submissions" asp-action="UserSubmissions" asp-route-usermail="@Model.Email"><u>submissions</u></a></td></tr>
                                     <tr><td></td><td><a asp-controller="Threads" asp-action="UserThreads"><u>comments</u></a></td></tr>
                                     <tr>
@@ -42,7 +43,7 @@
                                             &nbsp;<span style="font-style:italic">(private)</span>
                                         </td>
                                     </tr>
-                                 </tbody>
+                                </tbody>
                                
                             </table>
                             <br><input type="submit" value="Update">

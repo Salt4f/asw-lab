@@ -32,7 +32,7 @@ namespace HackerNewsASW.Controllers
             return View(await GetIndexInfo());
         }
 
-        [Route("api/[controller]/Index")]
+        [Route("api/contributions")]
         public async Task<string> IndexAPI()
         {
             var contrib = await GetIndexInfo();
@@ -104,7 +104,7 @@ namespace HackerNewsASW.Controllers
             return View(contrib);
         }
 
-        [Route("api/[controller]/News")]
+        [Route("api/contributions/new")]
         public async Task<string> NewAPI()
         {
             var contrib = await GetIndexNews();
