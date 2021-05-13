@@ -91,7 +91,7 @@ namespace HackerNewsASW.Controllers
         }
 
         [HttpGet]
-        [Route("api/threads")]
+        [Route("api/users/{usermail}/threads")]
         public async Task<IActionResult> ThreadAPI(string usermail)
         {
             User user = await _context.Users.FindAsync(usermail);
