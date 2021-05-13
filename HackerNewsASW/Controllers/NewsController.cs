@@ -29,12 +29,45 @@ namespace HackerNewsASW.Controllers
         // GET: Contribucions
         public async Task<IActionResult> Index()
         {
+            return View(await GetIndexInfo());
+        }
+
+        [Route("api/[controller]/Index")]
+        public async Task<string> IndexAPI()
+        {
+            var contrib = await GetIndexInfo();
+
+            var json = new JArray();
+
+            foreach (var c in contrib)
+            {
+                var item = new JObject();
+                item.Add("Id", c.Id);
+                item.Add("DateCreated", c.DateCreated);
+                item.Add("Upvotes", c.Upvotes);
+                item.Add("Comments", c.Comments.Count);
+                item.Add("Title", c.getTitle());
+                item.Add("Content", c.Content);
+
+                var author = new JObject();
+                author.Add("UserId", c.Author.UserId);
+                author.Add("Email", c.Author.Email);
+
+                item.Add("Author", author);
+
+                json.Add(item);
+            }
+            return json.ToString();
+        }
+
+        private async Task<IEnumerable<News>> GetIndexInfo()
+        {
             User user = await _context.Users
                 .Include(u => u.Upvoted)
                 .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
             if (user != null) ViewBag.votedList = user.Upvoted;
 
-            return View(_context.News
+            return(_context.News
             .Include(c => c.Author)
             .Include(c => c.Comments)
             .OrderByDescending(c => c.Upvotes));
@@ -84,6 +117,7 @@ namespace HackerNewsASW.Controllers
                 item.Add("Id", c.Id);
                 item.Add("DateCreated", c.DateCreated);
                 item.Add("Upvotes", c.Upvotes);
+                item.Add("Comments", c.Comments.Count);
                 item.Add("Title", c.getTitle());
                 item.Add("Content", c.Content);
 
@@ -115,16 +149,12 @@ namespace HackerNewsASW.Controllers
             return View();
         }
 
-        // POST: Contribucions/Submit
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Submit([Bind("Title, Url, Text")] SubmitFormModel submit)
+
+        public async Task<Tuple<bool, long>> SubmitFunction(SubmitFormModel submit, User author)
         {
             if (submit.Title != null)
             {
-                User author = await _context.Users.FindAsync(GetUserEmail(User));
+                if (author is null) author = await _context.Users.FindAsync(GetUserEmail(User));
 
                 if (submit.Url is null && submit.Text is null) //ASK
                 {
@@ -139,7 +169,8 @@ namespace HackerNewsASW.Controllers
                     await _context.AddAsync(ask);
 
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", "Contributions", new { id = ask.Id }); //Habría que redireccionar a la inspección de la contribución
+                    //ask = await _context.Asks.FirstOrDefaultAsync(a => a.Title == submit.Title);
+                    return new Tuple<bool, long>(true, ask.Id); //Habría que redireccionar a la inspección de la contribución
                 }
                 else if (submit.Url is null) //ASK
                 {
@@ -154,7 +185,8 @@ namespace HackerNewsASW.Controllers
                     await _context.AddAsync(ask);
 
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", "Contributions",  new { id = ask.Id }); //Habría que redireccionar a la inspección de la contribución
+                    //ask = await _context.Asks.FirstOrDefaultAsync(a => a.Title == submit.Title);
+                    return new Tuple<bool, long>(true, ask.Id); //Habría que redireccionar a la inspección de la contribución
                 }
                 else if (submit.Url.Trim().StartsWith("http"))//URL
                 {
@@ -162,7 +194,7 @@ namespace HackerNewsASW.Controllers
                     if (url != null)
                     {
                         //Aquí habría que redireccionar a la función que se encargue de visualizar una noticia y sus comentarios
-                        return RedirectToAction("Details", "Contributions", new { id = url.Id });
+                        return new Tuple<bool, long>(false, url.Id);
                     }
 
                     if (submit.Text is null) //URL
@@ -178,7 +210,8 @@ namespace HackerNewsASW.Controllers
                         await _context.AddAsync(news);
 
                         await _context.SaveChangesAsync();
-                        return RedirectToAction("Details", "Contributions", new { id = news.Id }); //Habría que redireccionar a la inspección de la contribución
+                        //news = await _context.News.FirstOrDefaultAsync(a => a.Title == submit.Title);
+                        return new Tuple<bool, long>(true, news.Id);  //Habría que redireccionar a la inspección de la contribución
                     }
                     else //URL + COMMENT
                     {
@@ -205,11 +238,51 @@ namespace HackerNewsASW.Controllers
                         await _context.AddAsync(com);
 
                         await _context.SaveChangesAsync();
-                        return RedirectToAction("Details", "Contributions", new { id = news.Id }); //Habría que redireccionar a la inspección de la contribución
+                        //news = await _context.News.FirstOrDefaultAsync(a => a.Title == submit.Title);
+                        return new Tuple<bool, long> (true, news.Id); //Habría que redireccionar a la inspección de la contribución
                     }
                 }
             }
-            return View(submit);
+
+            return new Tuple<bool, long>(false, -1); 
+        }
+        
+        
+        // POST: Contribucions/Submit
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Submit([Bind("Title, Url, Text")] SubmitFormModel submit)
+        {
+            var submission = await SubmitFunction(submit, null);
+            if (submission.Item2 != -1)
+                return RedirectToAction("Details", "Contributions", new { id = submission.Item2 });
+            else return View(submit);
+        }
+
+        [Route("api/contributions")]
+        [HttpPost]
+        //[Authorize]
+        public async Task<IActionResult> SubmitAPI(string title, string url, string text)
+        {
+
+            if (title is null) return BadRequest();
+
+            var header = Request.Headers["X-API-KEY"];//.FirstOrDefault();
+            if (!header.Any()) return StatusCode(401);
+
+            User author = await _context.Users.FirstOrDefaultAsync(u => u.Token == header.FirstOrDefault());
+            if (author is null) return StatusCode(401);
+
+            var submit = new SubmitFormModel()
+            {
+                Title = title,
+                Url = url,
+                Text = text
+            };
+            var submission = await SubmitFunction(submit, author);
+            return submission.Item1 ? Created("URI", "Deberíamos poner el objeto (o no)") : StatusCode(412);
         }
 
         // GET: Contribucions/Edit/5
