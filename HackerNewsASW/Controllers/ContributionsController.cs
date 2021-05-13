@@ -9,6 +9,7 @@ using HackerNewsASW.Data;
 using HackerNewsASW.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 
 namespace HackerNewsASW.Controllers
 {
@@ -322,11 +323,56 @@ namespace HackerNewsASW.Controllers
                 return NotFound();
             }
 
-            var t = Tuple.Create(contribution, await GetComments(contribution));
+            //var json = new JArray();
 
-            return Ok();
+            var item = new JObject();
+            item.Add("Id", contribution.Id);
+            item.Add("DateCreated", contribution.DateCreated);
+            item.Add("Upvotes", contribution.Upvotes);
+            item.Add("Title", contribution.getTitle());
+            item.Add("Content", contribution.Content);
+
+            var author = new JObject();
+            author.Add("UserId", contribution.Author.UserId);
+            author.Add("Email", contribution.Author.Email);
+
+            var coms = new JArray();
+            await FillJson(coms, contribution);
+
+            item.Add("Comments", coms);
+
+            return Ok(item.ToString());
         }
 
+        private async Task FillJson(JArray json, Contribution c)
+        {
+            c = await _context.Contributions
+                .Include(c => c.Comments)
+                .FirstOrDefaultAsync(c2 => c2.Id == c.Id);
+
+            foreach (var c2 in c.Comments)
+            {
+                var item = new JObject();
+                item.Add("Id", c2.Id);
+                item.Add("DateCreated", c2.DateCreated);
+                item.Add("Upvotes", c2.Upvotes);
+                item.Add("Title", c2.getTitle());
+                item.Add("Content", c2.Content);
+
+                var author = new JObject();
+                author.Add("UserId", c2.Author.UserId);
+                author.Add("Email", c2.Author.Email);
+
+                item.Add("Author", author);
+
+                var coms = new JArray();
+
+                await FillJson(coms, c2);
+
+                json.Add(item);
+
+            }
+        }
 
 
     }
