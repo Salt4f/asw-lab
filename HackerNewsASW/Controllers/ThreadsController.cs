@@ -11,6 +11,9 @@ using HackerNewsASW.Models;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace HackerNewsASW.Controllers
 {
@@ -68,6 +71,51 @@ namespace HackerNewsASW.Controllers
 
             if (email != null) return email;
             return "";
+        }
+
+        private async Task<IEnumerable<Comment>> GetThreadsNews()
+        {
+            User user = await _context.Users
+                .Include(u => u.Upvoted)
+                .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
+            if (user != null) ViewBag.votedList = user.Upvoted;
+
+            var comments = await _context.Comments
+            .Include(c => c.Author)
+            .Include(c => c.Comments)
+            .OrderByDescending(c => c.DateCreated)
+            .ToListAsync<Comment>();
+
+            return comments;
+
+        }
+
+        [Authorize]
+        [Route("api/[controller]/Threads")]
+        public async Task<string> ThreadAPI()
+        {
+            var comments = await GetThreadsNews();
+
+            var json = new JArray();
+
+            foreach (var c in comments)
+            {
+                var item = new JObject();
+                item.Add("Id", c.Id);
+                item.Add("DateCreated", c.DateCreated);
+                item.Add("Upvotes", c.Upvotes);
+                item.Add("Title", c.getTitle());
+                item.Add("Content", c.Content);
+
+                var author = new JObject();
+                author.Add("UserId", c.Author.UserId);
+                author.Add("Email", c.Author.Email);
+
+                item.Add("Author", author);
+
+                json.Add(item);
+            }
+            return json.ToString();
         }
 
     }
