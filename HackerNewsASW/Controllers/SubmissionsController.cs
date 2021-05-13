@@ -66,6 +66,31 @@ namespace HackerNewsASW.Controllers
             return json.ToString();
         }
 
+        [HttpPost]
+        [Route("api/[controller]/Submission/Author")]
+        // [Authorize]
+        public async Task<string> UserSubmissionsAPI(string usermail)
+        {
+
+            var contributions = await getUserSubmissions(usermail);
+
+            var json = new JArray();
+
+            foreach (var c in contributions)
+            {
+                var item = new JObject();
+                item.Add("Id", c.Id);
+                item.Add("DateCreated", c.DateCreated);
+                item.Add("Upvotes", c.Upvotes);
+                item.Add("Title", c.getTitle());
+                item.Add("Content", c.Content);
+
+                
+                json.Add(item);
+            }
+            return json.ToString();
+        }
+
         private static string GetUserEmail(System.Security.Claims.ClaimsPrincipal user)
         {
             string email = user.Claims.Where(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")
