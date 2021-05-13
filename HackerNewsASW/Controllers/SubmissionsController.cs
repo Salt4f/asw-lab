@@ -43,34 +43,13 @@ namespace HackerNewsASW.Controllers
 
             return View(contributions);
         }
-        [Route("api/[controller]/Submission/Author")]
-        public async Task<string> UserSubmissionsAPI()
+        
+        [HttpGet]
+        [Route("api/users/{usermail}/contributions")]
+        public async Task<IActionResult> UserSubmissionsAPI(string usermail)
         {
-            var usermail = "marc.cortadellas@estudiantat.upc.edu";
-            var contributions = await getUserSubmissions(usermail);
 
-            var json = new JArray();
-
-            foreach (var c in contributions)
-            {
-                var item = new JObject();
-                item.Add("Id", c.Id);
-                item.Add("DateCreated", c.DateCreated);
-                item.Add("Upvotes", c.Upvotes);
-                item.Add("Title", c.getTitle());
-                item.Add("Content", c.Content);
-
-                
-                json.Add(item);
-            }
-            return json.ToString();
-        }
-
-        [HttpPost]
-        [Route("api/[controller]/Submission/Author")]
-        // [Authorize]
-        public async Task<string> UserSubmissionsAPI(string usermail)
-        {
+            if (!await _context.Users.AnyAsync(u => u.Email == usermail)) return NotFound();
 
             var contributions = await getUserSubmissions(usermail);
 
@@ -88,7 +67,7 @@ namespace HackerNewsASW.Controllers
                 
                 json.Add(item);
             }
-            return json.ToString();
+            return Ok(json.ToString());
         }
 
         private static string GetUserEmail(System.Security.Claims.ClaimsPrincipal user)
