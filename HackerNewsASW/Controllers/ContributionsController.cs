@@ -124,7 +124,17 @@ namespace HackerNewsASW.Controllers
             return Redirect(Request.Query["return"].ToString());
         }
 
-        /* [Authorize]
+
+
+
+
+
+
+
+
+
+        /* 
+         * [Authorize]
        public async Task<IActionResult> SubmissionsUpvoted()
         {
             string usermail=GetUserEmail(User);
@@ -133,7 +143,8 @@ namespace HackerNewsASW.Controllers
                 .FirstOrDefaultAsync(u => u.Email == usermail);
                 
              return View(user.Contributions);
-        }*/
+        }
+        */
 
         [Authorize]
         public async Task<IActionResult> Unvote(long? id)
@@ -165,6 +176,8 @@ namespace HackerNewsASW.Controllers
             return Redirect(Request.Query["return"].ToString());
         }
 
+
+
         private bool ContributionExists(long id)
         {
             return _context.Contributions.Any(e => e.Id == id);
@@ -192,5 +205,91 @@ namespace HackerNewsASW.Controllers
             }
             return comments;
         }
+
+
+
+
+        public async Task<Tuple<bool, long>> UpvoteApi(long id, Contribution contribution)
+        {
+            var user = await _context.Users
+                .Include(u => u.Upvoted)
+                .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
+            if (user.Upvoted.FirstOrDefault(c => c.Id == contribution.Id) != null)
+            {
+                contribution.Upvotes--;
+                user.Upvoted.Remove(contribution);
+
+                await _context.SaveChangesAsync();
+            }
+
+            return new Tuple<bool, long>(true, id);
+
+        }
+
+        public async Task<Tuple<bool, long>> UnVoteApi(long id, Contribution contribution)
+        {
+            
+
+            var user = await _context.Users
+                .Include(u => u.Upvoted)
+                .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
+            if (user.Upvoted.FirstOrDefault(c => c.Id == contribution.Id) != null)
+            {
+                contribution.Upvotes--;
+                user.Upvoted.Remove(contribution);
+
+                await _context.SaveChangesAsync();
+            }
+
+            return new Tuple<bool, long>(true, id);
+        }
+
+
+
+        [Route("api/[controller]/Contributions/Vote")]
+        [HttpPost]
+        //[Authorize]
+        public async Task<IActionResult> VoteApi(long id, string email)
+        {
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contribution = await _context.Contributions
+                .Include(c => c.Comments)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (contribution == null)
+            {
+                return NotFound();
+            }
+            
+
+            var upvoters = await _context.Contributions.FindAsync(id);
+
+            bool trobat;
+            trobat= false;
+            foreach (var u in upvoters.Upvoters)
+            {
+                if(u.Email == email)
+                {
+                    trobat = true;
+                }
+            }
+
+            //Si ha votado
+            if (trobat)
+            {
+                var answ = await UnVoteApi(id, contribution);
+                return answ.Item1 ? Created("URI", "Deberíamos poner el objeto (o no)") : StatusCode(412); 
+                
+            }
+            
+            var answ2 = await UpvoteApi(id, contribution);
+            return answ2.Item1 ? Created("URI", "Deberíamos poner el objeto (o no)") : StatusCode(412);
+        }
+
+          
     }
 }
