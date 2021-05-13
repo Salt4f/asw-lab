@@ -73,11 +73,11 @@ namespace HackerNewsASW.Controllers
             return "";
         }
 
-        private async Task<IEnumerable<Comment>> GetThreadsNews()
+        private async Task<IEnumerable<Comment>> GetThreadsNews(string usermail)
         {
             User user = await _context.Users
                 .Include(u => u.Upvoted)
-                .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
+                .FirstOrDefaultAsync(u => u.Email == usermail);
             if (user != null) ViewBag.votedList = user.Upvoted;
 
             var comments = await _context.Comments
@@ -90,11 +90,20 @@ namespace HackerNewsASW.Controllers
 
         }
 
-        [Authorize]
-        [Route("api/[controller]/Threads")]
-        public async Task<string> ThreadAPI()
+        [HttpGet]
+        [Route("api/threads")]
+        public async Task<IActionResult> ThreadAPI(string usermail)
         {
-            var comments = await GetThreadsNews();
+            User user = await _context.Users.FindAsync(usermail);
+
+            if (user is null) return NotFound(); //404
+            
+            var header = Request.Headers["X-API-KEY"];//.FirstOrDefault();
+            if (!header.Any() || header.FirstOrDefault() != user.Token) return StatusCode(401);
+
+
+            var comments = await GetThreadsNews(usermail);
+
 
             var json = new JArray();
 
@@ -115,7 +124,7 @@ namespace HackerNewsASW.Controllers
 
                 json.Add(item);
             }
-            return json.ToString();
+            return Ok(json.ToString());
         }
 
     }
