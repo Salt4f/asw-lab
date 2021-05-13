@@ -83,6 +83,7 @@ namespace HackerNewsASW.Controllers
             var comments = await _context.Comments
             .Include(c => c.Author)
             .Include(c => c.Comments)
+            .Where(c => c.Author == user)
             .OrderByDescending(c => c.DateCreated)
             .ToListAsync<Comment>();
 
@@ -109,23 +110,42 @@ namespace HackerNewsASW.Controllers
 
             foreach (var c in comments)
             {
-                var item = new JObject();
-                item.Add("Id", c.Id);
-                item.Add("DateCreated", c.DateCreated);
-                item.Add("Upvotes", c.Upvotes);
-                item.Add("Title", c.getTitle());
-                item.Add("Content", c.Content);
-
-                var author = new JObject();
-                author.Add("UserId", c.Author.UserId);
-                author.Add("Email", c.Author.Email);
-
-                item.Add("Author", author);
-
-                json.Add(item);
+                var sub = new JArray();
+                await FillJson(sub, c);
+                json.Add(sub);
             }
+
             return Ok(json.ToString());
         }
 
+        private async Task FillJson(JArray json, Contribution c)
+        {
+            c = await _context.Contributions
+                .Include(c => c.Comments)
+                .FirstOrDefaultAsync(c2 => c2.Id == c.Id);
+
+            foreach (var c2 in c.Comments)
+            {
+                var item = new JObject();
+                item.Add("Id", c2.Id);
+                item.Add("DateCreated", c2.DateCreated);
+                item.Add("Upvotes", c2.Upvotes);
+                item.Add("Title", c2.getTitle());
+                item.Add("Content", c2.Content);
+
+                var author = new JObject();
+                author.Add("UserId", c2.Author.UserId);
+                author.Add("Email", c2.Author.Email);
+
+                item.Add("Author", author);
+
+                var coms = new JArray();
+
+                await FillJson(coms, c2);
+
+                json.Add(item);
+
+            }
+        }
     }
 }
