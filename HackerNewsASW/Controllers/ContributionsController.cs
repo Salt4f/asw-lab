@@ -204,7 +204,7 @@ namespace HackerNewsASW.Controllers
         [Route("api/contributions/{id}/upvote")]
         [HttpDelete]
         //[Authorize]
-        public async Task<IActionResult> unvoteAPI(long id)
+        public async Task<IActionResult> UnvoteAPI(long id)
         {
 
             var contribution = await _context.Contributions
@@ -236,7 +236,7 @@ namespace HackerNewsASW.Controllers
         [Route("api/contributions/{id}/upvote")]
         [HttpPost]
         //[Authorize]
-        public async Task<IActionResult> upvoteAPI(long id)
+        public async Task<IActionResult> UpvoteAPI(long id)
         {
 
             var contribution = await _context.Contributions
@@ -270,6 +270,42 @@ namespace HackerNewsASW.Controllers
 
         }
 
+        [Route("api/contributions/{id}")]
+        [HttpPost]
+        public async Task<IActionResult> CommentAPI(long id, string comment)
+        {
+
+            var contribution = await _context.Contributions
+                .Include(c => c.Author)
+                .Include(c => c.Comments)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (contribution == null)
+            {
+                return NotFound();
+            }
+
+            var header = Request.Headers["X-API-KEY"];//.FirstOrDefault();
+            if (!header.Any()) return StatusCode(401);
+
+            User user = await _context.Users.FirstOrDefaultAsync(u => u.Token == header.FirstOrDefault());
+            if (user is null) return StatusCode(401);
+
+            Comment com = new Comment
+            {
+                Commented = contribution,
+                DateCreated = DateTime.Now,
+                Content = comment,
+                Author = user
+            };
+
+            if (contribution.Comments is null) contribution.Comments = new HashSet<Comment>();
+            contribution.Comments.Add(com);
+
+            await _context.AddAsync(comment);
+            await _context.SaveChangesAsync();
+
+            return StatusCode(201);
+        }
 
 
 
