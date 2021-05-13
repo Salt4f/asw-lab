@@ -324,7 +324,7 @@ namespace HackerNewsASW.Controllers
 
             var t = Tuple.Create(contribution, await GetComments(contribution));
 
-            return Ok(t);
+            return Ok();
         }
 
 
