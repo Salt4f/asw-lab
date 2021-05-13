@@ -301,7 +301,7 @@ namespace HackerNewsASW.Controllers
             if (contribution.Comments is null) contribution.Comments = new HashSet<Comment>();
             contribution.Comments.Add(com);
 
-            await _context.AddAsync(comment);
+            await _context.AddAsync(com);
             await _context.SaveChangesAsync();
 
             return StatusCode(201);
