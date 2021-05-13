@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HackerNewsASW.Data;
 using HackerNewsASW.Models;
+using Newtonsoft.Json.Linq;
 
 namespace HackerNewsASW.Controllers
 {
@@ -19,23 +20,59 @@ namespace HackerNewsASW.Controllers
             _context = context;
         }
 
-        // GET: Asks
-        
-        public async Task<IActionResult> Index()
+        private async Task<IEnumerable<Contribution>> GetIndexAsk()
         {
             User user = await _context.Users
                 .Include(u => u.Upvoted)
                 .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
             if (user != null) ViewBag.votedList = user.Upvoted;
 
-            return View(_context.Asks
-            .Include(c => c.Author)
-            .Include(c => c.Comments)
-            .OrderByDescending(c => c.Upvotes));
+            var ask = _context.Asks
+                .Include(c => c.Author)
+                .Include(c => c.Comments)
+                .OrderByDescending(c => c.Upvotes);
+            return ask;
         }
 
-        // GET: Asks/Details/5
-        public async Task<IActionResult> Details(long? id)
+        // GET: Asks
+        
+        public async Task<IActionResult> Index()
+        {
+           var ask = await GetIndexAsk();
+
+            return View(ask);
+        }
+
+        [Route("api/[controller]/Asks")]
+        public async Task<string> AskAPI()
+        {
+            var contrib = await GetIndexAsk();
+
+            var json = new JArray();
+
+            foreach (var c in contrib)
+            {
+                var item = new JObject();
+                item.Add("Id", c.Id);
+                item.Add("DateCreated", c.DateCreated);
+                item.Add("Upvotes", c.Upvotes);
+                item.Add("Title", c.getTitle());
+                item.Add("Content", c.Content);
+
+                var author = new JObject();
+                author.Add("UserId", c.Author.UserId);
+                author.Add("Email", c.Author.Email);
+
+                item.Add("Author", author);
+
+                json.Add(item);
+            }
+
+            //return json;
+            return json.ToString();
+        }
+            // GET: Asks/Details/5
+            public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
             {
