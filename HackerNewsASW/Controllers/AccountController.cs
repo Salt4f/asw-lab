@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json.Linq;
 using System.Text;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Http;
@@ -135,19 +136,88 @@ namespace HackerNewsASW.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> SubmissionsUpvoted()
+        public async Task<IEnumerable<Contribution>> getUserSubmissionsUpvoted(string usermail)
         {
-            string usermail=GetUserEmail(User);
             User user = await _context.Users
                 .Include(u => u.Upvoted)
                 .FirstOrDefaultAsync(u => u.Email == usermail);
             HashSet<Contribution> upvoted = new HashSet<Contribution>();
-            foreach (var c in user.Upvoted) {
+            foreach (var c in user.Upvoted)
+            {
                 var c2 = await _context.Contributions.Include(c3 => c3.Comments).Include(c3 => c3.Author).FirstOrDefaultAsync(c3 => c3.Id == c.Id);
                 upvoted.Add(c2);
             }
+            return upvoted;
+        }
 
-            return View(upvoted);
+        public async Task<IActionResult> SubmissionsUpvoted(string usermail)
+        {
+            var contributions = await getUserSubmissionsUpvoted(usermail);
+
+            return View(contributions);
+        }
+
+        //[Authorize]
+        [HttpGet]
+        [Route("api/[controller]/SubmissionsUpvoted/Author")]
+        public async Task<string> UserSubmissionsAPI(string usermail)
+        {
+
+            var contributions = await getUserSubmissionsUpvoted(usermail);
+
+            var json = new JArray();
+
+            foreach (var c in contributions)
+            {
+                if(c.GetType() != typeof(HackerNewsASW.Models.Comment))
+                {
+                    var author = new JObject();
+                    author.Add("UserId", c.Author.UserId);
+                    author.Add("Email", c.Author.Email);
+
+                    var item = new JObject();
+                    item.Add("Id", c.Id);
+                    item.Add("DateCreated", c.DateCreated);
+                    item.Add("Upvotes", c.Upvotes);
+                    item.Add("Author", author);
+                    item.Add("Title", c.getTitle());
+                    item.Add("Content", c.Content);
+
+                    json.Add(item);
+                }
+            }
+            return json.ToString();
+        }
+
+        [HttpGet]
+        [Route("api/[controller]/CommentsUpvoted/Author")]
+        public async Task<string> UserCommentsAPI(string usermail)
+        {
+
+            var contributions = await getUserSubmissionsUpvoted(usermail);
+
+            var json = new JArray();
+
+            foreach (var c in contributions)
+            {
+                if (c.GetType() == typeof(HackerNewsASW.Models.Comment))
+                {
+                    var author = new JObject();
+                    author.Add("UserId", c.Author.UserId);
+                    author.Add("Email", c.Author.Email);
+
+                    var item = new JObject();
+                    item.Add("Id", c.Id);
+                    item.Add("DateCreated", c.DateCreated);
+                    item.Add("Upvotes", c.Upvotes);
+                    item.Add("Author", author);
+                    item.Add("Title", c.getTitle());
+                    item.Add("Content", c.Content);
+
+                    json.Add(item);
+                }
+            }
+            return json.ToString();
         }
 
         [Authorize]
