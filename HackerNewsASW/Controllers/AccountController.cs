@@ -88,7 +88,7 @@ namespace HackerNewsASW.Controllers
         }
        
         [HttpGet]
-        [Route("api/otherProfile")]
+        [Route("api/users/{usermail}/otherProfile")]
         public async Task<string> otherProfileApi(string usermail)
         {
             var Author = await _context.Users.FindAsync(usermail);
@@ -111,7 +111,7 @@ namespace HackerNewsASW.Controllers
         }
 
         [HttpGet]
-        [Route("api/usercomments")]
+        [Route("api/users/{usermail}/usercomments")]
         public async Task<string> ProfileCommentsApi(string usermail)
         {
             var Author = await _context.Users.FindAsync(usermail);
@@ -203,9 +203,14 @@ namespace HackerNewsASW.Controllers
         //[Authorize]
         [HttpGet]
         [Route("api/users/{usermail}/upvotedSubmissions")]
-        public async Task<string> UserSubmissionsAPI(string usermail)
+        public async Task<IActionResult> UserSubmissionsAPI(string usermail)
         {
+            User user = await _context.Users.FindAsync(usermail);
 
+            if (user is null) return NotFound(); //404
+
+            var header = Request.Headers["X-API-KEY"];//.FirstOrDefault();
+            if (!header.Any() || header.FirstOrDefault() != user.Token) return StatusCode(401);
             var contributions = await getUserSubmissionsUpvoted(usermail);
 
             var json = new JArray();
@@ -229,13 +234,20 @@ namespace HackerNewsASW.Controllers
                     json.Add(item);
                 }
             }
-            return json.ToString();
+            return Ok(json.ToString());
         }
 
         [HttpGet]
         [Route("api/users/{usermail}/upvotedComments")]
-        public async Task<string> UserCommentsAPI(string usermail)
+        public async Task<IActionResult> UserCommentsAPI(string usermail)
         {
+
+            User user = await _context.Users.FindAsync(usermail);
+
+            if (user is null) return NotFound(); //404
+
+            var header = Request.Headers["X-API-KEY"];//.FirstOrDefault();
+            if (!header.Any() || header.FirstOrDefault() != user.Token) return StatusCode(401);
 
             var contributions = await getUserSubmissionsUpvoted(usermail);
 
@@ -260,7 +272,7 @@ namespace HackerNewsASW.Controllers
                     json.Add(item);
                 }
             }
-            return json.ToString();
+            return Ok(json.ToString());
         }
 
         //[Authorize]
