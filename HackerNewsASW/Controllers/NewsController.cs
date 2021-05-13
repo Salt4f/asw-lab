@@ -29,12 +29,45 @@ namespace HackerNewsASW.Controllers
         // GET: Contribucions
         public async Task<IActionResult> Index()
         {
+            return View(await GetIndexInfo());
+        }
+
+        [Route("api/[controller]/Index")]
+        public async Task<string> IndexAPI()
+        {
+            var contrib = await GetIndexInfo();
+
+            var json = new JArray();
+
+            foreach (var c in contrib)
+            {
+                var item = new JObject();
+                item.Add("Id", c.Id);
+                item.Add("DateCreated", c.DateCreated);
+                item.Add("Upvotes", c.Upvotes);
+                item.Add("Comments", c.Comments.Count);
+                item.Add("Title", c.getTitle());
+                item.Add("Content", c.Content);
+
+                var author = new JObject();
+                author.Add("UserId", c.Author.UserId);
+                author.Add("Email", c.Author.Email);
+
+                item.Add("Author", author);
+
+                json.Add(item);
+            }
+            return json.ToString();
+        }
+
+        private async Task<IEnumerable<News>> GetIndexInfo()
+        {
             User user = await _context.Users
                 .Include(u => u.Upvoted)
                 .FirstOrDefaultAsync(u => u.Email == GetUserEmail(User));
             if (user != null) ViewBag.votedList = user.Upvoted;
 
-            return View(_context.News
+            return(_context.News
             .Include(c => c.Author)
             .Include(c => c.Comments)
             .OrderByDescending(c => c.Upvotes));
@@ -84,6 +117,7 @@ namespace HackerNewsASW.Controllers
                 item.Add("Id", c.Id);
                 item.Add("DateCreated", c.DateCreated);
                 item.Add("Upvotes", c.Upvotes);
+                item.Add("Comments", c.Comments.Count);
                 item.Add("Title", c.getTitle());
                 item.Add("Content", c.Content);
 
