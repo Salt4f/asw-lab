@@ -115,12 +115,12 @@ namespace HackerNewsASW.Controllers
             return View();
         }
 
-     
-        public async Task<Tuple<bool, long>> SubmitFunction(SubmitFormModel submit)
+
+        public async Task<Tuple<bool, long>> SubmitFunction(SubmitFormModel submit, User author)
         {
             if (submit.Title != null)
             {
-                User author = await _context.Users.FindAsync(GetUserEmail(User));
+                if (author is null) author = await _context.Users.FindAsync(GetUserEmail(User));
 
                 if (submit.Url is null && submit.Text is null) //ASK
                 {
@@ -221,19 +221,25 @@ namespace HackerNewsASW.Controllers
         [Authorize]
         public async Task<IActionResult> Submit([Bind("Title, Url, Text")] SubmitFormModel submit)
         {
-            var submission = await SubmitFunction(submit);
+            var submission = await SubmitFunction(submit, null);
             if (submission.Item2 != -1)
                 return RedirectToAction("Details", "Contributions", new { id = submission.Item2 });
             else return View(submit);
         }
 
-        [Route("api/[controller]/News/Submit")]
+        [Route("api/contributions")]
         [HttpPost]
         //[Authorize]
-        public async Task<IActionResult> SubmitAPI(string title, string? url, string? text)
+        public async Task<IActionResult> SubmitAPI(string title, string url, string text)
         {
 
             if (title is null) return BadRequest();
+
+            var header = Request.Headers["X-API-KEY"];//.FirstOrDefault();
+            if (!header.Any()) return StatusCode(401);
+
+            User author = await _context.Users.FirstOrDefaultAsync(u => u.Token == header.FirstOrDefault());
+            if (author is null) return StatusCode(401);
 
             var submit = new SubmitFormModel()
             {
@@ -241,7 +247,7 @@ namespace HackerNewsASW.Controllers
                 Url = url,
                 Text = text
             };
-            var submission = await SubmitFunction(submit);
+            var submission = await SubmitFunction(submit, author);
             return submission.Item1 ? Created("URI", "Deberíamos poner el objeto (o no)") : StatusCode(412);
         }
 
