@@ -263,7 +263,7 @@ namespace HackerNewsASW.Controllers
 
         //[Authorize]
         [HttpGet]
-        [Route("api/[controller]/SubmissionsUpvoted/Author")]
+        [Route("api/users/{usermail}/upvotedSubmissions")]
         public async Task<string> UserSubmissionsAPI(string usermail)
         {
 
@@ -294,7 +294,7 @@ namespace HackerNewsASW.Controllers
         }
 
         [HttpGet]
-        [Route("api/[controller]/CommentsUpvoted/Author")]
+        [Route("api/users/{usermail}/upvotedComments")]
         public async Task<string> UserCommentsAPI(string usermail)
         {
 
