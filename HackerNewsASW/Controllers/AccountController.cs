@@ -43,13 +43,13 @@ namespace HackerNewsASW.Controllers
             return View(author);
         }
 
-        [Route("api/users/{email}/about")]
+        [Route("api/users/{usermail}/about")]
         [HttpPut]
         //[Authorize]
-        public async Task<IActionResult> AboutAPI(string email, string about)
+        public async Task<IActionResult> AboutAPI(string usermail, string about)
         {
 
-            User user = await _context.Users.FindAsync(email);
+            User user = await _context.Users.FindAsync(usermail);
             
             if (user is null) return NotFound(); //404
             if (about is null) return BadRequest(); //400
