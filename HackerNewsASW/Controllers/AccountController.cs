@@ -86,17 +86,8 @@ namespace HackerNewsASW.Controllers
             if (author is null) return NotFound();
             return View(author);
         }
-/*
-        [Route("api/[controller]/Account")]
-        public async Task<string> otherProfileApi(string usermail)
-        {
-            var Author = "";
-            if (Author is null) return "";
-
-
-        
-
-        [Route("api/[controller]/Account")]
+       
+        [Route("api/OtherProfile")]
         public async Task<string> otherProfileApi(string usermail)
         {
             var Author = await _context.Users.FindAsync(usermail);
@@ -107,29 +98,31 @@ namespace HackerNewsASW.Controllers
             item.Add("Date", Author.DateCreated);
             item.Add("About", Author.About);
 
-            
+             var json = new JArray();
 
-            /*
+            json.Add(item);
+
+
+            //return json;
+            return json.ToString();
+
+
+        }
+
+
+        [Route("api/UserComments")]
+        public async Task<string> ProfileCommentsApi(string usermail)
+        {
+            var Author = await _context.Users.FindAsync(usermail);
+            if (Author is null) return "";
+
+            var item = new JObject();
+    
+
             var comments = await _context.Comments
-            .Include(c => c.Comments)
-            .Include(c => c.Commented)
-            .Where( c => c.Commented != null) //respon un comentari
-            .Where(c => c.Author.Email == usermail)
-            .OrderByDescending(c => c.DateCreated)
-            .ToListAsync<Comment>();
-            
-            var submissions = await _context.Contributions
-            .Include(c => c.Comments)
-            .Where(c => c.GetType() != typeof(Comment)) 
-            .Where(c => c.Author.Email == usermail)
-            .OrderByDescending(c => c.DateCreated)
-            .ToListAsync<Comment>();
-            */
-
-
-            /*var comments = await _context.Comments
            .Include(c => c.Comments)
-           .OrderByDescending(c => c.DateCreated)
+           .OrderBy(c => c.DateCreated)
+           .Where(c => c.Author==Author)
            .ToListAsync<Comment>();
 
 
@@ -145,84 +138,29 @@ namespace HackerNewsASW.Controllers
                 CommentsJson.Add(item2);
             }
 
-            var news = await _context.News
-            .Include(c => c.Author)
-            .Include(c => c.Comments)
-            .Where(s => s.Author.Email == usermail)
-            .ToListAsync<Contribution>();
-
-            var asks = await _context.Asks
-            .Include(c => c.Author)
-            .Include(c => c.Comments)
-            .Where(s => s.Author.Email == usermail)
-            .ToListAsync<Contribution>();
-
-            var submissions = news.Union(asks);
-            submissions = submissions.OrderByDescending(c => c.DateCreated);
-
-            /*var submissions = await _context.Contributions
-            .Include(s => s.Comments)
-            //.Where( )
-            .Where(s => s.Author.Email == usermail)
-            .ToListAsync<Contribution>();*/
-
-            /*var SubmissionJson = new JArray();
-            foreach (var s in submissions)
-            {
-                var item2 = new JObject();
-                item2.Add("Id", s.Id);
-                item2.Add("DateCreated", s.DateCreated);
-                item2.Add("Upvotes", s.Upvotes);
-                item2.Add("Title", s.getTitle());
-                item2.Add("Content", s.Content);
-                SubmissionJson.Add(item2);
-            }
-
-          
-
-
-
-
-
-            item.Add("Submissions", SubmissionJson);
-            item.Add("Comments",CommentsJson);
-
             
+
+
+
+
+
+
+
+            item.Add("Comments", CommentsJson);
+
+
 
             var json = new JArray();
 
             json.Add(item);
-            
-
-            var json = new JArray();
-
-            foreach (var a in Author)
-            {
-                var item = new JObject();
-                item.Add("Id", a.Id);
-                item.Add("DateCreated", a.DateCreated);
-                item.Add("About", a.About);
-
-                var submissions = new JObject();
-                submissions.Add("Submissions", a.Submissions);
-
-                var comments = new JObject();
-                comments.Add("Comments", a.Comments);
 
 
-                item.Add("Submisisons", submissions);
-                item.Add("Comments", comments);
-
-                json.Add(item);
-            }
-
-            //return json;
             return json.ToString();
 
 
         }
 
-*/
+
         public async Task<IActionResult> CheckUser(string usermail)
         {
             User author = await _context.Users.FindAsync(GetUserEmail(User));
