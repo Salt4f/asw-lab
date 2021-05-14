@@ -368,6 +368,7 @@ namespace HackerNewsASW.Controllers
                 var coms = new JArray();
 
                 await FillJson(coms, c2);
+                item.Add("Comments", coms);
 
                 json.Add(item);
 

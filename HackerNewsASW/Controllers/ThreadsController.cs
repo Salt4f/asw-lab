@@ -110,9 +110,23 @@ namespace HackerNewsASW.Controllers
 
             foreach (var c in comments)
             {
-                var sub = new JArray();
-                await FillJson(sub, c);
-                json.Add(sub);
+                var item = new JObject();
+                item.Add("Id", c.Id);
+                item.Add("DateCreated", c.DateCreated);
+                item.Add("Upvotes", c.Upvotes);
+                item.Add("Title", c.getTitle());
+                item.Add("Content", c.Content);
+
+                var author = new JObject();
+                author.Add("UserId", c.Author.UserId);
+                author.Add("Email", c.Author.Email);
+
+                var coms = new JArray();
+                await FillJson(coms, c);
+
+                item.Add("Comments", coms);
+
+                json.Add(item);
             }
 
             return Ok(json.ToString());
