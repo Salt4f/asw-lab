@@ -353,22 +353,27 @@ namespace HackerNewsASW.Controllers
 
             foreach (var c2 in c.Comments)
             {
+                var c3 = await _context.Contributions
+                .Include(c => c.Comments)
+                .Include(c => c.Author)
+                .FirstOrDefaultAsync(c => c.Id == c2.Id);
+
                 var item = new JObject();
-                item.Add("Id", c2.Id);
-                item.Add("DateCreated", c2.DateCreated);
-                item.Add("Upvotes", c2.Upvotes);
-                item.Add("Title", c2.getTitle());
-                item.Add("Content", c2.Content);
+                item.Add("Id", c3.Id);
+                item.Add("DateCreated", c3.DateCreated);
+                item.Add("Upvotes", c3.Upvotes);
+                item.Add("Title", c3.getTitle());
+                item.Add("Content", c3.Content);
 
                 var author = new JObject();
-                author.Add("UserId", c2.Author.UserId);
-                author.Add("Email", c2.Author.Email);
+                author.Add("UserId", c3.Author.UserId);
+                author.Add("Email", c3.Author.Email);
 
                 item.Add("Author", author);
 
                 var coms = new JArray();
+                await FillJson(coms, c3);
 
-                await FillJson(coms, c2);
                 item.Add("Comments", coms);
 
                 json.Add(item);
