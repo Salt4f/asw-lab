@@ -348,6 +348,7 @@ namespace HackerNewsASW.Controllers
         {
             c = await _context.Contributions
                 .Include(c => c.Comments)
+                .Include(c => c.Author)
                 .FirstOrDefaultAsync(c2 => c2.Id == c.Id);
 
             foreach (var c2 in c.Comments)
