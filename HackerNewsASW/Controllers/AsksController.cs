@@ -43,7 +43,7 @@ namespace HackerNewsASW.Controllers
             return View(ask);
         }
 
-        [Route("api/asks")]
+        [Route("api/contributions/asks")]
         public async Task<string> AskAPI()
         {
             var contrib = await GetIndexAsk();

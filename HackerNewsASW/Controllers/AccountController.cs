@@ -88,11 +88,11 @@ namespace HackerNewsASW.Controllers
         }
        
         [HttpGet]
-        [Route("api/users/{usermail}/otherProfile")]
-        public async Task<string> otherProfileApi(string usermail)
+        [Route("api/users/{usermail}")]
+        public async Task<IActionResult> OtherProfileApi(string usermail)
         {
             var Author = await _context.Users.FindAsync(usermail);
-            if (Author is null) return "";
+            if (Author is null) return NotFound();
 
             var item = new JObject();
             item.Add("Email", Author.Email);
@@ -103,29 +103,28 @@ namespace HackerNewsASW.Controllers
 
             json.Add(item);
 
-
             //return json;
-            return json.ToString();
+            return Ok(json.ToString());
 
 
         }
 
         [HttpGet]
-        [Route("api/users/{usermail}/usercomments")]
-        public async Task<string> ProfileCommentsApi(string usermail)
+        [Route("api/users/{usermail}/comments")]
+        public async Task<IActionResult> ProfileCommentsAPI(string usermail)
         {
-            var Author = await _context.Users.FindAsync(usermail);
-            if (Author is null) return "";
+            User user = await _context.Users.FindAsync(usermail);
 
-            var item = new JObject();
-    
+            if (user is null) return NotFound(); //404
+
+            var header = Request.Headers["X-API-KEY"];//.FirstOrDefault();
+            if (!header.Any() || header.FirstOrDefault() != user.Token) return StatusCode(401);
 
             var comments = await _context.Comments
            .Include(c => c.Comments)
            .OrderByDescending(c => c.DateCreated)
-           .Where(c => c.Author==Author)
+           .Where(c => c.Author == user)
            .ToListAsync<Comment>();
-
 
             var CommentsJson = new JArray();
             foreach (var c in comments)
@@ -139,14 +138,12 @@ namespace HackerNewsASW.Controllers
                 CommentsJson.Add(item2);
             }
 
-            item.Add("Comments", CommentsJson);
 
             var json = new JArray();
 
-            json.Add(item);
+            json.Add(CommentsJson);
 
-
-            return json.ToString();
+            return Ok(json.ToString());
         }
 
 
@@ -190,8 +187,8 @@ namespace HackerNewsASW.Controllers
 
         //[Authorize]
         [HttpGet]
-        [Route("api/users/{usermail}/upvotedSubmissions")]
-        public async Task<IActionResult> UserSubmissionsAPI(string usermail)
+        [Route("api/users/{usermail}/upvotedContributions")]
+        public async Task<IActionResult> UpvotedSubmissionsAPI(string usermail)
         {
             User user = await _context.Users.FindAsync(usermail);
 
@@ -227,7 +224,7 @@ namespace HackerNewsASW.Controllers
 
         [HttpGet]
         [Route("api/users/{usermail}/upvotedComments")]
-        public async Task<IActionResult> UserCommentsAPI(string usermail)
+        public async Task<IActionResult> UpvotedCommentsAPI(string usermail)
         {
 
             User user = await _context.Users.FindAsync(usermail);
