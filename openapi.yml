@@ -1,0 +1,326 @@
+openapi: 3.0.0
+info:
+  version: '2.0'
+  title: HackerNewsASW
+  description: >-
+    This is the Open API documentation for the REST API of our beloved
+    application **HackerNews** deployed at <http://asw.vgafib.org/>. <br>All
+    operations are executable. Several operations requires authentication. In
+    this case, you must **Authorize** your request by providing the token vaule
+    you got when you created your own account.
+servers:
+  - url: 'http://asw.vgafib.org/api'
+paths:
+  /contributions:
+    get:
+      summary: Retrieves a list of all contributions sorted by votes
+      description: ''
+      operationId: IndexAPI
+      responses:
+        '200':
+          description: Successful operation
+      tags:
+        - Contributions
+    post:
+      summary: Submit a new contribution
+      description: ''
+      operationId: SubmitAPI
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        description: Field **title** is **REQUIRED**
+        required: true
+        content:
+          contribution:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                url:
+                  type: string
+                content:
+                  type: string
+              required:
+                - title
+            example:
+              title: "google.com"
+              url: "https://google.com"
+              content: "Google's home page"
+      responses:
+        '201':
+          description: Contribution created
+        '401':
+          description: API key not given or not authenticated
+        '412':
+          description: A new already exists with the given URL
+      tags:
+        - Contributions
+  /contributions/new:
+    get:
+      summary: Retrieves a list of all contributions sorted by creation time
+      description: ''
+      operationId: NewAPI
+      responses:
+        '200':
+          description: Successful operation
+      tags:
+        - Contributions
+  /contributions/asks:
+    get:
+      summary: Retrieves a list of all ask contributions sorted by votes
+      description: ''
+      operationId: AskAPI
+      responses:
+        '200':
+          description: Successful operation
+      tags:
+        - Contributions
+  '/users/{usermail}/about':
+    put:
+      summary: Changes the about of the given username
+      description: ''
+      operationId: AboutAPI
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        description: ''
+        required: true
+        content:
+          about:
+            schema:
+              type: string
+            example:
+              about: "This is about me!"
+      parameters:
+        - name: usermail
+          in: path
+          description: Email of the requested user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: About changed
+        '404':
+          description: User with the given email not found
+        '400':
+          description: About field empty or null
+        '401':
+          description: API key not given or not authenticated
+      tags:
+        - Users
+  '/users/{usermail}/contributions':
+    get:
+      summary: Retrieves a list of all contributions of an user
+      description: ''
+      operationId: UserSubmissionsAPI
+      parameters:
+        - name: usermail
+          in: path
+          description: Email of the requested user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: User with the given email not found
+      tags:
+        - Users
+  '/users/{usermail}':
+    get:
+      summary: Retrieves information of an user
+      description: ''
+      operationId: OtherProfileAPI
+      parameters:
+        - name: usermail
+          in: path
+          description: Email of the requested user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: User with the given email not found
+      tags:
+        - Users
+  '/users/{usermail}/comments':
+    get:
+      summary: Retrieves a list of all comments of an user
+      description: ''
+      operationId: ProfileCommentsAPI
+      parameters:
+        - name: usermail
+          in: path
+          description: Email of the requested user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: User with the given email not found
+      tags:
+        - Users
+  '/users/{usermail}/upvotedContributions':
+    get:
+      summary: Retrieves a list of all upvoted contributions of an user
+      description: ''
+      operationId: UpvotedSubmissionsAPI
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: usermail
+          in: path
+          description: Email of the requested user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: User with the given email not found
+        '401':
+          description: API key not given or not authenticated
+      tags:
+        - Users
+  '/users/{usermail}/upvotedComments':
+    get:
+      summary: Retrieves a list of all upvoted comments of an user
+      description: ''
+      operationId: UpvotedCommentsAPI
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: usermail
+          in: path
+          description: Email of the requested user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: User with the given email not found
+        '401':
+          description: API key not given or not authenticated
+      tags:
+        - Users
+  '/contributions/{id}/upvote':
+    post:
+      summary: Upvote a contribution
+      description: ''
+      operationId: UpvoteAPI
+      security:
+        - ApiKeyAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: ID of the contribution
+        required: true
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: Contribution upvoted
+        '401':
+          description: API key not given or not authenticated
+        '404':
+          description: Contribution with the given ID not found
+        '412':
+          description: Already voted the given contribution
+      tags:
+        - Contributions
+    delete:
+      summary: Unvote a contribution
+      description: ''
+      operationId: UnvoteAPI
+      security:
+        - ApiKeyAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: ID of the contribution
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Contribution unvoted
+        '401':
+          description: API key not given or not authenticated
+        '404':
+          description: Contribution with the given ID not found
+        '412':
+          description: The given contribution was not upvoted
+      tags:
+        - Contributions
+  '/contributions/{id}':
+    post:
+      summary: Comment a contribution
+      description: ''
+      operationId: CommentAPI
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        description: ''
+        required: true
+        content:
+          comment:
+            schema:
+              type: string
+            example:
+              comment: "Awesome!"
+      parameters:
+      - name: id
+        in: path
+        description: ID of the contribution
+        required: true
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: Comment created
+        '401':
+          description: API key not given or not authenticated
+        '404':
+          description: Contribution with the given ID not found
+      tags:
+        - Contributions
+    get:
+      summary: Retrieves the details and a comment list of a contribution
+      description: ''
+      operationId: DetailsAPI
+      parameters:
+      - name: id
+        in: path
+        description: ID of the contribution
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Contribution unvoted
+        '401':
+          description: API key not given or not authenticated
+        '404':
+          description: Contribution with the given ID not found
+        '412':
+          description: The given contribution was not upvoted
+      tags:
+        - Contributions
+      
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
