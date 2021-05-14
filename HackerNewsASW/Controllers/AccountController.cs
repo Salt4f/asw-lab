@@ -117,8 +117,8 @@ namespace HackerNewsASW.Controllers
 
             if (user is null) return NotFound(); //404
 
-            var header = Request.Headers["X-API-KEY"];//.FirstOrDefault();
-            if (!header.Any() || header.FirstOrDefault() != user.Token) return StatusCode(401);
+            /*var header = Request.Headers["X-API-KEY"];//.FirstOrDefault();
+            if (!header.Any() || header.FirstOrDefault() != user.Token) return StatusCode(401);*/
 
             var comments = await _context.Comments
            .Include(c => c.Comments)
