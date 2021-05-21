@@ -27,3 +27,8 @@ services:
       - "5488:5432"
     volumes:
       - ./pg/db_data:/var/lib/postgresql/data
+  angular:
+    container_name: "angular_app"
+    build: ./HackerNewsAngular
+    ports:
+      - "80:80"
