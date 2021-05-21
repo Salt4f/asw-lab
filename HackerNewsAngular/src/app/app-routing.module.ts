@@ -10,7 +10,6 @@ const routes: Routes = [
   {path: 'asks', component: AskComponent},
   {path: 'submit', component: SubmitComponent},
   {path: 'threads', component: ThreadComponent},
-
 ];
 
 @NgModule({

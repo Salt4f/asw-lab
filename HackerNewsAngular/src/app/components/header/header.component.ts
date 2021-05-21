@@ -11,7 +11,7 @@ import { DialogPopUpComponent } from 'src/app/dialogs/dialog-pop-up/dialog-pop-u
 })
 export class HeaderComponent implements OnInit {
 
-  usermail: string = "marc.cortadellas";
+  usermail = "marc.cortadellas";
   title ="";
   
   constructor(
@@ -27,6 +27,7 @@ export class HeaderComponent implements OnInit {
     this.router.navigate([ruta,item]);
   }
   hazAlgo(titulo: string): void{
+    this.usermail = "";
     
     const dialogRef = this.dialog.open(DialogPopUpComponent, {
       width: '500px',
@@ -35,6 +36,10 @@ export class HeaderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result =>{
       if(result) alert("Cerrado el dialog con boton aceptar");  
     });
+  }
+
+  login(){
+    this.usermail = "marc.cortadellas";
   }
 
 

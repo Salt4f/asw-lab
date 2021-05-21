@@ -3,15 +3,13 @@
 
     
     <ng-template ngIf="true">
-        <button mat-button 
-            (click)="hazAlgo('LOGO')">Logo</button>
+        <button mat-button mat-menu-item (click)="hazAlgo('LOGO')">Logo</button>
         
     </ng-template>
 
 
     <ng-template ngIf="true">
-        <button mat-button 
-            (click)="hazAlgo('HackerNews')">HackerNews</button>
+        <button mat-button mat-menu-item (click)="hazAlgo('HackerNews')">HackerNews</button>
         
     </ng-template>
 
@@ -39,7 +37,8 @@
     </ng-template>
 
     <ng-template ngIf="true">
-        <button mat-button mat-menu-item [routerLink]="['/login']">Login</button>
+        <button *ngIf="usermail == '' " mat-button mat-menu-item (click)="login()">Login</button>
+        <button *ngIf="usermail != '' " mat-button mat-menu-item (click)="login()">LogOut</button>
     </ng-template>
 
 
