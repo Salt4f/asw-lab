@@ -1,0 +1,46 @@
+
+<mat-toolbar color="primary">
+
+    
+    <ng-template ngIf="true">
+        <button mat-button 
+            (click)="hazAlgo('LOGO')">Logo</button>
+        
+    </ng-template>
+
+
+    <ng-template ngIf="true">
+        <button mat-button 
+            (click)="hazAlgo('HackerNews')">HackerNews</button>
+        
+    </ng-template>
+
+
+
+    <ng-template ngIf="true">
+        <button mat-button mat-menu-item [routerLink]="['/news']">New</button>
+       
+    </ng-template>
+
+    <ng-template ngIf="true">
+        <button mat-button mat-menu-item [routerLink]="['/threads']">Thread</button>
+    </ng-template>
+
+    <ng-template ngIf="true">
+        <button mat-button mat-menu-item [routerLink]="['/asks']">ask</button>
+    </ng-template>
+
+    <ng-template ngIf="true">
+        <button mat-button mat-menu-item [routerLink]="['/submit']">Submit</button>
+    </ng-template>
+
+    <ng-template ngIf="true">
+        <button mat-button mat-menu-item [routerLink]="['/account']">{{usermail}}</button>
+    </ng-template>
+
+    <ng-template ngIf="true">
+        <button mat-button mat-menu-item [routerLink]="['/login']">Login</button>
+    </ng-template>
+
+
+</mat-toolbar>
