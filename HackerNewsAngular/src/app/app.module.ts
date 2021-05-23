@@ -4,6 +4,7 @@ import { MaterialModule } from "./material.modules";
 import { HeaderComponent } from './components/header/header.component';
 
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatTableModule } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +20,8 @@ import { registerLocaleData } from '@angular/common';
 
 
 import es from '@angular/common/locales/es';
+import { AccountComponent } from './pages/account/account.component';
+import { ContributionComponent } from './pages/contribution/contribution.component';
 registerLocaleData(es);
 
 @NgModule({
@@ -29,7 +32,9 @@ registerLocaleData(es);
     ThreadComponent,
     AskComponent,
     SubmitComponent,
-    DialogPopUpComponent
+    DialogPopUpComponent,
+    AccountComponent,
+    ContributionComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -40,6 +45,7 @@ registerLocaleData(es);
     FormsModule,
     HttpClientModule,
     MaterialModule,
+    MatTableModule,
     MatDialogModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es-ES' }],

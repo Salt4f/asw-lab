@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit {
   hazAlgo(titulo: string): void{
     this.usermail = "";
     
+    
     const dialogRef = this.dialog.open(DialogPopUpComponent, {
       width: '500px',
       data: { title: titulo }
