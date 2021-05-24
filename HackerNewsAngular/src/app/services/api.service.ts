@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
-import { Submision } from "./Interface";
+import { Submisions } from "./Interface";
 
 /*
 AQUI HAREMOS LAS LLAMADAS A LA API
@@ -32,13 +32,17 @@ export class ApiService {
 
 
     obtenerNewsByVote(){
-      return this.http.get<Submision[]>(environment.apiUrl + environment.contribution);
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution);
     }
     obtenerAsksByVote(){
-      return this.http.get<Submision[]>(environment.apiUrl + environment.contribution + '/asks');
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + '/asks');
     }
     obtenerNewsByCreation(){
-      return this.http.get<Submision[]>(environment.apiUrl + environment.contribution + '/new');
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + '/new');
+    }
+
+    obtenerInfoContribution(id: number){
+      return this.http.get<any>(environment.apiUrl + environment.contribution + '/' +id);
     }
 }
 

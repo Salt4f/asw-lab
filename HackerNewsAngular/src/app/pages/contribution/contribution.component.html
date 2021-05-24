@@ -1,1 +1,14 @@
-<p>contribution works!</p>
+
+<p>La id de la contribution es {{lista.Id}}</p>
+<p>La data de la contribution es {{lista.DateCreated}}</p>
+<p>el contenido de la contribution es {{lista.Content}}</p>
+<p>el titulo de la contribution es {{lista.Title}}</p>
+<p>numero de votos de la contribution es {{lista.Upvotes}}</p>
+<p>Comentarios: no se ven comentarios de comentarios</p>
+<ul class="comments">
+    <li *ngFor="let comment of lista.Comments"
+      [class.selected]="comment === selectedComment"
+      (click)="onSelect(comment)">
+      <span class="badge"></span> {{comment.Title}}
+    </li>
+</ul>

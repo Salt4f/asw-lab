@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
-import { Submision } from 'src/app/services/Interface';
+import { Submisions } from 'src/app/services/Interface';
 
 @Component({
   selector: 'app-new',
@@ -10,7 +10,7 @@ import { Submision } from 'src/app/services/Interface';
 })
 export class NewComponent implements OnInit {
 
-  lista : Submision[] = [];
+  lista : Submisions[] = [];
 
   displayedColumns: string[] = ["buttons","title", "upvotes","comments","dateCreated","author"]  
 
@@ -53,7 +53,7 @@ export class NewComponent implements OnInit {
 
   muestraSubmission(item : any){
     console.log(item);
-    this.router.navigate(['contribution/'+item.Id],{queryParams: item.Id});
+    this.router.navigate(['contribution/'+item.Id]);
    }
 
 }

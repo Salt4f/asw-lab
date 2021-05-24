@@ -1,5 +1,5 @@
 
-export interface Submision {
+export interface Submisions {
     Author: Author;
     Comments: number;
     Content: string;

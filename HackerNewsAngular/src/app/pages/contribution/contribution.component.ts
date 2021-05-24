@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-contribution',
@@ -7,9 +9,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContributionComponent implements OnInit {
 
-  constructor() { }
+  idUrl = 0;
+
+  lista: any;
+
+  constructor(
+    private apiservice: ApiService,
+    private router: Router) { }
 
   ngOnInit(): void {
+    this.obtenerId(this.router.url);
+    this.obtenerInfoContribution(this.idUrl);
+  }
+
+  obtenerId(url: string){
+    let pos = url.lastIndexOf("/");
+    this.idUrl = parseInt(url.substring(pos +1));
+  }
+  obtenerInfoContribution(idUrl: number){
+    this.apiservice.obtenerInfoContribution(idUrl).subscribe(data=> {
+      console.log(data);
+      this.lista = data;
+    })
+
   }
 
 }
