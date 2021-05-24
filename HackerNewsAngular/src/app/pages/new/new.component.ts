@@ -19,9 +19,31 @@ export class NewComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
+    console.log(this.router.url);
+    if(this.router.url =="/"){
+      this.obtenerNews();
+    }
+    else if(this.router.url =="/asks"){
+      this.obtenerAsks();
+    }
+    else if(this.router.url =="/news"){
+      this.obtenerContributions();
+    }
+  }
+
+  private obtenerAsks(){
+    this.apiservice.obtenerAsksByVote().subscribe(data => {
+      this.lista = data;
+    });
+  }
+  private obtenerNews(){
     this.apiservice.obtenerNewsByVote().subscribe(data => {
       this.lista = data;
-      console.log(this.lista);
+    });
+  }
+  private obtenerContributions(){
+    this.apiservice.obtenerNewsByCreation().subscribe(data =>{
+      this.lista = data;
     });
   }
 

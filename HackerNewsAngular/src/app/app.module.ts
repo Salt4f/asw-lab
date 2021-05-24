@@ -10,7 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NewComponent } from './pages/new/new.component';
 import { ThreadComponent } from './pages/thread/thread.component';
-import { AskComponent } from './pages/ask/ask.component';
 import { SubmitComponent } from './pages/submit/submit.component';
 import { DialogPopUpComponent } from './dialogs/dialog-pop-up/dialog-pop-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -30,7 +29,6 @@ registerLocaleData(es);
     HeaderComponent,
     NewComponent,
     ThreadComponent,
-    AskComponent,
     SubmitComponent,
     DialogPopUpComponent,
     AccountComponent,

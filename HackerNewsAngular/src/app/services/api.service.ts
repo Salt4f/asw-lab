@@ -32,7 +32,13 @@ export class ApiService {
 
 
     obtenerNewsByVote(){
-        return this.http.get<Submision[]>(environment.apiUrl + '/contributions');
+      return this.http.get<Submision[]>(environment.apiUrl + environment.contribution);
+    }
+    obtenerAsksByVote(){
+      return this.http.get<Submision[]>(environment.apiUrl + environment.contribution + '/asks');
+    }
+    obtenerNewsByCreation(){
+      return this.http.get<Submision[]>(environment.apiUrl + environment.contribution + '/new');
     }
 }
 
