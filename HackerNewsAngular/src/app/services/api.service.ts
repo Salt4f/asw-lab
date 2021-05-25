@@ -13,32 +13,43 @@ obtenerContributionsByEmail(email: string){
 }
 //devolvemos un array de cosas (any). en enviroment tendremos el nombre de variables de las url
 
-*/
+
 const httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',
       Authorization: environment.apikey
     })
 };
+*/
 
 @Injectable({
     providedIn: 'root'
   })
 export class ApiService {
-  
+
     constructor(
       private http: HttpClient
     ) { }
 
+    createAuthorizationHeader(headers: HttpHeaders) : HttpHeaders {
+      return headers.append('x-api-key', environment.apikey)//.append('hola-hola', 'hola');
+    }
 
     obtenerNewsByVote(){
-      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + "?usermail=" + environment.usermail);
+      let header = new HttpHeaders();
+      header = this.createAuthorizationHeader(header);
+      
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + "?usermail=" + environment.usermail, {headers: header});
     }
     obtenerAsksByVote(){
-      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + environment.asks + "?usermail=" + environment.usermail);
+      let header = new HttpHeaders();
+      header = this.createAuthorizationHeader(header);
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + environment.asks + "?usermail=" + environment.usermail, {headers: header});
     }
     obtenerNewsByCreation(){
-      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + environment.news + "?usermail=" + environment.usermail);
+      let header = new HttpHeaders();
+      header = this.createAuthorizationHeader(header);
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + environment.news + "?usermail=" + environment.usermail, {headers: header});
     }
 
     obtenerInfoContribution(id: number){

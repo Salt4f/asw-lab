@@ -19,5 +19,4 @@ RUN mv /app/dist/${APP}/* /app/dist/
 FROM nginx:1.13.8-alpine
 
 COPY --from=node /app/dist/ /usr/share/nginx/html
-COPY --from=node /app/node_modules/ /app/node_modules
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
