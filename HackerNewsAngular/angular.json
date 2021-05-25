@@ -47,7 +47,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
+                  "maximumWarning": "500mb",
                   "maximumError": "50mb"
                 },
                 {
@@ -67,16 +67,18 @@
             "development": {
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "HackerNewsAngular:build:production"
+              "browserTarget": "HackerNewsAngular:build:production",
+              "proxyConfig": "src/proxy.conf.json"
             },
             "development": {
-              "browserTarget": "HackerNewsAngular:build:development"
+              "browserTarget": "HackerNewsAngular:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
