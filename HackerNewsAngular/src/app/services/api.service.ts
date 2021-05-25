@@ -14,12 +14,6 @@ obtenerContributionsByEmail(email: string){
 //devolvemos un array de cosas (any). en enviroment tendremos el nombre de variables de las url
 
 */
-const httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type':  'application/json',
-      Authorization: 'f6e205fda57d593885b06558834952d4cd2149f584e6d8b265438e0edfcefe0ef8e15f8cf343797370e8686166ae6bf14efea275cc206dbde35826c0d637e176'
-    })
-};
 
 @Injectable({
     providedIn: 'root'
@@ -29,6 +23,11 @@ export class ApiService {
     constructor(
       private http: HttpClient
     ) { }
+
+    createAuthorizationHeader(headers: Headers) {
+      headers.append('Content-Type', 'application/json');
+      headers.append('x-api-key', 'f6e205fda57d593885b06558834952d4cd2149f584e6d8b265438e0edfcefe0ef8e15f8cf343797370e8686166ae6bf14efea275cc206dbde35826c0d637e176');
+    }
 
 
     obtenerNewsByVote(){
@@ -43,6 +42,12 @@ export class ApiService {
 
     obtenerInfoContribution(id: number){
       return this.http.get<any>(environment.apiUrl + environment.contribution + '/' +id);
+    }
+
+    obtenirThreadsByUser(usermail: string){
+      //const header = new Headers();
+      //this.createAuthorizationHeader(header);
+      return this.http.get<any>(environment.apiUrl + environment.users + '/' + usermail + environment.comments);
     }
 }
 
