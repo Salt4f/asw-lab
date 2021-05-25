@@ -33,11 +33,25 @@ namespace HackerNewsASW.Controllers
         }
 
         [Route("api/contributions")]
-        public async Task<string> IndexAPI()
+        public async Task<IActionResult> IndexAPI([FromQuery]string usermail)
         {
             var contrib = await GetIndexInfo();
 
             var json = new JArray();
+
+            User user = null;
+
+            if (usermail != null)
+            {
+                user = await _context.Users
+                    .Include(u => u.Upvoted)
+                    .FirstOrDefaultAsync(u => u.Email == usermail);
+            
+                if (user is null) return NotFound(); //404
+
+                var header = Request.Headers["X-API-KEY"];//.FirstOrDefault();
+                if (!header.Any() || header.FirstOrDefault() != user.Token) return StatusCode(401);
+            }
 
             foreach (var c in contrib)
             {
@@ -55,9 +69,15 @@ namespace HackerNewsASW.Controllers
 
                 item.Add("Author", author);
 
+                if (user != null) 
+                {
+                    item.Add("UpvotedByUser", user.Upvoted.Contains(c));
+                }
+
+
                 json.Add(item);
             }
-            return json.ToString();
+            return Ok(json.ToString());
         }
 
         private async Task<IEnumerable<News>> GetIndexInfo()
@@ -105,11 +125,25 @@ namespace HackerNewsASW.Controllers
         }
 
         [Route("api/contributions/new")]
-        public async Task<string> NewAPI()
+        public async Task<IActionResult> NewAPI([FromQuery]string usermail)
         {
             var contrib = await GetIndexNews();
 
             var json = new JArray();
+    
+            User user = null;
+
+            if (usermail != null)
+            {
+                user = await _context.Users
+                    .Include(u => u.Upvoted)
+                    .FirstOrDefaultAsync(u => u.Email == usermail);
+            
+                if (user is null) return NotFound(); //404
+
+                var header = Request.Headers["X-API-KEY"];//.FirstOrDefault();
+                if (!header.Any() || header.FirstOrDefault() != user.Token) return StatusCode(401);
+            }
 
             foreach (var c in contrib)
             {
@@ -127,11 +161,16 @@ namespace HackerNewsASW.Controllers
 
                 item.Add("Author", author);
 
+                if (user != null) 
+                {
+                    item.Add("UpvotedByUser", user.Upvoted.Contains(c));
+                }
+
                 json.Add(item);
             }
 
             //return json;
-            return json.ToString();
+            return Ok(json.ToString());
 
             /*var settings = new JsonSerializerSettings()
             {

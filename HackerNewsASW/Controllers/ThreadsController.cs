@@ -121,6 +121,11 @@ namespace HackerNewsASW.Controllers
                 author.Add("UserId", c.Author.UserId);
                 author.Add("Email", c.Author.Email);
 
+                if (user != null) 
+                {
+                    item.Add("UpvotedByUser", user.Upvoted.Contains(c));
+                }
+
                 var coms = new JArray();
                 await FillJson(coms, c);
 
@@ -158,6 +163,11 @@ namespace HackerNewsASW.Controllers
                 author.Add("Email", c3.Author.Email);
 
                 item.Add("Author", author);
+
+                if (user != null) 
+                {
+                    item.Add("UpvotedByUser", user.Upvoted.Contains(c));
+                }
 
                 var coms = new JArray();
                 await FillJson(coms, c3);

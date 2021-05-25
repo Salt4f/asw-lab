@@ -44,11 +44,25 @@ namespace HackerNewsASW.Controllers
         }
 
         [Route("api/contributions/asks")]
-        public async Task<string> AskAPI()
+        public async Task<IActionResult> AskAPI([FromQuery]string usermail)
         {
             var contrib = await GetIndexAsk();
 
             var json = new JArray();
+
+            User user = null;
+
+            if (usermail != null)
+            {
+                user = await _context.Users
+                    .Include(u => u.Upvoted)
+                    .FirstOrDefaultAsync(u => u.Email == usermail);
+            
+                if (user is null) return NotFound(); //404
+
+                var header = Request.Headers["X-API-KEY"];//.FirstOrDefault();
+                if (!header.Any() || header.FirstOrDefault() != user.Token) return StatusCode(401);
+            }
 
             foreach (var c in contrib)
             {
@@ -65,12 +79,18 @@ namespace HackerNewsASW.Controllers
                 author.Add("Email", c.Author.Email);
 
                 item.Add("Author", author);
+                
+                if (user != null) 
+                {
+                    item.Add("UpvotedByUser", user.Upvoted.Contains(c));
+                }
+
 
                 json.Add(item);
             }
 
             //return json;
-            return json.ToString();
+            return Ok(json.ToString());
         }
             // GET: Asks/Details/5
             public async Task<IActionResult> Details(long? id)
