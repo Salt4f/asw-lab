@@ -11,6 +11,8 @@ import { Submisions } from 'src/app/services/Interface';
 export class NewComponent implements OnInit {
 
   lista : Submisions[] = [];
+  usermail = "marc.cortadellas@estudiantat.upc.edu";
+  estaVotada = false;
 
   displayedColumns: string[] = ["buttons","title", "upvotes","comments","dateCreated","author"]  
 
@@ -38,6 +40,7 @@ export class NewComponent implements OnInit {
   }
   private obtenerNews(){
     this.apiservice.obtenerNewsByVote().subscribe(data => {
+      console.log(data);
       this.lista = data;
     });
   }
@@ -46,7 +49,6 @@ export class NewComponent implements OnInit {
       this.lista = data;
     });
   }
-
   votar(){  }
 
   desvotar(){  }
