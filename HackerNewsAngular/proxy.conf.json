@@ -1,0 +1,7 @@
+{
+    "/api/*": {
+        "target": "http://asw.vgafib.org",
+        "secure": false,
+        "logLevel": "debug"
+    }
+}
