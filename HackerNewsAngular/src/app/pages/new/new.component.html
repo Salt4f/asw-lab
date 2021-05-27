@@ -8,10 +8,10 @@
             </th>
             
             <td mat-cell *matCellDef="let element">
-                <button class="button-create" *ngIf="element.UpvotedByUser" mat-icon-button type="button" (click)="votar()">
+                <button class="button-create" *ngIf="!element.UpvotedByUser" mat-icon-button type="button" (click)="votar($event,element)">
                     <mat-icon>keyboard_arrow_up</mat-icon>
                 </button>
-                <button class="button-create" *ngIf="!element.UpvotedByUser" mat-icon-button type="button" (click)="desvotar()">
+                <button class="button-create" *ngIf="element.UpvotedByUser" mat-icon-button type="button" (click)="desvotar($event,element)">
                     <mat-icon>keyboard_arrow_down</mat-icon>
                 </button>
             </td>

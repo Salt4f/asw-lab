@@ -49,9 +49,22 @@ export class NewComponent implements OnInit {
       this.lista = data;
     });
   }
-  votar(){  }
+  
+  votar(e: Event,sub : Submisions)
+  {
+    e.stopPropagation();
+    this.apiservice.upvoteContribution(sub.Id).subscribe(data =>{
+      sub.UpvotedByUser = true;
+    });
+  }
 
-  desvotar(){  }
+  desvotar(e: Event,sub : Submisions)
+  {
+    e.stopPropagation();
+    this.apiservice.downvoteContribution(sub.Id).subscribe(data =>{
+      sub.UpvotedByUser = true;
+    });
+  }
 
   muestraSubmission(item : any){
     console.log(item);
