@@ -1,7 +1,8 @@
 {
     "/api/*": {
-        "target": "http://asw.vgafib.org",
+        "target": "http://asw.vgafib.org/",
         "secure": false,
         "changeOrigin":true
     }
 }
+

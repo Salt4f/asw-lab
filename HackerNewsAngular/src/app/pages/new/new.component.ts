@@ -99,9 +99,23 @@ export class NewComponent implements OnInit {
 
 
 
-  votar(){  }
 
-  desvotar(){  }
+  
+  votar(e: Event,sub : Submisions)
+  {
+    e.stopPropagation();
+    this.apiservice.upvoteContribution(sub.Id).subscribe(data =>{
+      sub.UpvotedByUser = true;
+    });
+  }
+
+  desvotar(e: Event,sub : Submisions)
+  {
+    e.stopPropagation();
+    this.apiservice.downvoteContribution(sub.Id).subscribe(data =>{
+      sub.UpvotedByUser = true;
+    });
+  }
 
   muestraSubmission(item : any){
     console.log(item);

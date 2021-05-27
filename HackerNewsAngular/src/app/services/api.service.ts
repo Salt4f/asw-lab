@@ -26,7 +26,7 @@ const httpOptions = {
     providedIn: 'root'
   })
 export class ApiService {
-
+    
     constructor(
       private http: HttpClient
     ) { }
@@ -37,9 +37,9 @@ export class ApiService {
 
     obtenerNewsByVote(){
       let header = new HttpHeaders();
-      header = this.createAuthorizationHeader(header);
-      
+      header = this.createAuthorizationHeader(header);      
       return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution);// + "?usermail=" + environment.usermail, {headers: header});
+
     }
     obtenerAsksByVote(){
       let header = new HttpHeaders();
@@ -51,10 +51,24 @@ export class ApiService {
       header = this.createAuthorizationHeader(header);
       return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + environment.news + "?usermail=" + environment.usermail, {headers: header});
     }
+    modificarAbout(usermail : string, about : string) {
+      let header = new HttpHeaders();
+      header = this.createAuthorizationHeader(header);
+      const body = JSON.stringify({about});
+      return this.http.post(environment.apiUrl + environment.users + "/" + usermail + environment.about, body, { headers: header });
+    }
+    obtenerInfoUser(usermail: string) {
+      let header = new HttpHeaders();
+      header = this.createAuthorizationHeader(header);
+      return this.http.get<any>(environment.apiUrl + environment.users + "/" + usermail );
+    }
+
+
 
     obtenerInfoContribution(id: number){
       return this.http.get<any>(environment.apiUrl + environment.contribution + '/' +id);
     }
+
     obtenerSubmissionsByMail(usermail: any){
       return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.contribution);
     }
@@ -71,7 +85,27 @@ export class ApiService {
     obtenerUpbotedCommentsPrivate(usermail: string){
       return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.upvotedComments );
     }
+  
+
+    upvoteContribution(id: number) {
+      let header = new HttpHeaders();
+      header = this.createAuthorizationHeader(header);
+      return this.http.post(environment.apiUrl + environment.contribution + '/' + id + '/upvote', null, {headers: header});
+    }
+
+    downvoteContribution(id: number) {
+      let header = new HttpHeaders();
+      header = this.createAuthorizationHeader(header);
+      return this.http.delete(environment.apiUrl + environment.contribution + '/' + id + '/upvote', {headers: header});
+    }
+
+    reply(comment: string, id: number) {
+      const body = JSON.stringify({comment, id});
+      let header = new HttpHeaders();
+      header = this.createAuthorizationHeader(header);
+      return this.http.post(environment.apiUrl + environment.contribution+ '/' + id, body, {headers: header} );
+    }
+
     
 }
 
-  
