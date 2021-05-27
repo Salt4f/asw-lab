@@ -1,6 +1,12 @@
 <p>User: {{user}}</p>
 <p>Created: {{lista.Date}}</p>
-<textarea>About {{lista.About}}</textarea><br />
+<span *ngIf = "lista.Email =='marc.cortadellas@estudiantat.upc.edu'">
+    <textarea  >{{lista.About}}</textarea>
+</span>
+<span *ngIf = "lista.Email !='marc.cortadellas@estudiantat.upc.edu'">
+    <textarea disabled=true >{{lista.About}}</textarea>
+</span>
+<br />
 <span *ngIf="lista.Email=='marc.cortadellas@estudiantat.upc.edu'">
     <button class="button-create" (click)="modificarAbout()">Modificar</button>
 </span>
