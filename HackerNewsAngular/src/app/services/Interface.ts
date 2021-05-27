@@ -7,7 +7,7 @@ export interface Submisions {
     Id: number;
     Title: string;
     Upvotes: string;
-    estaVotada: boolean;
+    UpvotedByUser : boolean;
 }
 
 export interface Author {

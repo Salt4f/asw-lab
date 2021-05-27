@@ -11,4 +11,21 @@
       (click)="onSelect(comment)">
       <span class="badge"></span> {{comment.Title}}
     </li>
+    
+    <form #formulario="ngForm" (ngSubmit)="reply(comment)">
+      <mat-form-field appearance="outline" fxFlex="78" fxFlex.sm="100" fxFlex.xs="100">
+        <mat-label>Comentari:</mat-label>
+        <input #empresa="ngModel" required [(ngModel)]="texto" name="texto" matInput type="textArea">
+      </mat-form-field>
+      <div>
+        <span >
+          <button mat-raised-button type="submit">reply</button>
+        </span>
+      </div>
+
+
+
+
+    </form>
+
 </ul>

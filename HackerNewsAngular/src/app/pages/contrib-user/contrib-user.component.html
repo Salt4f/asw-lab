@@ -8,14 +8,11 @@
             </th>
             
             <td mat-cell *matCellDef="let element">
-                <button class="button-create" *ngIf="!element.UpvotedByUser" mat-icon-button type="button" (click)="votar($event,element)">
+                <button class="button-create" *ngIf="element.UpvotedByUser" mat-icon-button type="button" (click)="votar()">
                     <mat-icon>keyboard_arrow_up</mat-icon>
                 </button>
-                <button class="button-create" *ngIf="element.UpvotedByUser" mat-icon-button type="button" (click)="desvotar($event,element)">
+                <button class="button-create" *ngIf="!element.UpvotedByUser" mat-icon-button type="button" (click)="desvotar()">
                     <mat-icon>keyboard_arrow_down</mat-icon>
-                </button>
-                <button class="button-create" mat-icon-button type="button" (click)="muestraAuthor($event,element)">
-                    <mat-icon>account_circle</mat-icon>
                 </button>
             </td>
         </ng-container>
@@ -40,14 +37,6 @@
             <td mat-cell *matCellDef="let element" align="left"> {{element.DateCreated}} </td>
         </ng-container>
         
-        <ng-container matColumnDef="author">
-            <th mat-header-cell *matHeaderCellDef> Author </th>
-            <td mat-cell *matCellDef="let element" align="left"> {{element.Author.UserId}} </td>
-        </ng-container>
-        <ng-container matColumnDef="button">
-            <th mat-header-cell *matHeaderCellDef> Author </th>
-            <td mat-cell *matCellDef="let element" align="left"> {{element.Author.UserId}} </td>
-        </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="muestraSubmission(row)"></tr>

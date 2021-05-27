@@ -121,8 +121,13 @@ namespace HackerNewsASW.Controllers
                 author.Add("UserId", c.Author.UserId);
                 author.Add("Email", c.Author.Email);
 
+                if (user != null) 
+                {
+                    item.Add("UpvotedByUser", user.Upvoted.Contains(c));
+                }
+
                 var coms = new JArray();
-                await FillJson(coms, c);
+                await FillJson(coms, c, user);
 
                 item.Add("Comments", coms);
 
@@ -132,7 +137,7 @@ namespace HackerNewsASW.Controllers
             return Ok(json.ToString());
         }
 
-        private async Task FillJson(JArray json, Contribution c)
+        private async Task FillJson(JArray json, Contribution c, User user)
         {
             c = await _context.Contributions
                 .Include(c => c.Comments)
@@ -159,8 +164,13 @@ namespace HackerNewsASW.Controllers
 
                 item.Add("Author", author);
 
+                if (user != null) 
+                {
+                    item.Add("UpvotedByUser", user.Upvoted.Contains(c));
+                }
+
                 var coms = new JArray();
-                await FillJson(coms, c3);
+                await FillJson(coms, c3, user);
 
                 item.Add("Comments", coms);
 

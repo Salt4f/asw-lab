@@ -21,6 +21,7 @@ import { registerLocaleData } from '@angular/common';
 import es from '@angular/common/locales/es';
 import { AccountComponent } from './pages/account/account.component';
 import { ContributionComponent } from './pages/contribution/contribution.component';
+import { ContribUserComponent } from './pages/contrib-user/contrib-user.component';
 registerLocaleData(es);
 
 @NgModule({
@@ -32,7 +33,8 @@ registerLocaleData(es);
     SubmitComponent,
     DialogPopUpComponent,
     AccountComponent,
-    ContributionComponent
+    ContributionComponent,
+    ContribUserComponent
   ],
   imports: [
     ReactiveFormsModule,

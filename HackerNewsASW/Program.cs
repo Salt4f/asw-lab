@@ -33,6 +33,7 @@ namespace HackerNewsASW
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "An error occurred creating the DB.");
+                    Environment.Exit(1);
                 }
             }
 
