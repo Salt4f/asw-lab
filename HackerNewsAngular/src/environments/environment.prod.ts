@@ -4,9 +4,11 @@ export const environment = {
   users: '/users',
   contribution: '/contributions',
   comments: '/comments',
+  about: '/about',
   asks: '/asks',
   news :'/new',
-  comments: '/comments',
+  upvotedComments: '/upvotedComments',
+  upvotedContributions: '/upvotedContributions',
   usermail: 'marc.cortadellas@estudiantat.upc.edu',
   apikey: 'f6e205fda57d593885b06558834952d4cd2149f584e6d8b265438e0edfcefe0ef8e15f8cf343797370e8686166ae6bf14efea275cc206dbde35826c0d637e176'
 };
