@@ -63,6 +63,14 @@ export class ApiService {
     obtenerCommentsByMail(usermail: any){
       return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.comments);
     }
+
+    obtenerUpbotedContributionPrivate(usermail: string){
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.upvotedContributions);
+
+    }
+    obtenerUpbotedCommentsPrivate(usermail: string){
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.upvotedComments );
+    }
     
 }
 

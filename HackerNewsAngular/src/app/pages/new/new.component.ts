@@ -32,6 +32,14 @@ export class NewComponent implements OnInit {
     else if(this.router.url =="/news"){
       this.obtenerContributions();
     }
+    else if(this.router.url =="/myUpvotedContributions"){
+      console.log("hi");
+      this.obtenermyUpvotedContributions();
+
+    }
+    else if(this.router.url =="/myUpvotedComments"){
+      this.obtenermyUpvotedComments();
+    }
   }
 
   private obtenerAsks(){
@@ -69,6 +77,20 @@ export class NewComponent implements OnInit {
       this.lista = data;
     });
   }
+
+  private obtenermyUpvotedComments(){
+    this.apiservice.obtenerUpbotedCommentsPrivate(this.usermail).subscribe(data =>{
+      this.lista = data;
+    });
+
+  }
+
+  private obtenermyUpvotedContributions(){
+    this.apiservice.obtenerUpbotedContributionPrivate(this.usermail).subscribe(data =>{
+      this.lista = data;
+    });
+  }
+
 
   obtenerlastParam(url: string){
     let pos = url.lastIndexOf("/");

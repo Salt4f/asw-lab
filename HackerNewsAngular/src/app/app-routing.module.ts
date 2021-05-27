@@ -14,7 +14,9 @@ const routes: Routes = [
   {path: 'threads', component: ThreadComponent},
   {path: 'contribution/:id', component: ContributionComponent},
   {path: 'submissions/:usermail', component: ContribUserComponent},
-  {path: 'comments/:usermail', component: ContribUserComponent}
+  {path: 'comments/:usermail', component: ContribUserComponent},
+  {path: 'myUpvotedContributions', component: NewComponent},
+  {path: 'myUpvotedComments', component: NewComponent}
   
 ];
 
