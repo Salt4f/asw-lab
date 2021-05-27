@@ -1,10 +1,19 @@
-<p>User: {{lista.Email}}</p>
+<p>User: {{user}}</p>
 <p>Created: {{lista.Date}}</p>
 <textarea>About {{lista.About}}</textarea><br />
-<button class="button-create" (click)="modificarAbout()">Modificar</button>
+<span *ngIf="lista.Email=='marc.cortadellas@estudiantat.upc.edu'">
+    <button class="button-create" (click)="modificarAbout()">Modificar</button>
+</span>
+<br>
 <p>Email: {{lista.Email}}</p>
-<button mat-button mat-menu-item [routerLink]="['']">Submissions</button>
-<button mat-button mat-menu-item [routerLink]="['']">Comments</button>
-<button mat-button mat-menu-item [routerLink]="['']">Upvoted Submissions</button>
-<button mat-button mat-menu-item [routerLink]="['']">Upvoted Comments</button>
+<button mat-button mat-menu-item [routerLink]="['/submissions/'+lista.Email]">Submissions</button>
+<br>
+<button mat-button mat-menu-item [routerLink]="['/comments/'+lista.Email]">Comments</button>
+<br>
+<br>
+
+<span *ngIf="lista.Email=='marc.cortadellas@estudiantat.upc.edu'">
+    <button  mat-raised-button mat-menu-item [routerLink]="['/myUpvotedContributions']">Upvoted Submissions</button>
+    <button mat-raised-button mat-menu-item [routerLink]="['/myUpvotedComments']">Upvoted Comments</button>
+</span>
 

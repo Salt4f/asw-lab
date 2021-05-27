@@ -14,6 +14,7 @@ export class NewComponent implements OnInit {
   usermail = "marc.cortadellas@estudiantat.upc.edu";
   estaVotada = false;
   lastParam = "";
+  selectedItem :any;
   displayedColumns: string[] = ["buttons","title", "upvotes","comments","dateCreated","author"]  
   
 
@@ -119,7 +120,13 @@ export class NewComponent implements OnInit {
 
   muestraSubmission(item : any){
     console.log(item);
+    this.selectedItem = item;
     this.router.navigate(['contribution/'+item.Id]);
-   }
+  }
+  muestraAuthor(e:Event, item: Submisions){
+    e.stopPropagation();
+    console.log(item);
+    this.router.navigate(['account/'+item.Author.Email]);
+  }
 
 }

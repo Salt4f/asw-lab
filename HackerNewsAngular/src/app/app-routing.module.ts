@@ -19,7 +19,7 @@ const routes: Routes = [
   {path: 'myUpvotedContributions', component: NewComponent},
   {path: 'myUpvotedComments', component: NewComponent},
   { path: 'threads', component: ThreadComponent },
-  { path: 'account', component: AccountComponent },
+  { path: 'account/:usermail', component: AccountComponent },
   {path: 'contribution/:id', component: ContributionComponent}
 ];
 
