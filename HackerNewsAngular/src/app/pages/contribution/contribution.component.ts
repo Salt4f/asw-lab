@@ -10,7 +10,7 @@ import { ApiService } from 'src/app/services/api.service';
 export class ContributionComponent implements OnInit {
 
   idUrl = 0;
-
+  comment = "";
   lista: any;
 
   constructor(
@@ -33,5 +33,11 @@ export class ContributionComponent implements OnInit {
     })
 
   }
+
+  reply(){
+    this.apiservice.reply(this.comment, this.idUrl).subscribe();
+  }
+
+
 
 }
