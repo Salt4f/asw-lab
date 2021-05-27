@@ -25,6 +25,7 @@ export class ContributionComponent implements OnInit {
   obtenerId(url: string){
     let pos = url.lastIndexOf("/");
     this.idUrl = parseInt(url.substring(pos +1));
+    console.log(this.idUrl);
   }
   obtenerInfoContribution(idUrl: number){
     this.apiservice.obtenerInfoContribution(idUrl).subscribe(data=> {
@@ -37,7 +38,17 @@ export class ContributionComponent implements OnInit {
   reply(){
     this.apiservice.reply(this.comment, this.idUrl).subscribe();
   }
-
-
+  votar(){
+    console.log("votar comentario");
+  }
+  muestraAuthor(item: any){
+    console.log(item);
+    this.router.navigate(['account/'+item.Author.Email]);
+  }
+  replyComment(item:any){
+    console.log(item);
+    this.router.navigate(['contribution/'+item.Id]);
+    this.obtenerInfoContribution(item.Id);
+  }
 
 }

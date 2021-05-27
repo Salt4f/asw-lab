@@ -1,31 +1,33 @@
 
-<p>La id de la contribution es {{lista.Id}}</p>
-<p>La data de la contribution es {{ lista.DateCreated }}</p>
-<p>el contenido de la contribution es {{lista.Content}}</p>
-<p>el titulo de la contribution es {{lista.Title}}</p>
-<p>numero de votos de la contribution es {{lista.Upvotes}}</p>
+<p>title: <strong>{{lista.Title}}</strong> </p>
+<p>date:  <strong>{{ lista.DateCreated }}</strong> </p>
+
+
+<p>{{lista.Content}}</p>
+
+<p>votes: {{lista.Upvotes}}</p>
+<button mat-raised-button (click)="votar()">vote/unvote</button>
+<br>
+
 <p>Comentarios: no se ven comentarios de comentarios</p>
-<ul class="comments">
+  <ul class="comments">
     <li *ngFor="let comment of lista.Comments"
-      [class.selected]="comment === selectedComment"
-      (click)="onSelect(comment)">
+      [class.selected]="comment === selectedComment">
       <span class="badge"></span> {{comment.Title}}
+      <button mat-raised-button (click)="votar()">vote/unvote</button>
+      <button mat-raised-button (click)="muestraAuthor(comment)">{{comment.Author.UserId}}</button>
+      <button mat-raised-button (click)="replyComment(comment)">reply</button>
     </li>
-    
-    <form #formulario="ngForm" (ngSubmit)="reply(comment)">
-      <mat-form-field appearance="outline" fxFlex="78" fxFlex.sm="100" fxFlex.xs="100">
-        <mat-label>Comentari:</mat-label>
-        <input #empresa="ngModel" required [(ngModel)]="texto" name="texto" matInput type="textArea">
-      </mat-form-field>
-      <div>
-        <span >
-          <button mat-raised-button type="submit">reply</button>
-        </span>
-      </div>
-
-
-
-
-    </form>
-
-</ul>
+  </ul>
+  <br>
+  <form #formulario="ngForm" (ngSubmit)="reply(comment)">
+    <mat-form-field >
+      <mat-label>Comentari:</mat-label>
+      <input #empresa="ngModel" required [(ngModel)]="texto" name="texto" matInput type="textArea">
+    </mat-form-field>
+    <div>
+      <span >
+        <button mat-raised-button type="submit">reply</button>
+      </span>
+    </div>
+  </form>

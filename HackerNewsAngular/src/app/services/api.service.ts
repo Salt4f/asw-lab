@@ -40,12 +40,12 @@ export class ApiService {
     obtenerAsksByVote(){
       let header = new HttpHeaders();
       header = this.createAuthorizationHeader(header);
-      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + environment.asks + "?usermail=" + environment.usermail, {headers: header});
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + environment.asks);// + "?usermail=" + environment.usermail, {headers: header});
     }
     obtenerNewsByCreation(){
       let header = new HttpHeaders();
       header = this.createAuthorizationHeader(header);
-      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + environment.news + "?usermail=" + environment.usermail, {headers: header});
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + environment.news);// + "?usermail=" + environment.usermail, {headers: header});
     }
     modificarAbout(usermail : string, about : string) {
       let header = new HttpHeaders();
