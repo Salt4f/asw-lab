@@ -6,6 +6,8 @@ export const environment = {
   production: false,
   apiUrl: 'http://asw.vgafib.org/api',
   users: '/users',
+  contribution: '/contributions',
+  comments: '/comments'
   about: '/about',
   contribution: '/contributions',
   asks: '/asks',
