@@ -59,6 +59,13 @@ export class ApiService {
       return this.http.get<any>(environment.apiUrl + environment.users + "/" + usermail );
     }
 
+    submit(usermail: string, title: string, url: string, content: string) {
+      let header = new HttpHeaders();
+      header = this.createAuthorizationHeader(header);
+      const body = JSON.stringify({ title, url, content });
+      return this.http.post(environment.apiUrl + environment.contribution, body, { headers: header });
+    }
+
 
 
     obtenerInfoContribution(id: number){
