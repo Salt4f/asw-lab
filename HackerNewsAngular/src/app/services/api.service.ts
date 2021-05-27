@@ -37,9 +37,9 @@ export class ApiService {
 
     obtenerNewsByVote(){
       let header = new HttpHeaders();
-      header = this.createAuthorizationHeader(header);
-      
-      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution );//+ "?usermail=" + environment.usermail, {headers: header});
+      header = this.createAuthorizationHeader(header);      
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution);// + "?usermail=" + environment.usermail, {headers: header});
+
     }
     obtenerAsksByVote(){
       let header = new HttpHeaders();
@@ -68,6 +68,24 @@ export class ApiService {
     obtenerInfoContribution(id: number){
       return this.http.get<any>(environment.apiUrl + environment.contribution + '/' +id);
     }
+
+    obtenerSubmissionsByMail(usermail: any){
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.contribution);
+    }
+    
+
+    obtenerCommentsByMail(usermail: any){
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.comments);
+    }
+
+    obtenerUpbotedContributionPrivate(usermail: string){
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.upvotedContributions);
+
+    }
+    obtenerUpbotedCommentsPrivate(usermail: string){
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.upvotedComments );
+    }
+  
 
     upvoteContribution(id: number) {
       let header = new HttpHeaders();
