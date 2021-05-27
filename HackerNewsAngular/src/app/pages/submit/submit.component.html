@@ -1,1 +1,29 @@
-<p>submit works!</p>
+<div class="form">
+  <form #formulario="ngForm">
+    <br />
+    <mat-form-field appearance="outline">
+      <mat-label> Title </mat-label>
+      <input [(ngModel)]="title" name="title" matInput type="text">
+    </mat-form-field>
+    <br />
+    <br />
+    <mat-form-field appearance="outline">
+      <mat-label> Url </mat-label>
+      <input [(ngModel)]="url" name="url" matInput type="text">
+    </mat-form-field>
+
+    <p>Or</p>
+
+    <mat-form-field appearance="outline">
+      <mat-label> Text </mat-label>
+      <textarea matInput [(ngModel)]="content" name="content"></textarea>
+    </mat-form-field>
+
+    <div>
+      <br />
+      <span>
+        <button mat-raised-button (click)="submit()">Submit</button>
+      </span>
+    </div>
+  </form>
+</div>
