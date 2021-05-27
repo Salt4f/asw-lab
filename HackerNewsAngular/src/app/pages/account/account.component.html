@@ -1,1 +1,10 @@
-<p>account works!</p>
+<p>User: {{lista.Email}}</p>
+<p>Created: {{lista.Date}}</p>
+<textarea>About {{lista.About}}</textarea><br />
+<button class="button-create" (click)="modificarAbout()">Modificar</button>
+<p>Email: {{lista.Email}}</p>
+<button mat-button mat-menu-item [routerLink]="['']">Submissions</button>
+<button mat-button mat-menu-item [routerLink]="['']">Comments</button>
+<button mat-button mat-menu-item [routerLink]="['']">Upvoted Submissions</button>
+<button mat-button mat-menu-item [routerLink]="['']">Upvoted Comments</button>
+

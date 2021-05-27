@@ -1,7 +1,7 @@
 {
-    "/api/*": {
-        "target": "http://asw.vgafib.org",
-        "secure": false,
-        "logLevel": "debug"
-    }
+  "/api/*": {
+    "target": "http://asw.vgafib.org/",
+    "secure": false,
+    "changeOrigin": true
+  }
 }
