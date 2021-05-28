@@ -14,7 +14,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json.Linq;
 using System.Text;
-using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Http;
 
 namespace HackerNewsASW.Controllers

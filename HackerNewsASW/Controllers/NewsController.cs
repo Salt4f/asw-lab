@@ -321,7 +321,7 @@ namespace HackerNewsASW.Controllers
                 Text = text
             };
             var submission = await SubmitFunction(submit, author);
-            return submission.Item1 ? StatusCode(201) : StatusCode(412);
+            return submission.Item1 ? CreatedAtAction("DetailsAPI", "Contributions", submission.Item2, submission.Item2) : StatusCode(412);
         }
 
         // GET: Contribucions/Edit/5

@@ -83,6 +83,7 @@ namespace HackerNewsASW.Controllers
             var comments = await _context.Comments
             .Include(c => c.Author)
             .Include(c => c.Comments)
+            .Include(c => c.Commented)
             .Where(c => c.Author == user)
             .OrderByDescending(c => c.DateCreated)
             .ToListAsync<Comment>();
@@ -120,6 +121,12 @@ namespace HackerNewsASW.Controllers
                 var author = new JObject();
                 author.Add("UserId", c.Author.UserId);
                 author.Add("Email", c.Author.Email);
+
+                var parent = new JObject();
+                parent.Add("Id", c.Commented.Id);
+                parent.Add("Title", c.Commented.getTitle());
+
+                item.Add("Parent", parent);
 
                 if (user != null) 
                 {
