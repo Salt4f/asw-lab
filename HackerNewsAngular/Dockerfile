@@ -10,7 +10,7 @@ WORKDIR /app
 COPY ./ /app/
 
 # Instala y construye el Angular App
-RUN npm install
+RUN npm ci
 RUN npm run ng build --prod
 RUN mv /app/dist/${APP}/* /app/dist/
 
