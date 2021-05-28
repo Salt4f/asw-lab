@@ -3,37 +3,37 @@
 
     
     <ng-template ngIf="true">
-        <button mat-button mat-menu-item [routerLink]="['']">Logo</button>
+        <button mat-button mat-menu-item (click)="redirect('')">Logo</button>
         
     </ng-template>
 
 
     <ng-template ngIf="true">
-        <button mat-button mat-menu-item [routerLink]="['']">HackerNews</button>
+        <button mat-button mat-menu-item (click)="redirect('')">HackerNews</button>
         
     </ng-template>
 
 
 
     <ng-template ngIf="true">
-        <button mat-button mat-menu-item [routerLink]="['/news']">New</button>
+        <button mat-button mat-menu-item (click)="redirect('/news')">New</button>
        
     </ng-template>
 
     <ng-template ngIf="true">
-        <button mat-button mat-menu-item [routerLink]="['/threads']">Thread</button>
+        <button mat-button mat-menu-item (click)="redirect('/threads')">Thread</button>
     </ng-template>
 
     <ng-template ngIf="true">
-        <button mat-button mat-menu-item [routerLink]="['/asks']">ask</button>
+        <button mat-button mat-menu-item (click)="redirect('/asks')">ask</button>
     </ng-template>
 
     <ng-template ngIf="true">
-        <button mat-button mat-menu-item [routerLink]="['/submit']">Submit</button>
+        <button mat-button mat-menu-item (click)="redirect('/submit')">Submit</button>
     </ng-template>
 
     <ng-template ngIf="true">
-        <button mat-button mat-menu-item [routerLink]="['/account/marc.cortadellas@estudiantat.upc.edu']">Profile</button>
+        <button mat-button mat-menu-item (click)="redirect('/account/marc.cortadellas@estudiantat.upc.edu')">Profile</button>
     </ng-template>
 <!--
     <ng-template ngIf="true">

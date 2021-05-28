@@ -42,6 +42,13 @@ export class HeaderComponent implements OnInit {
   login(){
     this.usermail = "marc.cortadellas";
   }
+  redirect(url: string){
+    this.redirectTo(url);
+  }
+  redirectTo(uri:string){
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>
+    this.router.navigate([uri]));
+ }
 
 
 }

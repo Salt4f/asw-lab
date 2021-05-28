@@ -12,6 +12,11 @@
 </span>
 <br>
 <p>Email: {{lista.Email}}</p>
+
+<span *ngIf="usermail=='marc.cortadellas@estudiantat.upc.edu'">
+    
+<p>Token: {{apikey}}</p>
+</span>
 <button mat-button mat-menu-item [routerLink]="['/submissions/'+lista.Email]">Submissions</button>
 <br>
 <button mat-button mat-menu-item [routerLink]="['/comments/'+lista.Email]">Comments</button>
