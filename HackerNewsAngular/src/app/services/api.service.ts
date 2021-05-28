@@ -52,7 +52,8 @@ export class ApiService {
       header = this.createAuthorizationHeader(header);
       let body = new FormData();
       body.append("about", about);
-      return this.http.post(environment.apiUrl + environment.users + "/" + usermail + environment.about, body, {headers : header});
+      console.log(body);
+      return this.http.put(environment.apiUrl + environment.users + "/" + usermail + environment.about, body, {headers : header});
     }
     obtenerInfoUser(usermail: string) {
       let header = new HttpHeaders();
@@ -67,7 +68,7 @@ export class ApiService {
       body.append("title", title);
       body.append("content", content);
       body.append("url", url);
-      console.log("algo");
+      
       return this.http.post(environment.apiUrl + environment.contribution, body);
     }
 

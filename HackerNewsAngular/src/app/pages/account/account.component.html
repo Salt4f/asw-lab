@@ -1,11 +1,22 @@
 <p>User: {{user}}</p>
 <p>Created: {{lista.Date}}</p>
 <span *ngIf = "lista.Email =='marc.cortadellas@estudiantat.upc.edu'">
-    <textarea  >{{lista.About}}</textarea>
+    <mat-form-field appearance="outline">
+        <mat-label> Text </mat-label>
+        <textarea matInput [(ngModel)]="lista.About" name="content"></textarea>
+      </mat-form-field>
+    
 </span>
 <span *ngIf = "lista.Email !='marc.cortadellas@estudiantat.upc.edu'">
-    <textarea disabled=true >{{lista.About}}</textarea>
+    <mat-form-field appearance="outline">
+        <mat-label> Text </mat-label>
+        <textarea matInput [(ngModel)]="lista.About" name="content"></textarea>
+      </mat-form-field>
+    
 </span>
+
+
+
 <br />
 <span *ngIf="lista.Email=='marc.cortadellas@estudiantat.upc.edu'">
     <button class="button-create" (click)="modificarAbout()">Modificar</button>

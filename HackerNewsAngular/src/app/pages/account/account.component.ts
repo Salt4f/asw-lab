@@ -34,7 +34,7 @@ export class AccountComponent implements OnInit{
   }
 
   modificarAbout() {
-    this.apiservice.modificarAbout(this.usermail, this.about).subscribe(data=>{
+    this.apiservice.modificarAbout(this.usermail, this.lista.About).subscribe(data=>{
       //this.obtenerInformacionUsuario();
     });
   }
