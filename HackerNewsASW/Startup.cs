@@ -34,8 +34,9 @@ namespace HackerNewsASW
                 options.AddPolicy(name: cors,
                     builder =>
                     {
-                        builder.WithOrigins("http://asw.vgafib.org",
-                                            "http://angular.asw.vgafib.org");
+                        builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
                     });
             });
 
