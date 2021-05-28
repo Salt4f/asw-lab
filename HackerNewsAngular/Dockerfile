@@ -10,6 +10,6 @@ WORKDIR /app
 COPY ./ /app/
 
 # Instala y construye el Angular App
-RUN npm ci --only=production
+RUN npm install --only=production
 EXPOSE 8080
 CMD ["npm", "start"]
