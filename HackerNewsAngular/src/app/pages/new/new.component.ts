@@ -24,23 +24,7 @@ export class NewComponent implements OnInit {
   ngOnInit(): void {
     this.obtenerlastParam(this.router.url);
     console.log(this.router.url);
-    if(this.router.url =="/"){
-      this.obtenerNews();
-    }
-    else if(this.router.url =="/asks"){
-      this.obtenerAsks();
-    }
-    else if(this.router.url =="/news"){
-      this.obtenerContributions();
-    }
-    else if(this.router.url =="/myUpvotedContributions"){
-      console.log("hi");
-      this.obtenermyUpvotedContributions();
-
-    }
-    else if(this.router.url =="/myUpvotedComments"){
-      this.obtenermyUpvotedComments();
-    }
+    this.obtenerItems();
   }
 
   private obtenerAsks(){
@@ -98,23 +82,20 @@ export class NewComponent implements OnInit {
     this.lastParam = url.substring(pos +1);
   }
 
-
-
-
   
-  votar(e: Event,sub : Submisions)
-  {
+  votar(e: Event,sub : Submisions){
     e.stopPropagation();
     this.apiservice.upvoteContribution(sub.Id).subscribe(data =>{
       sub.UpvotedByUser = true;
+      this.obtenerItems();
     });
   }
 
-  desvotar(e: Event,sub : Submisions)
-  {
+  desvotar(e: Event,sub : Submisions)  {
     e.stopPropagation();
     this.apiservice.downvoteContribution(sub.Id).subscribe(data =>{
       sub.UpvotedByUser = true;
+      this.obtenerItems();
     });
   }
 
@@ -127,6 +108,17 @@ export class NewComponent implements OnInit {
     e.stopPropagation();
     console.log(item);
     this.router.navigate(['account/'+item.Author.Email]);
+  }
+  obtenerItems(){
+    if(this.router.url =="/"){
+      this.obtenerNews();
+    }
+    else if(this.router.url =="/asks"){
+      this.obtenerAsks();
+    }
+    else if(this.router.url =="/news"){
+      this.obtenerContributions();
+    }
   }
 
 }

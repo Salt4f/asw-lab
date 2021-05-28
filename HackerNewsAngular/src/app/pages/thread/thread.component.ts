@@ -12,7 +12,7 @@ import { Submisions } from 'src/app/services/Interface';
 export class ThreadComponent implements OnInit {
 
   lista: any[] = [];
-  displayedColumns: string[] = ["title", "upvotes","dateCreated","author"];
+  displayedColumns: string[] = ["title", "upvotes","dateCreated","author", "parent", "button"];
   usermail = "marc.cortadellas@estudiantat.upc.edu";
   
   constructor(
@@ -28,16 +28,21 @@ export class ThreadComponent implements OnInit {
     console.log(this.usermail);
     this.apiservice.obtenirThreadsByUser(this.usermail).subscribe(data => {
       console.log(data);
-      //this.lista = data[0].map( (thread: { Id: any; Content: any; DateCreated: any; Title: any; Upvotes: any; pId: any; pTitle: any; }) =>({Id: thread.Id, Content: thread.Content, Upvotes: thread.Upvotes, DateCreated: DateToString(thread.DateCreated), Title: thread.Title, pId: thread.Parent.Id, pTitle: thread.Parent.Title }));
-      console.log(data);
-      console.log(this.lista[0]);
-      this.lista.sort((a, b) => (a.Id < b.Id ? -1 : 1));
+      this.lista = data;
+      //this.lista = data.map( (thread: { Id: any; Content: any; DateCreated: any; Title: any; Upvotes: any; pId: any; pTitle: any; }) =>({Id: thread.Id, Content: thread.Content, Upvotes: thread.Upvotes, DateCreated: DateToString(thread.DateCreated), Title: thread.Title, pId: thread.Parent['Id'], pTitle: thread.Parent.Title }));
+      //this.lista.sort((a, b) => (a.Id < b.Id ? -1 : 1));
     });
   }
   muestraSubmission(item : any){
     console.log(item);
     this.router.navigate(['contribution/'+item.Id]);
-   }
+  }
+  muestraParent(e: Event, item:any){
+    e.stopPropagation();
+    
+    this.router.navigate(['contribution/'+item.Parent.Id]);
+  }
+
 
 
 }

@@ -24,19 +24,4 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  irALaRuta(ruta: string, item: string){
-    this.router.navigate([ruta,item]);
-  }
-
-  
-  redirect(url: string){
-    this.redirectTo(url);
-  }
-  redirectTo(uri:string){
-    console.log(uri);
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>
-    this.router.navigate([uri]));
- }
-
-
 }

@@ -36,10 +36,9 @@ export class ContributionComponent implements OnInit {
   }
 
   reply(){
-    this.apiservice.reply(this.comment, this.idUrl).subscribe();
-  }
-  votar(){
-    console.log("votar comentario");
+    this.apiservice.reply(this.comment, this.idUrl).subscribe( data =>{
+      this.obtenerInfoContribution(this.idUrl);
+    });
   }
   muestraAuthor(item: any){
     console.log(item);
@@ -47,8 +46,27 @@ export class ContributionComponent implements OnInit {
   }
   replyComment(item:any){
     console.log(item);
+    this.comment ="";
     this.router.navigate(['contribution/'+item.Id]);
     this.obtenerInfoContribution(item.Id);
   }
+
+  votar(e: Event,sub : any){
+    e.stopPropagation();
+    this.apiservice.upvoteContribution(sub.Id).subscribe(data =>{
+      sub.UpvotedByUser = true;
+      this.obtenerInfoContribution(this.idUrl);
+    });
+  }
+
+  desvotar(e: Event,sub : any)  {
+    e.stopPropagation();
+    console.log(sub);
+    this.apiservice.downvoteContribution(sub.Id).subscribe(data =>{
+      sub.UpvotedByUser = true;
+      this.obtenerInfoContribution(this.idUrl);
+    });
+  }
+
 
 }

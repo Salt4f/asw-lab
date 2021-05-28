@@ -9,21 +9,34 @@
 <button mat-raised-button (click)="votar()">vote/unvote</button>
 <br>
 
-<p>Comentarios: no se ven comentarios de comentarios</p>
+<p>Comentarios:</p>
   <ul class="comments">
     <li *ngFor="let comment of lista.Comments"
       [class.selected]="comment === selectedComment">
       <span class="badge"></span> {{comment.Title}}
-      <button mat-raised-button (click)="votar()">vote/unvote</button>
-      <button mat-raised-button (click)="muestraAuthor(comment)">{{comment.Author.UserId}}</button>
+      <ng-container matColumnDef ="buttons">
+        <th mat-header-cell *matHeaderCellDef>
+
+        </th>
+        
+        <td mat-cell *matCellDef="let element">
+            <button class="button-create" *ngIf="!comment.UpvotedByUser" mat-icon-button type="button" (click)="votar($event,element)">
+                <mat-icon>keyboard_arrow_up</mat-icon>
+            </button>
+            <button class="button-create" *ngIf="comment.UpvotedByUser" mat-icon-button type="button" (click)="desvotar($event,element)">
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+<button mat-raised-button (click)="muestraAuthor(comment)">{{comment.Author.UserId}}</button>
       <button mat-raised-button (click)="replyComment(comment)">reply</button>
     </li>
   </ul>
   <br>
-  <form #formulario="ngForm" (ngSubmit)="reply(comment)">
+  <form #formulario="ngForm" (ngSubmit)="reply()">
     <mat-form-field >
       <mat-label>Comentari:</mat-label>
-      <input #empresa="ngModel" required [(ngModel)]="texto" name="texto" matInput type="textArea">
+      <input #empresa="ngModel" required [(ngModel)]="comment" name="texto" matInput type="textArea">
     </mat-form-field>
     <div>
       <span >
