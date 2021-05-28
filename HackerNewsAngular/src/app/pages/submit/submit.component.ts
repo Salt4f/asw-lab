@@ -25,8 +25,8 @@ export class SubmitComponent implements OnInit {
   }
 
   submit() {
-    this.apiservice.submit(this.usermail, this.title, this.url, this.content).subscribe((data: any) => {
-     // this.router.navigate(["contribution/" + data.id]);
+    this.apiservice.submit( this.title, this.url, this.content).subscribe((data: any) => {
+     this.router.navigate(["contribution/" + data.id]);
 
     });
   }
