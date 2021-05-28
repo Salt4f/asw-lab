@@ -34,18 +34,18 @@ export class ApiService {
     obtenerNewsByVote(){
       let header = new HttpHeaders();
       header = this.createAuthorizationHeader(header);      
-      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + "?usermail=" + environment.usermail);
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + "?usermail=" + environment.usermail, {headers : header});
 
     }
     obtenerAsksByVote(){
       let header = new HttpHeaders();
       header = this.createAuthorizationHeader(header);
-      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + environment.asks + "?usermail=" + environment.usermail);
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + environment.asks + "?usermail=" + environment.usermail, {headers : header});
     }
     obtenerNewsByCreation(){
       let header = new HttpHeaders();
       header = this.createAuthorizationHeader(header);
-      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + environment.news + "?usermail=" + environment.usermail);
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.contribution + environment.news + "?usermail=" + environment.usermail, {headers : header});
     }
     modificarAbout(usermail : string, about : string) {
       let header = new HttpHeaders();
@@ -58,10 +58,10 @@ export class ApiService {
     obtenerInfoUser(usermail: string) {
       let header = new HttpHeaders();
       header = this.createAuthorizationHeader(header);
-      return this.http.get<any>(environment.apiUrl + environment.users + "/" + usermail );
+      return this.http.get<any>(environment.apiUrl + environment.users + "/" + usermail, {headers : header} );
     }
 
-    submit(usermail: string, title: string, url: string, content: string) {
+    submit( title: string, url: string, content: string) {
       let header = new HttpHeaders();
       header = this.createAuthorizationHeader(header);
       let body = new FormData();
@@ -69,59 +69,63 @@ export class ApiService {
       body.append("content", content);
       body.append("url", url);
       
-      return this.http.post(environment.apiUrl + environment.contribution, body);
+      return this.http.post(environment.apiUrl + environment.contribution, body, {headers : header});
     }
-
-
 
     obtenerInfoContribution(id: number){
       return this.http.get<any>(environment.apiUrl + environment.contribution + '/' +id);
     }
 
-
     obtenirThreadsByUser(usermail: string){
-      //const header = new Headers();
-      //this.createAuthorizationHeader(header);
-      return this.http.get<any[]>(environment.apiUrl + environment.users + '/' + usermail + environment.threads);
+      let header  = new HttpHeaders();
+      this.createAuthorizationHeader(header);
+      return this.http.get<any[]>(environment.apiUrl + environment.users + '/' + usermail + environment.threads, {headers : header});
     }
 
     obtenerSubmissionsByMail(usermail: any){
-      return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.contribution);
+      let header  = new HttpHeaders();
+      this.createAuthorizationHeader(header);
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.contribution, {headers : header});
     }
     
 
     obtenerCommentsByMail(usermail: any){
-      return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.comments);
+      let header  = new HttpHeaders();
+      this.createAuthorizationHeader(header);
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.comments, {headers : header});
     }
 
     obtenerUpbotedContributionPrivate(usermail: string){
-      return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.upvotedContributions);
+      let header  = new HttpHeaders();
+      this.createAuthorizationHeader(header);
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.upvotedContributions, {headers : header});
 
     }
     obtenerUpbotedCommentsPrivate(usermail: string){
-      return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.upvotedComments );
+      let header  = new HttpHeaders();
+      this.createAuthorizationHeader(header);
+      return this.http.get<Submisions[]>(environment.apiUrl + environment.users +'/' + usermail + environment.upvotedComments, {headers : header} );
     }
   
 
     upvoteContribution(id: number) {
       let header = new HttpHeaders();
       header = this.createAuthorizationHeader(header);
-      return this.http.post(environment.apiUrl + environment.contribution + '/' + id + '/upvote', null);
+      return this.http.post(environment.apiUrl + environment.contribution + '/' + id + '/upvote', null, {headers : header});
     }
 
     downvoteContribution(id: number) {
       let header = new HttpHeaders();
       header = this.createAuthorizationHeader(header);
-      return this.http.delete(environment.apiUrl + environment.contribution + '/' + id + '/upvote');
+      return this.http.delete(environment.apiUrl + environment.contribution + '/' + id + '/upvote', {headers : header});
     }
 
     reply(comment: string, id: number) {
       let body = new FormData();
       body.append("comment", comment);
-      //const body = JSON.stringify({comment, id});
       let header = new HttpHeaders();
       header = this.createAuthorizationHeader(header);
-      return this.http.post(environment.apiUrl + environment.contribution+ '/' + id, body );
+      return this.http.post(environment.apiUrl + environment.contribution+ '/' + id, body, {headers : header} );
     }
 
 }
