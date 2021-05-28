@@ -76,7 +76,7 @@ export class ApiService {
     obtenirThreadsByUser(usermail: string){
       //const header = new Headers();
       //this.createAuthorizationHeader(header);
-      return this.http.get<any>(environment.apiUrl + environment.users + '/' + usermail + environment.comments);
+      return this.http.get<any[]>(environment.apiUrl + environment.users + '/' + usermail + environment.threads);
     }
 
     obtenerSubmissionsByMail(usermail: any){

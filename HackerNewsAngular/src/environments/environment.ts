@@ -8,6 +8,7 @@ export const environment = {
   users: '/users',
   contribution: '/contributions',
   comments: '/comments',
+  threads: '/threads',
   about: '/about',
   asks: '/asks',
   news :'/new',

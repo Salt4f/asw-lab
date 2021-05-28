@@ -3,21 +3,18 @@
 
     
     <ng-template ngIf="true">
-        <button mat-button mat-menu-item (click)="redirect('')">Logo</button>
-        
+        <button mat-button mat-menu-item (click)="redirect('/')">Logo</button>
     </ng-template>
 
 
     <ng-template ngIf="true">
-        <button mat-button mat-menu-item (click)="redirect('')">HackerNews</button>
-        
+        <button mat-button mat-menu-item (click)="redirect('/')">HackerNews</button>
     </ng-template>
 
 
 
     <ng-template ngIf="true">
         <button mat-button mat-menu-item (click)="redirect('/news')">New</button>
-       
     </ng-template>
 
     <ng-template ngIf="true">
@@ -33,7 +30,7 @@
     </ng-template>
 
     <ng-template ngIf="true">
-        <button mat-button mat-menu-item (click)="redirect('/account/marc.cortadellas@estudiantat.upc.edu')">Profile</button>
+        <button mat-button mat-menu-item (click)="redirect('/account/'+ usermail )">Profile</button>
     </ng-template>
 <!--
     <ng-template ngIf="true">

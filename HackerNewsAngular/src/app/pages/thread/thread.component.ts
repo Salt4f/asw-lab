@@ -27,7 +27,8 @@ export class ThreadComponent implements OnInit {
   obtenirThreads(){
     console.log(this.usermail);
     this.apiservice.obtenirThreadsByUser(this.usermail).subscribe(data => {
-      this.lista = data[0].map( (thread: { Id: any; Content: any; DateCreated: any; Title: any; Upvotes: any }) =>({Id: thread.Id, Content: thread.Content, Upvotes: thread.Upvotes, DateCreated: DateToString(thread.DateCreated), Title: thread.Title }));
+      console.log(data);
+      //this.lista = data[0].map( (thread: { Id: any; Content: any; DateCreated: any; Title: any; Upvotes: any; pId: any; pTitle: any; }) =>({Id: thread.Id, Content: thread.Content, Upvotes: thread.Upvotes, DateCreated: DateToString(thread.DateCreated), Title: thread.Title, pId: thread.Parent.Id, pTitle: thread.Parent.Title }));
       console.log(data);
       console.log(this.lista[0]);
       this.lista.sort((a, b) => (a.Id < b.Id ? -1 : 1));
