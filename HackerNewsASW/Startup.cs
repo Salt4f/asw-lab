@@ -16,6 +16,9 @@ namespace HackerNewsASW
 {
     public class Startup
     {
+
+        static readonly string cors = "_corsPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,6 +29,16 @@ namespace HackerNewsASW
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: cors,
+                    builder =>
+                    {
+                        builder.WithOrigins("http://asw.vgafib.org",
+                                            "http://angular.asw.vgafib.org");
+                    });
+            });
+
             services.AddControllersWithViews();
 
             services.AddDbContext<DatabaseContext>(options =>
@@ -66,6 +79,8 @@ namespace HackerNewsASW
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseCors(cors);
 
             app.UseAuthentication();
             app.UseAuthorization();
